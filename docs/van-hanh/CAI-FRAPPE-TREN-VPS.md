@@ -80,6 +80,17 @@ Tạo subdomain bằng tay trên cPanel (nếu không dùng script): **Domains �
 
 ## 6. Sửa 502
 
+<!-- [2026-11-21 07:20 PM Johnny Chu - Chu Hoàng Anh] OPS-2 — tìm ra nguyên nhân 502: Imunify360 chặn cổng đi ra 8080. -->
+> **Nguyên nhân thật (2026-11-21): Imunify360.** Tường lửa của Imunify360 đặt `port_blocking_mode: DENY` và danh sách `TCP_OUT_IPv4` không có `8080`. Máy chủ (docker-proxy) không gọi được vào container frontend ở `172.23.0.10:8080` và nhận `Connection refused`, nên Apache báo `502 Proxy Error`. ketoan chạy được vì container của nó nghe ở cổng 80. Máy này **không có CSF**.
+>
+> **Sửa:** thêm `8080` vào `TCP_OUT_IPv4`. Lệnh `config update` thay cả danh sách, nên phải gửi đủ danh sách cũ cộng cổng mới. Xem danh sách hiện tại bằng `imunify360-agent config show`:
+> ```bash
+> imunify360-agent config update '{"FIREWALL":{"TCP_OUT_IPv4":[...danh sách cũ..., "8080"]}}'
+> ```
+> **Luật cho lần sau:** container mới nghe ở cổng nào thì cổng đó phải có trong `TCP_OUT_IPv4` của Imunify. Cách kiểm nhanh: `timeout 3 bash -c 'echo > /dev/tcp/<IP container>/<cổng>'`.
+>
+> Hiện tượng phụ: lần đầu chạy, container frontend treo ở dòng `Linking fresh assets to volume...`. Chạy `docker restart erp-frontend-1` thì hết.
+
 Triệu chứng (2026-11-21): `https://erp.btnet.vn` → trang **502 Bad gateway** của Cloudflare, ô "Host" báo Error. Nghĩa là Apache **có** trả lời nhưng trả 502. Kiểm từng chặng, từ trong ra ngoài:
 
 ```bash
