@@ -13,11 +13,13 @@
 
 <!-- [2026-11-21 08:20 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-4 / B001-C10 sang 🟡 (bridge PR #6). -->
 
-## 0. Số đếm (cập nhật 21/11 08:20 PM)
+<!-- [2026-11-21 08:35 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-5, S002-6 sang 🟡 (bridge PR #7); S002-4 đã merge (bridge PR #6, 4701eef). -->
+
+## 0. Số đếm (cập nhật 21/11 08:35 PM)
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 159 | 3 | 17 | 18 | 121 | 16 |
+| 159 | 3 | 19 | 18 | 119 | 16 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Ba việc ✅** đều là việc chủ trả lời / duyệt: S001-O1, O1b, O5.
@@ -42,9 +44,9 @@
 | S002-1 | open-ketoan | open-ketoan Docker + tenant `shopa`, khoá riêng _(bất biến I-1)_ | ☐ |  |
 | S002-2 | open-pos | `pos/tests/setup-localwp.php`: 2 blog, ba plugin, bỏ bật React, khoá theo blog, cron thật _(bất biến I-1)_ | ☐ |  |
 | S002-3 | open-pos-backend | `tools/lat-doc-seed.php`: nhóm, mã, bảng giá, gán blog, ĐVT, giá, nhập kho; chạy lại được _(bất biến —)_ | ☐ |  |
-| S002-4 | open-ketoan-bridge | `TGS_Acc_Source_Pos` (= B001-C10) + `ready()` + test _(bất biến I-3)_ | 🟡 2026-11-21 08:11 PM — mã + test (tests/source-pos-test.php, 38 phép kiểm đạt); nguồn sổ POS mặc định tắt, bật theo blog; chưa chạy trong WordPress thật | [bridge PR #6](https://github.com/hoanganh8389/open-ketoan-bridge/pull/6) |
-| S002-5 | open-ketoan-bridge | Option `tgs_acc_branch_code` theo blog; `ensure_branch` không tạo trùng _(bất biến I-4)_ | ☐ |  |
-| S002-6 | open-ketoan-bridge | `TGS_Acc_Money::split_vat` + làm tròn dòng; `unit` = ĐVT nhỏ nhất _(bất biến I-5)_ | ☐ |  |
+| S002-4 | open-ketoan-bridge | `TGS_Acc_Source_Pos` (= B001-C10) + `ready()` + test _(bất biến I-3)_ | 🟡 2026-11-21 08:11 PM — mã + test (tests/source-pos-test.php, 38 phép kiểm đạt); nguồn sổ POS mặc định tắt, bật theo blog; chưa chạy trong WordPress thật | [bridge PR #6](https://github.com/hoanganh8389/open-ketoan-bridge/pull/6) (đã merge 4701eef) |
+| S002-5 | open-ketoan-bridge | Option `tgs_acc_branch_code` theo blog; `ensure_branch` không tạo trùng _(bất biến I-4)_ | 🟡 2026-11-21 08:30 PM — mã + test (tests/branch-unit-test.php, 17 phép kiểm); mã chi nhánh khai theo blog, mã khai sai thì báo lỗi, không tạo chi nhánh trống; chưa chạy trong WordPress thật | [bridge PR #7](https://github.com/hoanganh8389/open-ketoan-bridge/pull/7) |
+| S002-6 | open-ketoan-bridge | `TGS_Acc_Money::split_vat` + làm tròn dòng; `unit` = ĐVT nhỏ nhất _(bất biến I-5)_ | 🟡 2026-11-21 08:30 PM — phần ĐVT: dòng nguồn sổ POS gửi ĐVT nhỏ nhất ở unit; phần hàm tiền đã có ở S002-4 (công thức của TGS_POS_BCTK_Sales_Service); chưa chạy trong WordPress thật | [bridge PR #7](https://github.com/hoanganh8389/open-ketoan-bridge/pull/7) |
 | S002-7 | open-ketoan-bridge | Thuế lẻ không khớp 6 mã → lỗi rõ, không gửi _(bất biến I-5)_ | ☐ |  |
 | S002-8 | open-ketoan-bridge | `wp tgs-acc preflight` _(bất biến I-5)_ | ☐ |  |
 | S002-9 | open-ketoan-bridge | Nhật ký gửi giữ `pending` riêng _(bất biến I-4)_ | ☐ |  |
