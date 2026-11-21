@@ -17,13 +17,15 @@
 
 <!-- [2026-11-21 08:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-9, 10, 12 sang 🟡 (bridge PR #8); S002-5, 6 đã merge (bridge PR #7, 96a1f1c). -->
 
+<!-- [2026-11-21 10:15 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-14 sang 🟡 (open-pos PR #23); S002-13 thêm nút ở Cổng kế toán (bridge PR #10). -->
+<!-- [2026-11-21 09:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-2 (open-pos PR #22), S002-3 (open-pos-backend PR #32) sang 🟡; S002-8, 11, 13 đã merge (bridge PR #9, 1832956). -->
 <!-- [2026-11-21 09:05 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-8, 11, 13 sang 🟡 (bridge PR #9); S002-9, 10, 12 đã merge (bridge PR #8, 155c66e). -->
 
-## 0. Số đếm (cập nhật 21/11 09:05 PM)
+## 0. Số đếm (cập nhật 21/11 10:15 PM)
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 159 | 3 | 25 | 18 | 113 | 16 |
+| 159 | 3 | 28 | 18 | 110 | 16 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Ba việc ✅** đều là việc chủ trả lời / duyệt: S001-O1, O1b, O5.
@@ -46,8 +48,8 @@
 | ID | Repo | Việc | Trạng thái | Bằng chứng |
 |---|---|---|---|---|
 | S002-1 | open-ketoan | open-ketoan Docker + tenant `shopa`, khoá riêng _(bất biến I-1)_ | ☐ |  |
-| S002-2 | open-pos | `pos/tests/setup-localwp.php`: 2 blog, ba plugin, bỏ bật React, khoá theo blog, cron thật _(bất biến I-1)_ | ☐ |  |
-| S002-3 | open-pos-backend | `tools/lat-doc-seed.php`: nhóm, mã, bảng giá, gán blog, ĐVT, giá, nhập kho; chạy lại được _(bất biến —)_ | ☐ |  |
+| S002-2 | open-pos | `tests/setup-lat-doc.php`: 2 blog, ba plugin, bỏ bật React, khoá theo blog, cron thật _(bất biến I-1)_ | 🟡 2026-11-21 09:15 PM — script dựng blog A (nối kế toán, nguồn sổ POS, CN01) + blog B (tự quản), tạo bảng theo blog, kiểm feed/meta; cron thật chạy tay theo hướng dẫn đầu file; chưa chạy trên LocalWP thật | [open-pos PR #22](https://github.com/hoanganh8389/open-pos/pull/22) |
+| S002-3 | open-pos-backend | `tools/lat-doc-seed.php`: nhóm, mã, bảng giá, gán blog, ĐVT, giá, nhập kho; chạy lại được _(bất biến —)_ | 🟡 2026-11-21 09:40 PM — seed blog A: nhóm LATDOC, SKU 900000001 (Cái, 10 %), bảng giá LATDOC gán blog A, 11.000 gồm VAT, nhập 10 qua create_import_ledger + duyệt; php -l sạch; chưa chạy trên LocalWP thật | [open-pos-backend PR #32](https://github.com/hoanganh8389/open-pos-backend/pull/32) |
 | S002-4 | open-ketoan-bridge | `TGS_Acc_Source_Pos` (= B001-C10) + `ready()` + test _(bất biến I-3)_ | 🟡 2026-11-21 08:11 PM — mã + test (tests/source-pos-test.php, 38 phép kiểm đạt); nguồn sổ POS mặc định tắt, bật theo blog; chưa chạy trong WordPress thật | [bridge PR #6](https://github.com/hoanganh8389/open-ketoan-bridge/pull/6) (đã merge 4701eef) |
 | S002-5 | open-ketoan-bridge | Option `tgs_acc_branch_code` theo blog; `ensure_branch` không tạo trùng _(bất biến I-4)_ | 🟡 2026-11-21 08:30 PM — mã + test (tests/branch-unit-test.php, 17 phép kiểm); mã chi nhánh khai theo blog, mã khai sai thì báo lỗi, không tạo chi nhánh trống; chưa chạy trong WordPress thật | [bridge PR #7](https://github.com/hoanganh8389/open-ketoan-bridge/pull/7) (đã merge 96a1f1c) |
 | S002-6 | open-ketoan-bridge | `TGS_Acc_Money::split_vat` + làm tròn dòng; `unit` = ĐVT nhỏ nhất _(bất biến I-5)_ | 🟡 2026-11-21 08:30 PM — phần ĐVT: dòng nguồn sổ POS gửi ĐVT nhỏ nhất ở unit; phần hàm tiền đã có ở S002-4 (công thức của TGS_POS_BCTK_Sales_Service); chưa chạy trong WordPress thật | [bridge PR #7](https://github.com/hoanganh8389/open-ketoan-bridge/pull/7) (đã merge 96a1f1c) |
@@ -57,8 +59,8 @@
 | S002-10 | open-ketoan-bridge | Kéo trạng thái theo `docKey` → `posted` / `error` _(bất biến I-6)_ | 🟡 2026-11-21 08:45 PM — refresh_status theo docKey + cron tgs_acc_status_pull 5 phút; chưa chạy trong WordPress thật | [bridge PR #8](https://github.com/hoanganh8389/open-ketoan-bridge/pull/8) (đã merge 155c66e) |
 | S002-11 | open-ketoan-bridge | `wp tgs-acc status` (5 số) _(bất biến I-6)_ | 🟡 2026-11-21 09:00 PM — wp tgs-acc status: năm số + cảnh báo; chưa chạy trong WordPress thật | [bridge PR #9](https://github.com/hoanganh8389/open-ketoan-bridge/pull/9) |
 | S002-12 | open-ketoan-bridge | Cron gửi lại dùng `for_blog($blog)` _(bất biến I-1)_ | 🟡 2026-11-21 08:45 PM — TGS_Acc_Api_Client::for_blog; Events gửi tức thời + cron gửi lại theo blog; chưa chạy trong WordPress thật | [bridge PR #8](https://github.com/hoanganh8389/open-ketoan-bridge/pull/8) (đã merge 155c66e) |
-| S002-13 | open-ketoan-bridge | Tạm dừng kết nối theo blog `tgs_acc_paused` + nút; vẫn ghi sự kiện, không gửi, không thử lại _(bất biến I-0, I-3)_ | 🟡 2026-11-21 09:00 PM — tgs_acc_paused theo blog + wp tgs-acc pause / resume; hàng chờ giữ 7 ngày; nút màn quản trị làm cùng S002-14; chưa chạy trong WordPress thật | [bridge PR #9](https://github.com/hoanganh8389/open-ketoan-bridge/pull/9) |
-| S002-14 | open-pos-backend / open-pos | Admin của blog đổi `tgs_pos_engine` react ↔ legacy, có nhật ký; không sửa checkout _(bất biến I-0)_ | ☐ |  |
+| S002-13 | open-ketoan-bridge | Tạm dừng kết nối theo blog `tgs_acc_paused` + nút; vẫn ghi sự kiện, không gửi, không thử lại _(bất biến I-0, I-3)_ | 🟡 2026-11-21 09:00 PM — tgs_acc_paused theo blog + wp tgs-acc pause / resume; hàng chờ giữ 7 ngày; 10:15 PM nút Tạm dừng / Bỏ tạm dừng + cột Kết nối ở Cổng kế toán, danh sách shop gộp blog nguồn sổ POS; chưa chạy trong WordPress thật | [bridge PR #9](https://github.com/hoanganh8389/open-ketoan-bridge/pull/9) (đã merge 1832956), [bridge PR #10](https://github.com/hoanganh8389/open-ketoan-bridge/pull/10) |
+| S002-14 | open-pos-backend / open-pos | Admin của blog đổi `tgs_pos_engine` react ↔ legacy, có nhật ký; không sửa checkout _(bất biến I-0)_ | 🟡 2026-11-21 10:00 PM — màn POS → Máy bán của shop + nhật ký tgs_pos_engine_log (bắt cả Quản trị mạng, WP-CLI); test 14 phép kiểm; chưa bấm thử trên WordPress thật | [open-pos PR #23](https://github.com/hoanganh8389/open-pos/pull/23) |
 | S002-16 | open-pos-backend | Census `--check=I0` theo danh mục D002-6 + ca bán chuẩn so dòng sổ _(bất biến I-0)_ | ☐ |  |
 
 ### PHASE-002 lát dọc — S2 — chạy ca và ghi bằng chứng
