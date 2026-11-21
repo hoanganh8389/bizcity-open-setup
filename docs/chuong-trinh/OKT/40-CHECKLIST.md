@@ -17,11 +17,13 @@
 
 <!-- [2026-11-21 08:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-9, 10, 12 sang 🟡 (bridge PR #8); S002-5, 6 đã merge (bridge PR #7, 96a1f1c). -->
 
-## 0. Số đếm (cập nhật 21/11 08:50 PM)
+<!-- [2026-11-21 09:05 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-8, 11, 13 sang 🟡 (bridge PR #9); S002-9, 10, 12 đã merge (bridge PR #8, 155c66e). -->
+
+## 0. Số đếm (cập nhật 21/11 09:05 PM)
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 159 | 3 | 22 | 18 | 116 | 16 |
+| 159 | 3 | 25 | 18 | 113 | 16 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Ba việc ✅** đều là việc chủ trả lời / duyệt: S001-O1, O1b, O5.
@@ -50,12 +52,12 @@
 | S002-5 | open-ketoan-bridge | Option `tgs_acc_branch_code` theo blog; `ensure_branch` không tạo trùng _(bất biến I-4)_ | 🟡 2026-11-21 08:30 PM — mã + test (tests/branch-unit-test.php, 17 phép kiểm); mã chi nhánh khai theo blog, mã khai sai thì báo lỗi, không tạo chi nhánh trống; chưa chạy trong WordPress thật | [bridge PR #7](https://github.com/hoanganh8389/open-ketoan-bridge/pull/7) (đã merge 96a1f1c) |
 | S002-6 | open-ketoan-bridge | `TGS_Acc_Money::split_vat` + làm tròn dòng; `unit` = ĐVT nhỏ nhất _(bất biến I-5)_ | 🟡 2026-11-21 08:30 PM — phần ĐVT: dòng nguồn sổ POS gửi ĐVT nhỏ nhất ở unit; phần hàm tiền đã có ở S002-4 (công thức của TGS_POS_BCTK_Sales_Service); chưa chạy trong WordPress thật | [bridge PR #7](https://github.com/hoanganh8389/open-ketoan-bridge/pull/7) (đã merge 96a1f1c) |
 | S002-7 | open-ketoan-bridge | Thuế lẻ không khớp 6 mã → lỗi rõ, không gửi _(bất biến I-5)_ | ☐ |  |
-| S002-8 | open-ketoan-bridge | `wp tgs-acc preflight` _(bất biến I-5)_ | ☐ |  |
-| S002-9 | open-ketoan-bridge | Nhật ký gửi giữ `pending` riêng _(bất biến I-4)_ | 🟡 2026-11-21 08:45 PM — nhật ký gửi giữ pending / remote_error riêng; không gửi lại cùng nội dung; test (tests/status-test.php, 21 phép kiểm); chưa chạy trong WordPress thật | [bridge PR #8](https://github.com/hoanganh8389/open-ketoan-bridge/pull/8) |
-| S002-10 | open-ketoan-bridge | Kéo trạng thái theo `docKey` → `posted` / `error` _(bất biến I-6)_ | 🟡 2026-11-21 08:45 PM — refresh_status theo docKey + cron tgs_acc_status_pull 5 phút; chưa chạy trong WordPress thật | [bridge PR #8](https://github.com/hoanganh8389/open-ketoan-bridge/pull/8) |
-| S002-11 | open-ketoan-bridge | `wp tgs-acc status` (5 số) _(bất biến I-6)_ | ☐ |  |
-| S002-12 | open-ketoan-bridge | Cron gửi lại dùng `for_blog($blog)` _(bất biến I-1)_ | 🟡 2026-11-21 08:45 PM — TGS_Acc_Api_Client::for_blog; Events gửi tức thời + cron gửi lại theo blog; chưa chạy trong WordPress thật | [bridge PR #8](https://github.com/hoanganh8389/open-ketoan-bridge/pull/8) |
-| S002-13 | open-ketoan-bridge | Tạm dừng kết nối theo blog `tgs_acc_paused` + nút; vẫn ghi sự kiện, không gửi, không thử lại _(bất biến I-0, I-3)_ | ☐ |  |
+| S002-8 | open-ketoan-bridge | `wp tgs-acc preflight` _(bất biến I-5)_ | 🟡 2026-11-21 09:00 PM — wp tgs-acc preflight (test tests/pause-cli-test.php); chưa chạy với open-ketoan thật | [bridge PR #9](https://github.com/hoanganh8389/open-ketoan-bridge/pull/9) |
+| S002-9 | open-ketoan-bridge | Nhật ký gửi giữ `pending` riêng _(bất biến I-4)_ | 🟡 2026-11-21 08:45 PM — nhật ký gửi giữ pending / remote_error riêng; không gửi lại cùng nội dung; test (tests/status-test.php, 21 phép kiểm); chưa chạy trong WordPress thật | [bridge PR #8](https://github.com/hoanganh8389/open-ketoan-bridge/pull/8) (đã merge 155c66e) |
+| S002-10 | open-ketoan-bridge | Kéo trạng thái theo `docKey` → `posted` / `error` _(bất biến I-6)_ | 🟡 2026-11-21 08:45 PM — refresh_status theo docKey + cron tgs_acc_status_pull 5 phút; chưa chạy trong WordPress thật | [bridge PR #8](https://github.com/hoanganh8389/open-ketoan-bridge/pull/8) (đã merge 155c66e) |
+| S002-11 | open-ketoan-bridge | `wp tgs-acc status` (5 số) _(bất biến I-6)_ | 🟡 2026-11-21 09:00 PM — wp tgs-acc status: năm số + cảnh báo; chưa chạy trong WordPress thật | [bridge PR #9](https://github.com/hoanganh8389/open-ketoan-bridge/pull/9) |
+| S002-12 | open-ketoan-bridge | Cron gửi lại dùng `for_blog($blog)` _(bất biến I-1)_ | 🟡 2026-11-21 08:45 PM — TGS_Acc_Api_Client::for_blog; Events gửi tức thời + cron gửi lại theo blog; chưa chạy trong WordPress thật | [bridge PR #8](https://github.com/hoanganh8389/open-ketoan-bridge/pull/8) (đã merge 155c66e) |
+| S002-13 | open-ketoan-bridge | Tạm dừng kết nối theo blog `tgs_acc_paused` + nút; vẫn ghi sự kiện, không gửi, không thử lại _(bất biến I-0, I-3)_ | 🟡 2026-11-21 09:00 PM — tgs_acc_paused theo blog + wp tgs-acc pause / resume; hàng chờ giữ 7 ngày; nút màn quản trị làm cùng S002-14; chưa chạy trong WordPress thật | [bridge PR #9](https://github.com/hoanganh8389/open-ketoan-bridge/pull/9) |
 | S002-14 | open-pos-backend / open-pos | Admin của blog đổi `tgs_pos_engine` react ↔ legacy, có nhật ký; không sửa checkout _(bất biến I-0)_ | ☐ |  |
 | S002-16 | open-pos-backend | Census `--check=I0` theo danh mục D002-6 + ca bán chuẩn so dòng sổ _(bất biến I-0)_ | ☐ |  |
 
