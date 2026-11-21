@@ -5,6 +5,12 @@ Theo [Keep a Changelog](https://keepachangelog.com/); phiên bản theo SemVer k
 
 ## [Chưa phát hành]
 
+### 2026-11-21 (khuya) — W1: khung app Frappe `bizcity_site_manager`
+<!-- [2026-11-21 10:48 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 — W1 -->
+
+- `apps/bizcity_site_manager/`: lớp gọi `bizcity_site_provisioning@1` (Idempotency-Key bắt buộc, kiểm slug, lỗi có mã + câu dễ hiểu), máy chủ Provisioning giả, 13 ca kiểm Python thuần.
+- DocType `Bizcity Site Customer`, `Bizcity Ketoan Site`, `Bizcity Provision Job`, `Bizcity Site Manager Settings` + bảng con `Bizcity Site Root Domain`; việc nền gửi lệnh / hỏi trạng thái / đồng bộ mỗi giờ; REST `create_site`, `sites_of`, `job_status` cho `bizcity-llm-router`. Chưa thử trên bench.
+
 ### 2026-11-21 (tối) — vai trò PostgreSQL riêng từng site, luật nâng cấp
 
 - Chủ dự án chốt: mỗi site một database **và một vai trò PostgreSQL riêng**, chung mã open-ketoan. Luật nâng cấp một bản mã cho mọi site ghi vào README, CANON, ADR-0001 (điểm 8). Bên open-ketoan: ADR-0036, luật R-SITE.

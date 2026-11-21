@@ -1,0 +1,112 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "hash",
+ "creation": "2026-11-21 22:48:00.000000",
+ "description": "Nhật ký một lệnh gửi sang Provisioning API (R-JOB-1). Gửi lại dùng cùng Idempotency-Key (R-IDEM-1).",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "site",
+  "kind",
+  "status",
+  "idempotency_key",
+  "remote_job_id",
+  "attempts",
+  "steps",
+  "error_code",
+  "error_message"
+ ],
+ "fields": [
+  {
+   "fieldname": "site",
+   "fieldtype": "Link",
+   "label": "Site",
+   "reqd": 1,
+   "options": "Bizcity Ketoan Site",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "kind",
+   "fieldtype": "Select",
+   "label": "Lệnh",
+   "reqd": 1,
+   "options": "provision\nsuspend\nresume\nbackup\ndelete",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Trạng thái",
+   "options": "queued\nrunning\ndone\nfailed",
+   "default": "queued",
+   "read_only": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "idempotency_key",
+   "fieldtype": "Data",
+   "label": "Idempotency-Key",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "remote_job_id",
+   "fieldtype": "Data",
+   "label": "Mã việc bên Open Kế Toán",
+   "read_only": 1
+  },
+  {
+   "fieldname": "attempts",
+   "fieldtype": "Int",
+   "label": "Số lần chạy",
+   "read_only": 1,
+   "default": "0"
+  },
+  {
+   "fieldname": "steps",
+   "fieldtype": "Code",
+   "label": "Các bước",
+   "read_only": 1,
+   "options": "JSON"
+  },
+  {
+   "fieldname": "error_code",
+   "fieldtype": "Data",
+   "label": "Mã lỗi",
+   "read_only": 1
+  },
+  {
+   "fieldname": "error_message",
+   "fieldtype": "Small Text",
+   "label": "Lỗi (cho người dùng)",
+   "read_only": 1
+  }
+ ],
+ "links": [],
+ "modified": "2026-11-21 22:48:00.000000",
+ "modified_by": "Administrator",
+ "module": "Bizcity Site Manager",
+ "name": "Bizcity Provision Job",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "email": 1,
+   "print": 1,
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "kind"
+}
