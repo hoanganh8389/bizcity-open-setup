@@ -49,3 +49,17 @@ VPS chạy chung với zalo-hub và WordPress. Ba điều cấm:
 ## Khi review PR
 
 Bị 0 là **KHÔNG ĐẠT**: vi phạm một trong bốn câu trên · bí mật trong git · lệnh shell ghép chuỗi từ đầu vào người dùng · xoá site không qua bước sao lưu (R-DATA-1). Mỗi phát hiện ghi: mức · mã luật · `tệp:dòng` · cách làm đúng.
+
+<!-- [2026-11-21 07:52 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — open-setup thêm vai trục điều phối chương trình OKT. -->
+## Vai thứ hai: trục điều phối chương trình OKT
+
+Repo này còn giữ **trục tài liệu của chương trình OKT** (open-pos ⇄ open-ketoan) ở [docs/chuong-trinh/OKT/](docs/chuong-trinh/OKT/README.md):
+- canon: ADR-OKT-1, tám bất biến;
+- roadmap;
+- **checklist**, là nguồn trạng thái duy nhất;
+- phân việc, đánh giá, câu hỏi chờ chủ.
+
+Mã của chương trình nằm ở open-pos, open-pos-backend, open-ketoan-bridge, open-ketoan.
+
+- **Đổi trạng thái việc OKT chỉ ở `docs/chuong-trinh/OKT/40-CHECKLIST.md`**, kèm dấu R-SIG và link bằng chứng. Checklist ở các repo kia không giữ trạng thái.
+- **Bất biến I-0:** luồng bán, logic bán hàng và sổ của open-pos giữ nguyên. Khi review việc OKT, PR chạm tệp cấm sửa (ADR-OKT-1 D002-6) ngoài mẫu "chỉ đổi tên bảng" (D002-7) là **KHÔNG ĐẠT**.
