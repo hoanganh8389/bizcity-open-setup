@@ -1,7 +1,8 @@
 # PHASE-001 — Cổng tự tạo phần mềm kế toán (open.bizcity.vn)
 <!-- [2026-11-21 06:33 PM Johnny Chu - Chu Hoàng Anh] P001-INIT — mở phase 001: cổng tự tạo site kế toán trên bộ máy Frappe/ERPNext đã cài. -->
 
-> **Trạng thái:** Đã chốt hướng. Chưa có mã cổng. **Bộ máy đã chạy** (2026-11-21): ERPNext v15.125.0, `docker compose -p erp`, cổng `127.0.0.1:8090`. Site thử `erp.btnet.vn` đã tạo xong nhưng đang **502 qua Cloudflare**.
+> **Trạng thái:** Đã chốt hướng. Chưa có mã cổng. **Bộ máy đã chạy** (2026-11-21): ERPNext v15.125.0, `docker compose -p erp`, cổng `127.0.0.1:8090`. Site thử `erp.btnet.vn` **chạy được qua Cloudflare** (2026-11-21, Setup Wizard đã chạy). W0-1 xong: lỗi 502 là do Imunify360 chặn cổng đi ra 8080.
+<!-- [2026-11-21 07:30 PM Johnny Chu - Chu Hoàng Anh] W0-1 — erp.btnet.vn chạy; 502 do Imunify360 TCP_OUT thiếu 8080. -->
 > **Chủ phase:** chủ dự án (founder). Quyết định theo [phương án tốt nhất](#5-quyết-định-đã-chốt), không chờ người ngoài.
 
 ## 1. Mục tiêu (một câu)
@@ -59,7 +60,7 @@ Script `ops/provision-tenant.sh <slug> <root> <email> <tên công ty>` chạy b�
 
 | Đợt | Việc | Xong khi |
 |---|---|---|
-| **W0 — Gỡ chặn bộ máy** | W0-1 sửa 502 ở `erp.btnet.vn` (xem [CAI-FRAPPE §6](../../van-hanh/CAI-FRAPPE-TREN-VPS.md#6-sửa-502)) · W0-2 đổi sang MariaDB 10.6 (D001-10) · W0-3 kiểm `bizcity.vn` có trong cPanel `vibeyeuc` không · W0-4 bật cPHulk / SSH key (có dò mật khẩu root) | `https://erp.btnet.vn/login` = 200, đăng nhập được, Setup Wizard chạy xong |
+| **W0 — Gỡ chặn bộ máy** | ~~W0-1 sửa 502~~ ✅ đã xong: thêm `8080` vào `TCP_OUT_IPv4` của Imunify360 (xem [CAI-FRAPPE §6](../../van-hanh/CAI-FRAPPE-TREN-VPS.md#6-sửa-502)) · W0-2 đổi sang MariaDB 10.6 (D001-10) · W0-3 kiểm `bizcity.vn` có trong cPanel `vibeyeuc` không · W0-4 bật cPHulk / SSH key (có dò mật khẩu root) | `https://erp.btnet.vn/login` = 200, đăng nhập được, Setup Wizard chạy xong |
 | **W1 — Provisioner** | `ops/provision-tenant.sh` theo §4: JSON từng bước, `httpd -t` trước khi restart, dọn khi lỗi · `ops/tenant-ctl.sh suspend|resume|backup|drop` · sudoers | Tạo thử 3 site liên tiếp, giết giữa chừng 1 site → không còn gì mồ côi; các tham số độc đều bị từ chối |
 | **W2 — Cổng v1** | Fastify + SQLite: form §3, kiểm slug trực tiếp, email OTP, bảng `tenants`/`jobs`, worker, SSE tiến trình, email "xong" · subdomain `open.bizcity.vn` + proxy → 8095 · systemd unit | Một người ngoài đội tự tạo được site từ điện thoại, không cần hỏi ai |
 | **W3 — Nhanh + bền** | Kho site dựng sẵn (D001-11) · sao lưu hằng đêm `bench --site all backup --with-files` + đẩy ra ngoài VPS · cron hết hạn dùng thử (D001-7) | Giao site < 60 giây; có bản sao lưu ngoài VPS của đêm qua |
