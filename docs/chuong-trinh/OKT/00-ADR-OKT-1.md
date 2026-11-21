@@ -77,4 +77,46 @@ Ba tệp cũ nằm ở `open-pos-backend/docs/phases/PHASE-001-…/archive/`, ch
 
 ## 5. Trạng thái một blog và chuyển nguồn
 
-#
+### 5.1 Bảng trạng thái
+
+| `tgs_catalog_source` | Kết nối | Trạng thái | Máy bán | Quản trị danh mục |
+|---|---|---|---|---|
+| `local` | không cần | 🔵 **Tự quản** | Bán bình thường | CRUD đầy đủ: sản phẩm, nhóm, giá, ĐVT, thuế |
+| `local` | có khoá riêng, kiểm được | 🔵 **Tự quản, có gửi chứng từ** | Như trên; chứng từ gửi lên tenant sau khi ghi sổ | Như trên; có nút "Chuyển sang theo open-ketoan" (§5.2) |
+| `ketoan` | kiểm thành công | 🟢 **Theo kế toán** | Bán từ bản sao local | Trường gốc chỉ đọc + link sửa ở kế toán; thêm mã = gửi lên, **về rồi mới bán** (Q001-16) |
+| `ketoan` | lỗi mạng (hết giờ, 5xx), đã từng thành công | 🟡 **Dự phòng** | **Vẫn bán** (I-3); hàng chờ gửi dài ra, giữ 7 ngày | Không sửa danh mục, không thêm mã (Q001-21) |
+| `ketoan` | khoá bị từ chối, trùng tenant, bridge tắt, chưa từng thành công | 🔴 **Hỏng kết nối** | **Vẫn bán** từ bản sao, đơn xếp hàng (Q001-22 = 1); báo đỏ, quá 24 giờ báo cấp trên | Sửa khoá, hoặc chuyển về `local` theo thủ tục §5.2 |
+| bất kỳ | admin **tạm dừng** (`tgs_acc_paused`, R-OKT-CONN-12) | ⏸ **Tạm dừng kết nối** | Vẫn bán; sự kiện vẫn ghi, không gửi, không thử lại; bỏ tạm dừng thì gửi bù, không trùng | Như dòng tương ứng ở trên |
+
+Máy bán: **POS cũ** bán ở mọi trạng thái vì đơn ghi sổ local. **POS React** đăng nhập qua kế toán; ở 🟡 / 🔴 / ⏸ nó dựa vào chế độ dự phòng có sẵn, không đỡ được (kế toán tắt **trước** khi mở ca, máy mới) thì admin shop chuyển máy bán sang POS cũ ở **POS → Máy bán** (S002-14). Hoàn hàng / chuyển kho ở 🟡: Q001-25, mặc định **giữ nguyên** như đang chạy (I-0): POS cũ hoàn hàng bình thường (ghi sổ local); chế độ dự phòng của POS React không hoàn hàng, không thao tác kho.
+
+### 5.2 Chuyển nguồn
+
+**`local` → `ketoan`** (admin bấm, kết nối phải 🟢):
+1. Dựng ánh xạ mặc định (R-OKT-CONN-5).
+2. Khớp mã local theo SKU rồi barcode (Q001-12): khớp thì gắn `item_id`; không khớp thì gửi lên như mã mới, chỉ mã blog đã dùng (Q001-23).
+3. Kéo đầy đủ về bảng local, đối chứng lệch 0.
+4. Đặt `tgs_catalog_source = ketoan`. Từ đây kế toán thắng.
+
+**`ketoan` → `local`** là **thủ tục khôi phục** (I-2): có người duyệt, có nhật ký; không phải nút hằng ngày. Dữ liệu đã kéo ở lại và thành của blog. Chứng từ đang chờ vẫn gửi nếu còn kết nối.
+
+Mỗi lần chuyển ghi nhật ký kết nối: ai, lúc nào, kết quả đối chứng.
+
+### 5.3 Chuyển 92 blog đang chạy (một lần)
+
+1. Kế toán tách tenant theo blog (S001-K9), cấp tenant (S001-K10).
+2. Mỗi blog: dựng dữ liệu nạp từ bảng global (`TGS_Acc_Catalog_Sync::build_import`, lệnh `tools/danh-muc-hang.php nap`), lọc theo mã blog đã dùng (Q001-23), `dryRun`, rồi nạp vào tenant của blog.
+3. Kéo về bảng của blog, khớp id cũ theo SKU để sổ kho giữ khoá (D001-9), đối chứng lệch 0.
+4. Đặt `tgs_catalog_source = ketoan` cho blog đó.
+
+`nap` / `build_import` của bridge **không gỡ** (B001-C7) cho tới khi bước này xong.
+
+### 5.4 Điểm rủi ro đã biết ở vỏ POS React (doc 27 §2)
+
+| # | Điểm | Ở đâu | Xử lý theo ADR |
+|---|---|---|---|
+| E1 | Vỏ React không kiểm kết nối trước khi mở màn bán | `react-shell.php:84-106` | **Giữ** (Q001-22 = vẫn bán; I-0) |
+| E2 | Thiếu `TGS_POS_API_BASE` → `/api/v1` của API giả; bản build mặc định `mock` | `react-shell.php:15, 235`; `react/src/app/env.ts:1` | Kiểm khi deploy: bản build thật, có `TGS_POS_API_BASE` (95 deploy list) |
+| E3 | Địa chỉ API, khoá ký vé SSO, tenant chung cả mạng | `react-shell.php:367-404` | B001-C12 / P001-CFG: lấy theo blog; một tenant thì hành vi giống hệt, có ca đăng nhập trước / sau |
+| E4 | Mã chi nhánh lùi về `wp_blogs.tgs_site_code` | `react-shell.php:340-359` | Q001-20; chi nhánh khai theo blog `tgs_acc_branch_code` (S002-5) |
+| E5 | POS cũ không có cổng kết nối | — | **Giữ**: đúng D001-20 / I-3 |
