@@ -6,7 +6,7 @@
 
 > Một bộ máy chạy chung, mỗi doanh nghiệp một site và một cơ sở dữ liệu riêng. Người dùng không cài gì, không gặp kỹ thuật viên.
 
-> **Hiện trạng (2026-11-21):** giai đoạn 0. Đã có: bộ máy Frappe/ERPNext v15.125.0 chạy bằng Docker trên VPS cPanel và script tạo site bằng tay ([ops/new-tenant.sh](ops/new-tenant.sh)), đã tạo được site `erp.btnet.vn`. **Site này đang lỗi 502** khi truy cập qua Cloudflare (việc W0). **Chưa có cổng web.** Bước kế tiếp là [PHASE-001](docs/phases/PHASE-001-CONG-TU-TAO-KE-TOAN/README.md).
+> **Hiện trạng (2026-11-21):** giai đoạn 0. Đã có: bộ máy Frappe/ERPNext v15.125.0 chạy bằng Docker trên VPS cPanel và script tạo site bằng tay ([ops/new-tenant.sh](ops/new-tenant.sh)), đã tạo được site `erp.btnet.vn`. Site đã chạy qua Cloudflare sau khi mở cổng 8080 trong Imunify360. **Chưa có cổng web.** Bước kế tiếp là [PHASE-001](docs/phases/PHASE-001-CONG-TU-TAO-KE-TOAN/README.md).
 
 ## Luồng người dùng
 
