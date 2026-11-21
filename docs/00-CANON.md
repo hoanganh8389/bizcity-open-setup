@@ -1,5 +1,6 @@
 # CANON — Chỉ mục luật Bizcity Open Setup
 <!-- [2026-11-21 06:33 PM Johnny Chu - Chu Hoàng Anh] INIT — khởi tạo chỉ mục luật Open Setup. -->
+<!-- [2026-11-21 09:18 PM Johnny Chu - Chu Hoàng Anh] ADR-0001 — PostgreSQL: mỗi site một database và một vai trò riêng; trỏ luật nâng cấp R-SITE của open-ketoan. -->
 <!-- [2026-11-21 07:46 PM Johnny Chu - Chu Hoàng Anh] R-DATA-1 — hết hạn chỉ cảnh báo (khoá mềm); tên miền gốc động (R-DOMAIN-1). -->
 <!-- [2026-11-21 07:36 PM Johnny Chu - Chu Hoàng Anh] R-KEY-1 — bizcity-llm-router là chủ API key; Site Manager không cấp, không lưu khoá của khách. -->
 <!-- [2026-11-21 07:25 PM Johnny Chu - Chu Hoàng Anh] ADR-0001 — viết lại theo mô hình Frappe Site Manager + Open Kế Toán dùng chung + mỗi site một database. -->
@@ -15,7 +16,7 @@ Ba vai, không lẫn:
 
 - **Frappe** = giao diện điều hành và quản lý site.
 - **Open Kế Toán** = ứng dụng kế toán dùng chung, độc lập với Frappe.
-- **PostgreSQL** = mỗi site một database.
+- **PostgreSQL** = mỗi site một database và một vai trò riêng. Nâng cấp theo luật một bản mã cho mọi site (open-ketoan R-SITE-8..10).
 
 ## 1. Bốn câu không thương lượng
 
