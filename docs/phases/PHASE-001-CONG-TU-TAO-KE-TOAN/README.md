@@ -1,85 +1,109 @@
-# PHASE-001 — Cổng tự tạo phần mềm kế toán (open.bizcity.vn)
-<!-- [2026-11-21 06:33 PM Johnny Chu - Chu Hoàng Anh] P001-INIT — mở phase 001: cổng tự tạo site kế toán trên bộ máy Frappe/ERPNext đã cài. -->
+# PHASE-001 — Site Manager: app Frappe `bizcity_site_manager` và cổng open.bizcity.vn
+<!-- [2026-11-21 06:33 PM Johnny Chu - Chu Hoàng Anh] P001-INIT — mở phase 001: cổng tự tạo site kế toán. -->
+<!-- [2026-11-21 07:25 PM Johnny Chu - Chu Hoàng Anh] ADR-0001 — viết lại phase theo mô hình mới: Frappe chỉ quản lý site, Open Kế Toán cấp database qua Provisioning API; bỏ ERPNext, bỏ cổng Node + SQLite. -->
 
-> **Trạng thái:** Đã chốt hướng. Chưa có mã cổng. **Bộ máy đã chạy** (2026-11-21): ERPNext v15.125.0, `docker compose -p erp`, cổng `127.0.0.1:8090`. Site thử `erp.btnet.vn` **chạy được qua Cloudflare** (2026-11-21, Setup Wizard đã chạy). W0-1 xong: lỗi 502 là do Imunify360 chặn cổng đi ra 8080.
-<!-- [2026-11-21 07:30 PM Johnny Chu - Chu Hoàng Anh] W0-1 — erp.btnet.vn chạy; 502 do Imunify360 TCP_OUT thiếu 8080. -->
-> **Chủ phase:** chủ dự án (founder). Quyết định theo [phương án tốt nhất](#5-quyết-định-đã-chốt), không chờ người ngoài.
+> **Trạng thái:** Đã chốt hướng ([ADR-0001](../../adr/ADR-0001-frappe-site-manager-open-ketoan-ung-dung-chung.md)). Chưa có mã app.
+> **Phụ thuộc:** PHASE-039 của repo `open-ketoan` (Site Registry, Database Router, Provisioner, Provisioning API). W2 trở đi của phase này chờ bước B5 bên đó.
+> **Chủ phase:** chủ dự án (founder).
 
 ## 1. Mục tiêu (một câu)
 
-Người lạ vào **open.bizcity.vn** và trong **dưới 5 phút** (v1), dưới 1 phút (khi có kho site dựng sẵn ở W3), có một phần mềm kế toán riêng chạy được, đăng nhập bằng email của chính họ. Không cần ai trong đội phải làm gì.
+Một thành viên vào **open.bizcity.vn**, điền form, và nhận một site kế toán Open Kế Toán chạy được ở tên miền riêng. Đội vận hành nhìn thấy mọi site, khách hàng, khoá và việc đang chạy trong **một** màn quản trị Frappe.
 
-## 2. Ngoài phạm vi phase này
+## 2. Ngoài phạm vi
 
+- Mọi thứ thuộc PostgreSQL và Open Kế Toán: tạo database, migration, sao lưu, định tuyến theo tên miền. Đó là PHASE-039 bên `open-ketoan`.
 - Thu tiền và gói trả phí: PHASE-002, đi qua ví Bizcity.
-- Tên miền riêng của khách, ví dụ `ketoan.congtya.vn`: PHASE-003.
-- Sửa nghiệp vụ kế toán: thuộc engine (ERPNext hoặc open-ketoan), không thuộc Open Setup.
-- Bản địa hoá Việt Nam cho ERPNext (hệ thống tài khoản theo TT200/TT133, mẫu chứng từ): làm riêng, có thể là app Frappe `bizcity_vn`. Ghi ở rủi ro R-4.
+- Tên miền riêng của khách (`ketoan.congtya.vn`): PHASE-003.
 
-## 3. Luồng và màn hình
+## 3. App `bizcity_site_manager`
 
-| # | Màn | Nội dung | Ghi chú |
-|---|---|---|---|
-| 1 | **Đăng ký** | Họ tên · Tên công ty · Số điện thoại · Email · **Tên miền mong muốn** (`____.btnet.vn`, kiểm còn trống ngay khi gõ) · Tỉnh/thành · ☑ đồng ý điều khoản | Tự gợi ý slug từ tên công ty, bỏ dấu (`Công ty An Phát` → `anphat`). Ô đầu tiên luôn có sẵn gợi ý, theo tinh thần "ok = 1" |
-| 2 | **Xác nhận email** | Nhập mã 6 số gửi qua email; mã hết hạn sau 15 phút | Chặn tạo site bằng email ảo |
-| 3 | **Đang tạo** | Thanh tiến trình theo 5 bước ở §4, đẩy trạng thái bằng SSE; đóng tab rồi mở lại vẫn thấy tiến trình qua link trong email | Không hỏi thêm câu nào giữa chừng |
-| 4 | **Xong** | Nút "Mở phần mềm kế toán" → `https://<slug>.btnet.vn`; email "Đặt mật khẩu" của Frappe đã được gửi | Lần đầu đăng nhập, Setup Wizard của ERPNext điền sẵn Việt Nam / VND / tên công ty |
-| 5 | **Lỗi** | Câu dễ hiểu kèm mã việc (`JOB-…`) và nút "Thử lại" | Phía sau đã dọn phần tạo dở (R-JOB-1) |
+Một app Frappe nhỏ, cài trên **một** Frappe site quản trị (MariaDB). Năm DocType:
 
-## 4. Các bước tạo site (provisioner)
+| DocType | Giữ gì | Trường chính |
+|---|---|---|
+| **Bizcity Site Customer** | Khách hàng | họ tên, công ty, email (đã xác nhận), số điện thoại, tỉnh/thành, `external_ref` (mã người dùng WordPress, để nối `bizcity-llm-router` sau này) |
+| **Bizcity Ketoan Site** | Một site kế toán (bản điều hành) | `slug`, `domain`, khách hàng, `site_id` (do Open Kế Toán trả), trạng thái (`pending` · `provisioning` · `active` · `suspended` · `failed` · `deleted`), gói, hạn dùng, `app_version`, `schema_version`, `last_backup_at`, dung lượng |
+| **Bizcity Site Api Key** | Dấu vết khoá API của một site | site, nhãn, **tiền tố** khoá, phạm vi, người xin, ngày cấp, ngày thu hồi. **Không lưu giá trị khoá** (R-KEY-1) |
+| **Bizcity Provision Job** | Nhật ký một lệnh gửi sang Open Kế Toán | loại lệnh, `idempotency_key`, `job_id` bên kia, trạng thái, các bước, lỗi (mã + câu dễ hiểu) |
+| **Bizcity Site Manager Settings** (Single) | Cấu hình | địa chỉ Provisioning API, khoá Provisioning (`Password`), tên miền gốc, số ngày dùng thử, trần số site, danh sách slug cấm |
 
-Script `ops/provision-tenant.sh <slug> <root> <email> <tên công ty>` chạy bằng root qua sudo. Mỗi bước in **một dòng JSON** `{"step":n,"ok":true|false,"msg":"…"}` để cổng đọc và hiển thị.
+Phần mã ngoài DocType:
 
-| Bước | Việc | Lệnh | Dọn khi hỏng |
-|---|---|---|---|
-| 1 | Kiểm tham số + slug còn trống | regex R-SLUG-1; `ls sites/`; `uapi DomainInfo list_domains` | — |
-| 2 | Tạo site + cài ERPNext | `bench new-site … --install-app erpnext`; `set-config host_name`; `enable-scheduler` | `bench drop-site --no-backup --force` |
-| 3 | Tạo tài khoản quản trị cho khách | `bench --site … add-system-manager <email> --first-name … --send-welcome-email` | (đi cùng bước 2) |
-| 4 | Gắn tên miền trong cPanel | `uapi SubDomain addsubdomain` | `uapi SubDomain delsubdomain` |
-| 5 | Proxy Apache | ghi `userdata/{std,ssl}/2_4/vibeyeuc/<site>/proxy.conf` → `rebuildhttpdconf` → **`httpd -t` phải đạt** rồi mới `restartsrv_httpd`; sau đó `curl` kiểm `/login` = 200 qua Host header | xoá 2 thư mục userdata, rebuild |
+| Thành phần | Việc |
+|---|---|
+| `provisioning_client.py` | Lớp gọi `bizcity_site_provisioning@1`: ký khoá, gắn `Idempotency-Key`, đổi lỗi thành mã + câu dễ hiểu |
+| Việc nền (hàng đợi Frappe) | Gửi lệnh, hỏi trạng thái việc tới khi xong, cập nhật `Bizcity Ketoan Site` |
+| Việc định kỳ (scheduler) | Đồng bộ trạng thái / phiên bản / sao lưu từ registry mỗi giờ; khoá site hết hạn dùng thử |
+| Trang web `/dang-ky` (www của Frappe) | Form đăng ký công khai, kiểm slug, OTP email, màn tiến trình |
+| REST cho WordPress | `bizcity_site_manager.api.*`: tạo khách, tạo site, xem site của một `external_ref` |
 
-`Administrator` của mỗi site giữ cho đội vận hành, mật khẩu ghi vào `/root/frappe-sites.txt` (quyền 600). Khách dùng tài khoản System Manager mang email của mình.
+## 4. Luồng tạo site
+
+```text
+Người dùng (open.bizcity.vn/dang-ky)
+   │ họ tên · công ty · email · số điện thoại · tên miền mong muốn · ☑ điều khoản
+   ▼
+Site Manager: kiểm slug (R-SLUG-1) + chống lạm dụng (R-ABUSE-1) → gửi OTP email
+   ▼ (OTP đúng)
+Tạo Bizcity Site Customer + Bizcity Ketoan Site (pending) + Bizcity Provision Job
+   ▼ việc nền
+POST {Open Kế Toán}/_sites/v1/sites     Idempotency-Key = mã việc
+   ▼ 202 { jobId, siteId }
+GET  /_sites/v1/jobs/{jobId}  (hỏi lại mỗi 2 giây)
+   ▼ done
+Bizcity Ketoan Site = active  →  email "Site của bạn đã sẵn sàng" + nút mở site
+```
+
+Open Kế Toán làm phần còn lại: tạo database, chạy migration, tạo đơn vị đầu và tài khoản quản trị mang email của khách, ghi `domain → database` vào Site Registry. Hợp đồng đầy đủ nằm ở `open-ketoan` · `docs/phases/PHASE-039-NHIEU-CSDL-SITE-REGISTRY/30-HOP-DONG-PROVISIONING.md`.
 
 ## 5. Quyết định đã chốt
 
 | Mã | Quyết định | Vì sao |
 |---|---|---|
-| **D001-1** — engine | **ERPNext v15** trên Frappe (đã chạy). Cổng gọi engine qua giao diện `provision / suspend / resume / backup / drop`, nên open-ketoan cắm vào được sau | Có ngay hôm nay; không khoá cổng vào một engine |
-| **D001-2** — tên miền khách | **`<slug>.btnet.vn`** mỗi khách là một subdomain cPanel (đã kiểm: `uapi` trả `status: 1`). Thêm `bizcity.vn` làm tên miền gốc thứ hai **sau khi** xác nhận nó nằm trong tài khoản cPanel `vibeyeuc` và trên Cloudflare (W0-3) | Subdomain cPanel thắng wildcard WordPress; SSL Universal của Cloudflare phủ sẵn `*.btnet.vn`. **Không** dùng wildcard 2 cấp (`*.kt.btnet.vn`) vì cần chứng chỉ trả phí |
-| **D001-3** — quyền | Cổng chạy user `opensetup`. Sudoers chỉ cho phép đúng `/opt/open-setup/ops/provision-tenant.sh` và `ops/tenant-ctl.sh` | R-PRIV-1: cổng web bị chiếm cũng không có root |
-| **D001-4** — công nghệ cổng | **Node 20 + TypeScript + Fastify + SQLite** (`better-sqlite3`, WAL). Giao diện là HTML render từ server cộng một chút JS. Chạy bằng systemd ở `127.0.0.1:8095`, **không** chạy trong Docker | Cùng ngôn ngữ với open-ketoan; một tệp CSDL; tránh lỗi `overlay2 busy` của Docker trên VPS này; cổng cần gọi `sudo` trên máy chủ |
-| **D001-5** — hàng đợi | Bảng `jobs` trong SQLite, **một worker, chạy tuần tự** | `bench new-site` tốn CPU/RAM; chạy song song dễ đụng khoá CSDL. 3–5 phút mỗi site là chấp nhận được cho v1 |
-| **D001-6** — xác nhận danh tính | **Email OTP 6 số** ở v1. Zalo OTP qua zalo-hub ở v1.1 | Đơn giản, không phụ thuộc ZNS (đang chờ) |
-| **D001-7** — dùng thử | **30 ngày** miễn phí. Hết hạn thì site chuyển **chỉ đọc** (maintenance mode + `allow_reads_during_maintenance`). Sau 90 ngày không gia hạn: sao lưu → kiểm bản sao lưu → xoá | Kế toán cần trọn một chu kỳ khoá sổ tháng mới đánh giá được; R-DATA-1 |
-| **D001-8** — trần | Tối đa **1 site dùng thử / email / số điện thoại**; **3 lượt / IP / ngày**; trần tổng `MAX_TENANTS=200` (RAM trống 17 GB, mỗi site chủ yếu tốn CSDL và đĩa). Gần trần thì báo đội vận hành | R-ABUSE-1 |
-| **D001-9** — slug cấm | `www mail webmail ftp cpanel whm api admin open erp ketoan kiot app apps static cdn ns1 ns2 smtp pop imap test demo` + mọi subdomain đang có trong cPanel | Tránh đè tên miền hệ thống |
-| **D001-10** — MariaDB | Đổi image `mariadb:11.8` sang **`mariadb:10.6`** **trước khi** có khách thật (W0-2). Phải xoá volume `erp_db-data` và tạo lại `erp.btnet.vn` | Frappe v15 cảnh báo "11.8 not yet tested"; bây giờ mới có một site thử nên đổi rẻ, sau này rất đắt |
-| **D001-11** — kho site dựng sẵn | W3: luôn giữ **3 site trống** (`pool-xx.local`). Khi có khách thì đổi tên thư mục site + `host_name`, thêm user, gắn tên miền | Thời gian giao từ 3–5 phút xuống dưới 1 phút |
+| **D001-1** — vai của Frappe | Chỉ **một** Frappe site quản trị, cài `frappe` + `bizcity_site_manager`. Không ERPNext, không Frappe site cho từng khách | ADR-0001: tránh hai hệ multisite song song |
+| **D001-2** — tên miền site kế toán | `<slug>.<tên miền gốc>`, với **một tên miền gốc riêng cho kế toán** có wildcard trỏ thẳng vào Open Kế Toán. Tạo site mới **không** đụng cPanel. Trong lúc chờ chọn tên miền: tạo từng subdomain trên `btnet.vn` để thử | `*.btnet.vn` đang phục vụ WordPress multisite, không đổi được. Wildcard riêng thì SSL Universal của Cloudflare phủ sẵn |
+| **D001-3** — tên miền Site Manager | `open.bizcity.vn` → Frappe (subdomain cPanel + proxy, cách đã chạy được) | Một site duy nhất, tạo tay một lần |
+| **D001-4** — CSDL của Site Manager | **MariaDB 10.6** (đổi từ 11.8 khi dựng site quản trị) | Frappe v15 cảnh báo chưa thử 11.8; cùng họ MySQL với WordPress |
+| **D001-5** — image | Build image riêng từ `frappe_docker` với `apps.json` = `frappe` + `bizcity_site_manager` | Image `frappe/erpnext` không có app của mình |
+| **D001-6** — xác nhận danh tính | Email OTP 6 số ở v1; đăng nhập qua tài khoản WordPress Bizcity ở v1.1 | Đơn giản, không phụ thuộc bên ngoài |
+| **D001-7** — dùng thử | 30 ngày. Hết hạn thì gửi lệnh `suspend` (site chỉ đọc). Sau 90 ngày không gia hạn: `backup` → `delete` | R-DATA-1 |
+| **D001-8** — trần | 1 site dùng thử / email / số điện thoại; 3 lượt / IP / ngày; trần tổng cấu hình được | R-ABUSE-1 |
+| **D001-9** — khoá API của site | Site Manager **xin** Open Kế Toán cấp (`POST /_sites/v1/sites/{id}/api-keys`), hiện cho người dùng **một lần**, chỉ lưu tiền tố + nhãn | Một nơi cấp, một nơi kiểm; lộ CSDL quản trị không lộ khoá |
+| **D001-10** — ai là chủ sự thật | Open Kế Toán là chủ Site Registry. Bảng `Bizcity Ketoan Site` là bản điều hành, đồng bộ lại mỗi giờ; lệch thì tin registry | Open Kế Toán phải chạy được khi không có Frappe |
+| **D001-11** — nối WordPress | WordPress / `bizcity-llm-router` gọi REST của Frappe bằng khoá API Frappe; khách nối với người dùng WordPress qua `external_ref` | Site Manager là một cửa cho mọi kênh bán |
 
-## 6. Các đợt việc
+## 6. Câu còn mở
+
+| Mã | Câu hỏi | Đề nghị |
+|---|---|---|
+| **Q001-1** | Tên miền gốc cho các site kế toán là gì? | Một tên miền riêng, ngắn, chỉ dùng cho kế toán |
+| **Q001-2** | `bizcity-llm-router` giữ vai gì: chỉ là nơi người dùng bấm "tạo kế toán", hay cũng giữ danh sách site và khoá? | Chỉ là nơi bấm và hiển thị; danh sách và khoá ở Site Manager (một chủ) |
+
+## 7. Các đợt việc
 
 | Đợt | Việc | Xong khi |
 |---|---|---|
-| **W0 — Gỡ chặn bộ máy** | ~~W0-1 sửa 502~~ ✅ đã xong: thêm `8080` vào `TCP_OUT_IPv4` của Imunify360 (xem [CAI-FRAPPE §6](../../van-hanh/CAI-FRAPPE-TREN-VPS.md#6-sửa-502)) · W0-2 đổi sang MariaDB 10.6 (D001-10) · W0-3 kiểm `bizcity.vn` có trong cPanel `vibeyeuc` không · W0-4 bật cPHulk / SSH key (có dò mật khẩu root) | `https://erp.btnet.vn/login` = 200, đăng nhập được, Setup Wizard chạy xong |
-| **W1 — Provisioner** | `ops/provision-tenant.sh` theo §4: JSON từng bước, `httpd -t` trước khi restart, dọn khi lỗi · `ops/tenant-ctl.sh suspend|resume|backup|drop` · sudoers | Tạo thử 3 site liên tiếp, giết giữa chừng 1 site → không còn gì mồ côi; các tham số độc đều bị từ chối |
-| **W2 — Cổng v1** | Fastify + SQLite: form §3, kiểm slug trực tiếp, email OTP, bảng `tenants`/`jobs`, worker, SSE tiến trình, email "xong" · subdomain `open.bizcity.vn` + proxy → 8095 · systemd unit | Một người ngoài đội tự tạo được site từ điện thoại, không cần hỏi ai |
-| **W3 — Nhanh + bền** | Kho site dựng sẵn (D001-11) · sao lưu hằng đêm `bench --site all backup --with-files` + đẩy ra ngoài VPS · cron hết hạn dùng thử (D001-7) | Giao site < 60 giây; có bản sao lưu ngoài VPS của đêm qua |
-| **W4 — Trang quản trị** | `open.bizcity.vn/admin` (chỉ đội): danh sách site, trạng thái, hạn dùng, nút khoá/mở/sao lưu/xoá, nhật ký việc | Đội vận hành không phải SSH cho việc thường ngày |
+| **W0 — Nền máy chủ** | ~~W0-1 sửa 502~~ ✅ (Imunify360 `TCP_OUT_IPv4` + `8080`) · W0-2 dựng image riêng + MariaDB 10.6 + site quản trị `open.bizcity.vn`, xoá `erp.btnet.vn` · W0-3 bật cPHulk / SSH key | Đăng nhập được Frappe ở `open.bizcity.vn` |
+| **W1 — Khung app** | Tạo app `bizcity_site_manager`, 5 DocType, quyền (vai `Bizcity Site Operator`), `provisioning_client.py` chạy với **máy chủ giả** theo đúng hợp đồng | Tạo site trên màn quản trị → việc chạy → site `active` (với máy chủ giả); gửi trùng không tạo site thứ hai |
+| **W2 — Nối Open Kế Toán thật** | Trỏ sang Provisioning API thật (sau B5 của PHASE-039); việc đồng bộ mỗi giờ; khoá / mở / sao lưu / xoá từ màn quản trị | Tạo một site thật, đăng nhập được Open Kế Toán bằng email của khách |
+| **W3 — Cổng đăng ký** | Trang `/dang-ky`, kiểm slug, OTP, màn tiến trình, email xong | Người ngoài đội tự tạo site trên điện thoại, không hỏi ai |
+| **W4 — Vận hành** | Hết hạn dùng thử tự khoá; cấp / thu hồi khoá API; REST cho WordPress | Đội vận hành không phải SSH cho việc thường ngày |
 
-## 7. Nghiệm thu phase
+## 8. Nghiệm thu phase
 
-1. Người ngoài đội, trên điện thoại, từ lúc mở `open.bizcity.vn` tới lúc vào được màn kế toán: **≤ 5 phút**, không hỏi ai.
-2. Hai doanh nghiệp tạo cách nhau 1 phút: không ai thấy dữ liệu của người kia; mỗi bên một CSDL riêng.
-3. Thử `slug` = `abc;reboot`, `../x`, `www`, `ketoan`, một subdomain đã có → đều bị từ chối, cả ở cổng **và** ở script.
-4. Tắt nguồn giữa bước 2 → hệ tự dọn; người dùng thấy câu "Chưa tạo xong, bấm thử lại" kèm mã việc.
-5. Site hết hạn: vẫn đăng nhập và xem được, không ghi được; có bản sao lưu.
+1. Người ngoài đội, trên điện thoại: từ lúc mở `open.bizcity.vn` tới lúc vào màn kế toán **≤ 2 phút**.
+2. Tạo 2 site cách nhau 1 phút: không bên nào thấy dữ liệu bên kia; mỗi bên một database.
+3. Gửi cùng một lệnh tạo hai lần (cùng `Idempotency-Key`): chỉ có một site.
+4. Tắt Frappe: các site kế toán đang chạy **vẫn dùng bình thường**.
+5. Xem CSDL của Site Manager: không có giá trị khoá API nào ở dạng đọc được.
+6. Lệnh xoá site chưa có bản sao lưu mới: bị từ chối.
 
-## 8. Rủi ro
+## 9. Rủi ro
 
 | Mã | Rủi ro | Cách giữ |
 |---|---|---|
-| R-1 | VPS dùng chung với zalo-hub và WordPress. ERPNext ăn RAM | Giới hạn worker gunicorn; theo dõi `free -h`; trần D001-8; khi tải tăng thì tách VPS riêng cho bộ máy kế toán |
-| R-2 | Docker `overlay2 busy` trên VPS này | **Không** `systemctl restart docker`; cổng không chạy trong Docker (D001-4) |
-| R-3 | `restartsrv_httpd` hỏng thì **tất cả** website trên máy chết | Luôn `httpd -t` trước khi restart (W1) |
-| R-4 | ERPNext chưa có chuẩn kế toán VN | Phase riêng: app `bizcity_vn` (hệ thống TK, mẫu chứng từ, hoá đơn điện tử), hoặc chuyển engine sang open-ketoan |
-| R-5 | Lạm dụng tạo site hàng loạt | R-ABUSE-1, OTP, trần tổng |
+| R-1 | PHASE-039 chậm thì phase này đứng ở W1 | W1 dùng máy chủ giả theo hợp đồng; hai phía làm song song |
+| R-2 | Hợp đồng đổi giữa chừng | Hợp đồng có số phiên bản `@1`; đổi phải qua PR ở `open-ketoan` |
+| R-3 | VPS dùng chung với zalo-hub và WordPress | Ba điều cấm ở AGENTS.md; theo dõi RAM |
+| R-4 | Lạm dụng tạo site hàng loạt | R-ABUSE-1, OTP, trần tổng |

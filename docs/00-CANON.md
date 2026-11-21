@@ -1,36 +1,49 @@
 # CANON — Chỉ mục luật Bizcity Open Setup
 <!-- [2026-11-21 06:33 PM Johnny Chu - Chu Hoàng Anh] INIT — khởi tạo chỉ mục luật Open Setup. -->
+<!-- [2026-11-21 07:25 PM Johnny Chu - Chu Hoàng Anh] ADR-0001 — viết lại theo mô hình Frappe Site Manager + Open Kế Toán dùng chung + mỗi site một database. -->
 
-> **Phiên bản:** 0.1 · 2026-11-21 · **Trạng thái:** Đề xuất, chưa có mã cổng · **Người giữ:** chủ dự án
+> **Phiên bản:** 0.2 · 2026-11-21 · **Trạng thái:** Đề xuất, chưa có mã app · **Người giữ:** chủ dự án
 > **Cùng hệ quy ước** với CANON của open-ketoan / open-kiot: cấp luật Tier 0/1/2, phase `PHASE-NNN-*`, dấu R-SIG, bảng giữ chỗ R-FLOW.
 
 ## 0. Tôn chỉ
 
 **Ai cũng tự tạo được phần mềm kế toán của mình trong vài phút, và dữ liệu của doanh nghiệp này không bao giờ chạm tới doanh nghiệp khác.**
 
+Ba vai, không lẫn:
+
+- **Frappe** = giao diện điều hành và quản lý site.
+- **Open Kế Toán** = ứng dụng kế toán dùng chung, độc lập với Frappe.
+- **PostgreSQL** = mỗi site một database.
+
 ## 1. Bốn câu không thương lượng
 
-1. **Cổng web không có quyền root.** Cổng chạy bằng user `opensetup`. Việc cần root chỉ đi qua **một** script được phép trong sudoers. Script đó tự kiểm lại mọi tham số và không tin cổng (R-PRIV-1).
-2. **Mỗi doanh nghiệp một site, một CSDL.** Không có bảng dùng chung giữa các doanh nghiệp. Mật khẩu root CSDL chỉ script root đọc được; cổng không bao giờ thấy (R-TENANT-1).
-3. **Không xoá dữ liệu của khách mà không sao lưu trước.** Hết hạn thì khoá chỉ đọc. Xoá chỉ chạy sau khi có bản sao lưu đã kiểm (R-DATA-1).
-4. **Việc tạo site chạy từng việc một, có nhật ký từng bước.** Bước nào hỏng thì dừng, ghi rõ hỏng ở đâu, báo người dùng bằng câu dễ hiểu, và dọn phần đã tạo dở (R-JOB-1).
+1. **Frappe không giữ dữ liệu kế toán.** Site Manager chỉ giữ khách hàng, danh sách site, khoá và nhật ký việc (R-ROLE-1).
+2. **Một site kế toán không phải một Frappe site.** Chỉ có một Frappe site quản trị. Tạo site kế toán là gọi Provisioning API để Open Kế Toán cấp một database (R-ROLE-2).
+3. **Site Manager không chạm PostgreSQL.** Tạo / khoá / mở / sao lưu / xoá đều qua `bizcity_site_provisioning@1`. Open Kế Toán là chủ Site Registry (R-ROLE-3).
+4. **Không xoá dữ liệu của khách mà không sao lưu trước.** Hết hạn thì khoá. Xoá chỉ chạy sau khi có bản sao lưu đã kiểm (R-DATA-1).
 
 ## 2. Danh mục luật
 
 | Mã | Cấp | Một câu | Kiểm bằng |
 |---|---|---|---|
-| R-PRIV-1 | 0 | Cổng không root; sudo chỉ một script; script kiểm `slug` bằng regex và danh sách cấm | đọc `/etc/sudoers.d/opensetup`; ca thử tham số độc (`; rm`, `../`, chữ hoa) phải bị từ chối |
-| R-TENANT-1 | 0 | Một site một CSDL; bí mật CSDL chỉ root đọc | `stat` quyền `custom.env` = 600 root |
-| R-DATA-1 | 0 | Khoá trước, sao lưu trước, xoá sau | nhật ký việc `drop` phải có dòng `backup ok` trước nó |
-| R-JOB-1 | 1 | Hàng đợi tuần tự, nhật ký từng bước, dọn khi lỗi | ca thử: giết giữa chừng → không còn site / subdomain mồ côi |
-| R-SLUG-1 | 1 | `^[a-z][a-z0-9-]{2,29}$`, không kết thúc bằng `-`, không trùng danh sách cấm hoặc subdomain đang có trong cPanel | unit test bộ kiểm slug |
-| R-ABUSE-1 | 1 | Một email đã xác nhận và một số điện thoại chỉ tạo được 1 site dùng thử; mỗi IP tối đa 3 lượt/ngày; tổng số site có trần | unit test + đếm trong CSDL cổng |
-| R-SIG | 2 | Mọi thay đổi tài liệu có dòng `<!-- [giờ thật Johnny Chu - Chu Hoàng Anh] MÃ — việc -->` | người duyệt nhắc |
+| R-ROLE-1 | 0 | Không DocType nào của Site Manager chứa chứng từ, bút toán, số dư | đọc danh sách DocType của app |
+| R-ROLE-2 | 0 | Không `bench new-site` cho từng khách | tìm `new-site` trong mã app và `ops/` (chỉ được có ở phần dựng site quản trị) |
+| R-ROLE-3 | 0 | App không có chuỗi kết nối PostgreSQL, không gọi `psql` / `pg_dump` | tìm `postgres://`, `psycopg`, `pg_dump` trong mã app |
+| R-DATA-1 | 0 | Khoá trước, sao lưu trước, xoá sau | lệnh xoá bị API từ chối khi chưa có bản sao lưu mới; nhật ký việc có dòng `backup ok` trước dòng `drop` |
+| R-KEY-1 | 0 | Khoá Provisioning ở trường `Password` của Frappe; khoá API của site chỉ lưu tiền tố + nhãn; khoá hiện đúng một lần | đọc DocType; tìm khoá dạng rõ trong CSDL quản trị phải ra rỗng |
+| R-PRIV-1 | 0 | Tiến trình web không có quyền root; script root tự kiểm tham số | đọc sudoers; ca thử tham số độc bị từ chối |
+| R-IDEM-1 | 1 | Mọi lệnh ghi gửi sang Open Kế Toán có `Idempotency-Key`; gửi lại không tạo site thứ hai | ca thử gửi trùng |
+| R-JOB-1 | 1 | Mỗi lệnh là một việc có nhật ký từng bước; hỏng thì dừng, báo câu dễ hiểu kèm mã việc | đọc `Bizcity Provision Job` |
+| R-SLUG-1 | 1 | `^[a-z][a-z0-9-]{2,29}$`, không kết thúc bằng `-`, không nằm trong danh sách cấm | unit test bộ kiểm slug (cả hai phía) |
+| R-ABUSE-1 | 1 | Một email đã xác nhận và một số điện thoại: 1 site dùng thử; mỗi IP tối đa 3 lượt/ngày; tổng số site có trần | unit test + đếm |
+| R-NAME-1 | 2 | App `bizcity_site_manager`; DocType tiền tố `Bizcity `; hàm / hook Python tiền tố `bizcity_` | người duyệt nhắc |
+| R-SIG | 2 | Mọi thay đổi có dòng `[giờ thật Johnny Chu - Chu Hoàng Anh] MÃ — việc`; không ghi tên agent | người duyệt nhắc |
 
 ## 3. Đổi X thì sửa Y (cùng một PR)
 
 | Đổi | Phải sửa cùng |
 |---|---|
-| Cổng hoặc tên miền gốc của bộ máy | `ops/*.sh`, [CAI-FRAPPE-TREN-VPS](van-hanh/CAI-FRAPPE-TREN-VPS.md), README sơ đồ |
-| Bước trong script tạo site | bảng bước ở PHASE-001 §4, thông điệp tiến trình trên cổng |
-| Luật chống lạm dụng / hạn dùng thử | PHASE-001 §6, điều khoản trên form |
+| Hợp đồng `bizcity_site_provisioning@N` | sửa ở `open-ketoan` trước (chủ hợp đồng) → lớp gọi API của app → PHASE-001 §4 |
+| DocType của app | PHASE-001 §3, bảng "Ai làm việc gì" ở README |
+| Luật chống lạm dụng / hạn dùng thử | PHASE-001 §5, điều khoản trên form |
+| Cổng, tên miền, tường lửa của máy chủ | `ops/*.sh`, [CAI-FRAPPE-TREN-VPS](van-hanh/CAI-FRAPPE-TREN-VPS.md) |

@@ -1,48 +1,61 @@
 # Bizcity Open Setup
 
 <!-- [2026-11-21 06:33 PM Johnny Chu - Chu Hoàng Anh] INIT — khởi tạo Bizcity Open Setup: cổng tự tạo phần mềm kế toán tại open.bizcity.vn. -->
+<!-- [2026-11-21 07:25 PM Johnny Chu - Chu Hoàng Anh] ADR-0001 — đổi mô hình: Frappe chỉ là Site Manager; Open Kế Toán là ứng dụng dùng chung; mỗi site một database PostgreSQL. -->
 
-**Cổng tự tạo phần mềm kế toán.** Người dùng mở **open.bizcity.vn**, điền một form ngắn, chờ vài phút, nhận một phần mềm kế toán riêng ở tên miền riêng (`congtya.btnet.vn`), đăng nhập bằng email của mình.
+**Nơi tạo và quản lý các site kế toán.** Người dùng mở **open.bizcity.vn**, điền một form ngắn và nhận một phần mềm kế toán riêng ở tên miền riêng.
 
-> Một bộ máy chạy chung, mỗi doanh nghiệp một site và một cơ sở dữ liệu riêng. Người dùng không cài gì, không gặp kỹ thuật viên.
+> **Frappe** = giao diện điều hành và quản lý site.
+> **Open Kế Toán** = ứng dụng kế toán dùng chung, độc lập với Frappe.
+> **PostgreSQL** = mỗi site một database. Một chuỗi có thể có hàng trăm cửa hàng trong một site.
 
-> **Hiện trạng (2026-11-21):** giai đoạn 0. Đã có: bộ máy Frappe/ERPNext v15.125.0 chạy bằng Docker trên VPS cPanel và script tạo site bằng tay ([ops/new-tenant.sh](ops/new-tenant.sh)), đã tạo được site `erp.btnet.vn`. Site đã chạy qua Cloudflare sau khi mở cổng 8080 trong Imunify360. **Chưa có cổng web.** Bước kế tiếp là [PHASE-001](docs/phases/PHASE-001-CONG-TU-TAO-KE-TOAN/README.md).
+> **Hiện trạng (2026-11-21):** giai đoạn 0. Đã có: Frappe chạy bằng Docker trên VPS ([sổ tay](docs/van-hanh/CAI-FRAPPE-TREN-VPS.md)), tài liệu kiến trúc và phase. **Chưa có** app `bizcity_site_manager`, **chưa có** Provisioning API bên Open Kế Toán (PHASE-039 của repo `open-ketoan`). Lần cài thử ERPNext cho từng khách (`erp.btnet.vn`) là hướng **đã bỏ**, xem [ADR-0001](docs/adr/ADR-0001-frappe-site-manager-open-ketoan-ung-dung-chung.md).
 
-## Luồng người dùng
-
-```text
-open.bizcity.vn
-  │  Họ tên · Tên công ty · Số điện thoại · Email · Tên miền mong muốn · Tỉnh/thành · ☑ điều khoản
-  ▼
-Xác nhận email (mã 6 số)
-  ▼
-Màn chờ có tiến trình  ──  tạo CSDL → cài kế toán → gắn tên miền → tạo tài khoản
-  ▼
-"Xong": https://congtya.btnet.vn  + email đặt mật khẩu
-```
-
-## Kiến trúc
+## Mô hình triển khai
 
 ```text
-Internet ─ Cloudflare ─ Apache (cPanel)
-                          ├─ open.bizcity.vn ──► Cổng Open Setup  127.0.0.1:8095  (user opensetup, không root)
-                          │                          │ sudo chỉ một lệnh
-                          │                          ▼
-                          │                     ops/provision-tenant.sh  (root, tự kiểm tham số)
-                          │                          │ bench new-site · uapi subdomain · proxy.conf
-                          └─ <slug>.btnet.vn ───► Frappe/ERPNext  127.0.0.1:8090  (docker compose -p erp)
-                                                     một bộ container, nhiều site, mỗi site một CSDL MariaDB
+┌──────────────────────────────────────────────────────────────────┐
+│  FRAPPE — SITE MANAGER            (repo này)                     │
+│  Một Frappe site quản trị · database MariaDB riêng               │
+│  App bizcity_site_manager: khách hàng · danh sách site · khoá    │
+└──────────────────────────────┬───────────────────────────────────┘
+                               │  Provisioning API  bizcity_site_provisioning@1
+                               ▼
+┌──────────────────────────────────────────────────────────────────┐
+│  OPEN KẾ TOÁN — ỨNG DỤNG DÙNG CHUNG   (repo open-ketoan)         │
+│  Một bản mã · React + Fastify + Accounting Kernel                │
+│  Site Registry + Database Router                                 │
+└───────────┬──────────────────────┬──────────────────────┬────────┘
+            ▼                      ▼                      ▼
+     SITE A  a.<miền>       SITE B  b.<miền>       SITE C  c.<miền>
+     DB A (PostgreSQL)      DB B                   DB C
+     chuỗi 500 cửa hàng     chuỗi 20 cửa hàng      1 cửa hàng
 ```
+
+Tạo một site kế toán **không** tạo thêm Frappe site. Site Manager gọi Provisioning API; Open Kế Toán tạo database, chạy migration, ghi vào Site Registry và trả kết quả.
+
+## Ai làm việc gì
+
+| Việc | Site Manager (Frappe, repo này) | Open Kế Toán |
+|---|---|---|
+| Khách hàng, gói, hạn dùng | **chủ** | không biết |
+| Danh sách site (bản điều hành) | **chủ** bản điều hành, đồng bộ từ registry | **chủ** Site Registry (domain → database) |
+| Tạo / khoá / mở / xoá site | ra lệnh qua API | **thực hiện** |
+| Database, migration, sao lưu | không chạm | **chủ** |
+| Khoá API của site | xin cấp, lưu tiền tố và nhãn | **cấp và kiểm** |
+| Sổ sách kế toán | không có | **chủ** |
+| Nối WordPress / `bizcity-llm-router` | cửa REST của Frappe | không biết |
 
 ## Tài liệu
 
 | Tệp | Nội dung |
 |---|---|
 | [docs/00-CANON.md](docs/00-CANON.md) | Tôn chỉ, bốn câu không thương lượng, danh mục luật |
-| [docs/phases/PHASE-001-CONG-TU-TAO-KE-TOAN](docs/phases/PHASE-001-CONG-TU-TAO-KE-TOAN/README.md) | Phase đầu: cổng tự tạo, các đợt W0–W4, quyết định đã chốt |
-| [docs/van-hanh/CAI-FRAPPE-TREN-VPS.md](docs/van-hanh/CAI-FRAPPE-TREN-VPS.md) | Cách cài bộ máy Frappe/ERPNext lên VPS cPanel (đã chạy thật ngày 2026-11-21) |
-| [docs/phases/CLAIMS.md](docs/phases/CLAIMS.md) | Bảng giữ chỗ việc đang làm |
+| [ADR-0001](docs/adr/ADR-0001-frappe-site-manager-open-ketoan-ung-dung-chung.md) | Vì sao Frappe chỉ là Site Manager và mỗi site một database |
+| [PHASE-001](docs/phases/PHASE-001-CONG-TU-TAO-KE-TOAN/README.md) | App `bizcity_site_manager`: DocType, luồng, các đợt việc |
+| [docs/van-hanh/CAI-FRAPPE-TREN-VPS.md](docs/van-hanh/CAI-FRAPPE-TREN-VPS.md) | Cài Frappe trên VPS cPanel, các lỗi đã gặp |
+| `open-ketoan` · `docs/phases/PHASE-039-NHIEU-CSDL-SITE-REGISTRY` | Phần việc bên Open Kế Toán và bản hợp đồng Provisioning |
 
-## Cùng hệ sinh thái
+## Giấy phép và nhãn hiệu
 
-[open-ketoan](https://github.com/hoanganh8389) (sổ cái kế toán của Bizcity) · open-kiot (bán lẻ) · Zalo Brain / Cell (trợ lý AI). Open Setup chỉ là **cổng tạo và vận hành site**, không chứa nghiệp vụ kế toán. Bộ máy kế toán được cắm vào qua một giao diện chung (`engine`). v1 dùng ERPNext; open-ketoan có thể là engine thứ hai.
+Mã nguồn: **GPL-2.0-or-later** ([LICENSE](LICENSE)). Tên và logo BizCity là nhãn hiệu, không đi kèm GPL ([TRADEMARK.md](TRADEMARK.md)). Kiến trúc do Johnny Chu (Chu Hoàng Anh) thiết kế.

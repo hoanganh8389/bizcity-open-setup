@@ -1,5 +1,6 @@
 #!/bin/bash
 # [2026-11-21 06:33 PM Johnny Chu - Chu Hoàng Anh] OPS-1 — bản đã chạy thật trên VPS (tạo erp.btnet.vn), thêm kiểm slug + enable-scheduler.
+# [2026-11-21 07:25 PM Johnny Chu - Chu Hoàng Anh] ADR-0001 — KHÔNG dùng script này để tạo site cho khách nữa (site kế toán do Open Kế Toán cấp database). Giữ làm mẫu dựng một site quản trị.
 # Tạo một site kế toán ERPNext + subdomain cPanel + proxy Apache.
 # Dùng: ./new-tenant.sh <slug> [tên-miền-gốc]   vd: ./new-tenant.sh erp btnet.vn
 # Sẽ được thay bằng ops/provision-tenant.sh (PHASE-001 W1).

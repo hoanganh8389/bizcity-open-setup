@@ -1,5 +1,8 @@
 # Cài Frappe/ERPNext trên VPS cPanel (nhiều site kế toán)
 <!-- [2026-11-21 06:33 PM Johnny Chu - Chu Hoàng Anh] OPS-1 — ghi lại cài đặt đã chạy thật trên VPS 157.10.53.169 ngày 2026-11-21. -->
+<!-- [2026-11-21 07:25 PM Johnny Chu - Chu Hoàng Anh] ADR-0001 — ghi rõ: tạo Frappe site cho từng khách là hướng đã bỏ; sổ tay này còn dùng cho việc dựng một site quản trị. -->
+
+> **Đọc trước ([ADR-0001](../adr/ADR-0001-frappe-site-manager-open-ketoan-ung-dung-chung.md)):** từ 2026-11-21, Frappe chỉ chạy **một site quản trị** (Site Manager). **Không** tạo Frappe site / ERPNext cho từng khách nữa. Sổ tay này còn giá trị cho việc dựng Frappe trên VPS và các bài học về tường lửa, proxy. Mục 3 (tạo site cho khách bằng `new-tenant.sh`) chỉ còn là tư liệu của lần thử.
 
 > **Máy:** VPS cPanel `157.10.53.169`, tài khoản cPanel `vibeyeuc`. Máy này **dùng chung** với zalo-hub (Docker) và WordPress multisite.
 > **Cấm:** `systemctl restart docker` (zalo-hub đang chạy). `docker compose up` cho project khác `erp` cũng phải cẩn thận vì lỗi `overlay2 busy`.
@@ -80,7 +83,7 @@ Tạo subdomain bằng tay trên cPanel (nếu không dùng script): **Domains �
 
 ## 6. Sửa 502
 
-<!-- [2026-11-21 07:20 PM Johnny Chu - Chu Hoàng Anh] OPS-2 — tìm ra nguyên nhân 502: Imunify360 chặn cổng đi ra 8080. -->
+<!-- [2026-11-21 07:10 PM Johnny Chu - Chu Hoàng Anh] OPS-2 — tìm ra nguyên nhân 502: Imunify360 chặn cổng đi ra 8080. -->
 > **Nguyên nhân thật (2026-11-21): Imunify360.** Tường lửa của Imunify360 đặt `port_blocking_mode: DENY` và danh sách `TCP_OUT_IPv4` không có `8080`. Máy chủ (docker-proxy) không gọi được vào container frontend ở `172.23.0.10:8080` và nhận `Connection refused`, nên Apache báo `502 Proxy Error`. ketoan chạy được vì container của nó nghe ở cổng 80. Máy này **không có CSF**.
 >
 > **Sửa:** thêm `8080` vào `TCP_OUT_IPv4`. Lệnh `config update` thay cả danh sách, nên phải gửi đủ danh sách cũ cộng cổng mới. Xem danh sách hiện tại bằng `imunify360-agent config show`:
