@@ -4,7 +4,9 @@
 <!-- [2026-11-21 07:36 PM Johnny Chu - Chu Hoàng Anh] D001-9 — bizcity-llm-router quản lý API key. -->
 <!-- [2026-11-21 07:25 PM Johnny Chu - Chu Hoàng Anh] ADR-0001 — đổi mô hình: Frappe chỉ là Site Manager; Open Kế Toán là ứng dụng dùng chung; mỗi site một database PostgreSQL. -->
 
-**Nơi tạo và quản lý các site kế toán.** Người dùng mở **open.bizcity.vn**, điền một form ngắn và nhận một phần mềm kế toán riêng ở tên miền riêng.
+<!-- [2026-11-21 07:52 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — thêm vai trục điều phối chương trình OKT. -->
+
+**Nơi tạo và quản lý các site kế toán**, đồng thời là **trục điều phối chương trình OKT** (open-pos ⇄ open-ketoan, [docs/chuong-trinh/OKT/](docs/chuong-trinh/OKT/README.md)). Người dùng mở **open.bizcity.vn**, điền một form ngắn và nhận một phần mềm kế toán riêng ở tên miền riêng.
 
 > **Frappe** = giao diện điều hành và quản lý site.
 > **Open Kế Toán** = ứng dụng kế toán dùng chung, độc lập với Frappe.
@@ -57,6 +59,7 @@ Tạo một site kế toán **không** tạo thêm Frappe site. Site Manager g�
 | [docs/00-CANON.md](docs/00-CANON.md) | Tôn chỉ, bốn câu không thương lượng, danh mục luật |
 | [ADR-0001](docs/adr/ADR-0001-frappe-site-manager-open-ketoan-ung-dung-chung.md) | Vì sao Frappe chỉ là Site Manager và mỗi site một database |
 | [PHASE-001](docs/phases/PHASE-001-CONG-TU-TAO-KE-TOAN/README.md) | App `bizcity_site_manager`: DocType, luồng, các đợt việc |
+| [docs/chuong-trinh/OKT/](docs/chuong-trinh/OKT/README.md) | **Trục điều phối chương trình OKT** (open-pos ⇄ open-ketoan): ADR-OKT-1, roadmap, checklist (nguồn trạng thái duy nhất), phân việc, đánh giá |
 | [docs/van-hanh/CAI-FRAPPE-TREN-VPS.md](docs/van-hanh/CAI-FRAPPE-TREN-VPS.md) | Cài Frappe trên VPS cPanel, các lỗi đã gặp |
 | `open-ketoan` · `docs/phases/PHASE-039-NHIEU-CSDL-SITE-REGISTRY` | Phần việc bên Open Kế Toán và bản hợp đồng Provisioning |
 
