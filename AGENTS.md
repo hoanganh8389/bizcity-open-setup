@@ -14,7 +14,7 @@ Dự án: **Bizcity Open Setup** — nơi tạo và quản lý các site kế to
 1. **Frappe không giữ dữ liệu kế toán.** Site Manager chỉ giữ danh sách site, khách hàng và nhật ký việc. Sổ sách nằm trong database của từng site bên Open Kế Toán.
 2. **Một site kế toán không phải một Frappe site.** Tạo site kế toán = gọi Provisioning API của Open Kế Toán để cấp một database. Không `bench new-site` cho từng khách.
 3. **Site Manager không chạm PostgreSQL.** Mọi việc tạo / khoá / sao lưu / xoá đi qua Provisioning API (`bizcity_site_provisioning@1`). Open Kế Toán là chủ của Site Registry.
-4. **API key thuộc `bizcity-llm-router`.** Plugin đó cấp, thu hồi và kiểm khoá `biz-…` của khách. Site Manager không cấp, không lưu khoá của khách. Khoá Provisioning (máy chủ gọi máy chủ) nằm ở trường mật khẩu của Frappe.
+4. **Khoá `biz-…` thuộc `bizcity-llm-router` và chỉ để cảnh báo.** Plugin đó cấp và quản lý khoá. Hết hạn thì site vẫn dùng, chỉ có dải đỏ. Site Manager không cấp, không lưu khoá của khách. <!-- [2026-11-21 07:46 PM Johnny Chu - Chu Hoàng Anh] D001-9 — khoá mềm --> Khoá Provisioning (máy chủ gọi máy chủ) nằm ở trường mật khẩu của Frappe.
 
 ## Bước 0: giữ chỗ trước khi nhận việc (R-FLOW)
 

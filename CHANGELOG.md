@@ -5,6 +5,11 @@ Theo [Keep a Changelog](https://keepachangelog.com/); phiên bản theo SemVer k
 
 ## [Chưa phát hành]
 
+### 2026-11-21 (tối) — tên miền gốc động, khoá `biz-…` là khoá mềm
+
+- Chủ dự án chốt Q001-1: tên miền gốc là cấu hình động (`btnet.vn`, `bizcity.vn`, `*.<miền>` bất kỳ), mỗi miền khai cách nối `wildcard` hoặc `cpanel` (D001-2, R-DOMAIN-1).
+- Chủ dự án chốt: khoá `biz-…` chỉ để cảnh báo hết hạn. Hết hạn thì site vẫn dùng, có dải đỏ; không tự khoá, không tự xoá (D001-7, D001-9, câu 4 của CANON).
+
 ### 2026-11-21 (tối) — bizcity-llm-router quản lý API key
 
 - Chủ dự án chốt Q001-2: `bizcity-llm-router` cấp, thu hồi và kiểm API key (`biz-…`). Bỏ DocType `Bizcity Site Api Key`; D001-9, D001-11, R-KEY-1 viết lại.

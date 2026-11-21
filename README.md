@@ -43,11 +43,12 @@ Tạo một site kế toán **không** tạo thêm Frappe site. Site Manager g�
 | Danh sách site (bản điều hành) | **chủ** bản điều hành, đồng bộ từ registry | **chủ** Site Registry (domain → database) |
 | Tạo / khoá / mở / xoá site | ra lệnh qua API | **thực hiện** |
 | Database, migration, sao lưu | không chạm | **chủ** |
-| API key của khách (`biz-…`) | không giữ | hỏi `bizcity-llm-router` để kiểm |
+| Khoá bản quyền `biz-…` | chuyển tiếp khi tạo site, không lưu | gắn vào site; hết hạn thì hiện dải đỏ, **không chặn** |
+| Tên miền gốc | **chủ** cấu hình (động: `btnet.vn`, `bizcity.vn`, `*.<miền>` bất kỳ) | nhận mọi tên miền |
 | Sổ sách kế toán | không có | **chủ** |
 | Nối WordPress | cửa REST của Frappe cho `bizcity-llm-router` gọi | không biết |
 
-**`bizcity-llm-router` (plugin WordPress) là chủ API key** và là nơi người dùng bấm "tạo kế toán". Nó giữ người dùng, ví và khoá; Site Manager giữ site; Open Kế Toán giữ sổ.
+**`bizcity-llm-router` (plugin WordPress) là chủ khoá `biz-…`** và là nơi người dùng bấm "tạo kế toán". Nó giữ người dùng, ví và khoá; Site Manager giữ site; Open Kế Toán giữ sổ.
 
 ## Tài liệu
 
