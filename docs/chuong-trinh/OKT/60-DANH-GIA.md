@@ -47,5 +47,5 @@ Danh sách đủ ở open-pos-backend PHASE-001 doc 31 (32 GAP) và PHASE-002 do
 |---|---|
 | Bridge chỉ lấy đơn qua plugin ngoài tgs-bc-tk | S002-4 (= B001-C10) |
 | REST danh mục công khai + token demo viết trong mã (open-pos-backend) | việc bảo mật, xem doc 31 C1 / C2 |
-| Không có API cấp tenant cho shop | S001-K10 + open-setup PHASE-001 |
+| Không có API cấp tenant cho shop | S001-K10 (open-ketoan) |
 | GitHub Actions không chạy (tài khoản bị khoá thanh toán) | chủ xử lý |

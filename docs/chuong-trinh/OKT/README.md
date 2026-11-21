@@ -2,6 +2,10 @@
 
 <!-- [2026-11-21 07:52 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — chủ giao open-setup làm trục điều phối chương trình OKT: canon từng phase, roadmap, checklist (nguồn trạng thái duy nhất), phân việc, đánh giá việc. open-setup vẫn giữ vai Site Manager (PHASE-001 của repo này). -->
 
+<!-- [2026-11-21 08:10 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — chủ: open-setup nắm giữ phase điều phối này; mô hình Site Manager không liên quan tới chương trình OKT. -->
+
+**open-setup nắm giữ phase này** để điều phối mọi việc của chương trình. Ràng buộc gốc: luồng bán hàng, logic bán hàng và sổ của open-pos **giữ nguyên**; phần bổ sung chỉ để open-pos linh hoạt, chủ động hơn khi open-ketoan không hoạt động hoặc dừng kết nối.
+
 **Mục tiêu của chương trình (chủ, 21/11):**
 - open-pos **tự xoay xở được khi open-ketoan tắt hoặc dừng kết nối**;
 - **luồng bán, logic bán hàng và sổ của open-pos giữ nguyên**;
@@ -20,7 +24,7 @@ Mã nằm ở các repo làm việc. Repo này không chứa mã của open-pos.
 
 | Repo | Vai trong chương trình | Tài liệu kỹ thuật (research, thiết kế, bằng chứng) |
 |---|---|---|
-| **open-setup** (repo này, `bizcity-open-setup`) | trục điều phối; Site Manager cấp site / tenant kế toán (PHASE-001 của repo này) | `docs/chuong-trinh/OKT/` |
+| **open-setup** (repo này, `bizcity-open-setup`) | **nắm giữ phase điều phối này**: canon, roadmap, checklist, phân việc, đánh giá. Không có mã của chương trình; vai Site Manager của repo **không liên quan** tới OKT | `docs/chuong-trinh/OKT/` |
 | [open-pos](https://github.com/hoanganh8389/open-pos) (trước `tgs_pos`) | máy bán: POS cũ + POS React. **Đường bán và sổ giữ nguyên** (I-0) | `docs/phases/PHASE-001-POS-BANG-THEO-BLOG/` |
 | [open-pos-backend](https://github.com/hoanganh8389/open-pos-backend) (trước `tgs_shop_management`) | quản trị danh mục / giá / thuế, bộ kéo catalog, công cụ | `docs/phases/PHASE-001-…`, `PHASE-002-LAT-DOC-MOT-DON-BAN/` |
 | [open-ketoan-bridge](https://github.com/hoanganh8389/open-ketoan-bridge) | kết nối theo blog, đọc sổ POS, dựng và gửi chứng từ, tạm dừng / gửi bù | `docs/phases/PHASE-001-KET-NOI-THEO-BLOG/` |

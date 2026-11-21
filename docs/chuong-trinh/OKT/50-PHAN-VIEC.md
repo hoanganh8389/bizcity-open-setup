@@ -10,8 +10,7 @@
 | **TSM** | open-pos-backend | quản trị danh mục / giá / thuế, bảng theo prefix, bộ kéo C8, seed, census | đường bán (ADR D002-6) | ⛔ chủ gán |
 | **POS** | open-pos | **chỉ** đổi tên bảng theo D002-7, script dựng môi trường thử, màn quản trị chuyển máy bán | mọi logic bán / sổ (I-0) | ⛔ chủ gán |
 | **OK** | open-ketoan | việc S001-K* theo R-FLOW của repo đó (giữ chỗ trong `docs/phases/CLAIMS.md` bên đó) | — | ⛔ chủ gán |
-| **SETUP** | open-setup | Site Manager, cấp tenant (PHASE-001 của repo này) | dữ liệu kế toán | ⛔ chủ gán |
-| **PM** | open-setup | trục điều phối: cập nhật [40](40-CHECKLIST.md), mốc đo [60](60-DANH-GIA.md), [90](90-CAU-HOI-CHO-CHU.md) | — | ⛔ chủ gán |
+| **PM** | open-setup (nắm giữ phase này) | trục điều phối: cập nhật [40](40-CHECKLIST.md), mốc đo [60](60-DANH-GIA.md), [90](90-CAU-HOI-CHO-CHU.md) | — | ⛔ chủ gán |
 
 ## 2. Luật nhận việc
 

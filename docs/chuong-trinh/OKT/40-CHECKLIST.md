@@ -15,9 +15,9 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 158 | 3 | 15 | 17 | 123 | 17 |
+| 159 | 3 | 15 | 18 | 123 | 16 |
 
-- **Đối chiếu:** 175 dòng việc ở các repo nguồn = 158 còn hiệu lực + 17 đã huỷ / chuyển.
+- **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Ba việc ✅** đều là việc chủ trả lời / duyệt: S001-O1, O1b, O5.
 - **Chưa có việc mã nào ✅.** Việc mã gần nhất là B001-C1 (bridge PR #2, đã merge, chưa chạy trong WordPress thật) ở mức 🟡.
 - **Thứ tự làm** (chi tiết ở [10-ROADMAP](10-ROADMAP.md)): PHASE-002 lát dọc **trước**, rồi các mốc M1–M4 của PHASE-001.
@@ -252,6 +252,7 @@
 |---|---|---|---|---|
 | P001-T1 | open-pos | 10 helper tên bảng (`TGS_POS_Global_Products::*_table`, `TGS_POS_Price_List::*_table`, `TGS_POS_Material_Policy::*_table`, stock-max `global_product_table`) → `tgs_catalog_table($kind, $blog_id)`; bỏ `ensure_global_product_source()` `require_once` theo đường dẫn | ⛔ chờ tsm S001-C11 · ⚠️ **chỉ đổi tên bảng** (ngoại lệ D002-7 của ADR-OKT-1): không đổi truy vấn / lọc / tính; ca bán chuẩn trước–sau giống hệt; cờ lùi `tgs_catalog_store` |  |
 | P001-T2 | open-pos | 9 chỗ vượt helper + 7 fallback `defined(...) ?: 'wp_global_*'` + `promo-migrate::TABLE` dùng helper; `wp_` viết cứng ở lô / policy / training → `$wpdb->base_prefix`; `--check=G0` (tsm) với `--pos=` ra 0 | ☐ · ⚠️ **chỉ đổi tên bảng** (D002-7), như T1 |  |
+| P001-T3 | open-pos | `TGS_POS_Price_List`: đọc bảng giá theo blog — **chỉ đổi tên bảng** (D002-7); phần luật DM14 bỏ (áp ở bộ kéo, D002-8). Chi tiết: [open-pos checklist](https://github.com/hoanganh8389/open-pos/blob/main/docs/phases/PHASE-001-POS-BANG-THEO-BLOG/40-MASTER-CHECKLIST.md) | ⛔ chờ tsm S001-C11 · ⚠️ phần **tên bảng** theo D002-7; ❌ **bỏ phần luật DM14**: luật áp ở bộ kéo tsm, ghi sẵn vào bảng giá (D002-8) |  |
 | P001-T4 | open-pos | 22 chỗ báo cáo dùng `get_blog_prefix($blog_id)` cho ledger phải truyền cùng `$blog_id` vào helper catalog / giá; 3 AJAX (`ajax-return:42`, `ajax-exchange-return:28`, `ajax-policy-stats:30`) kiểm quyền trên blog đích trước khi `switch_to_blog` | ☐ |  |
 | P001-CACHE | open-pos | Lắng `tgs_catalog_changed($blog, …)`: xoá `tgs_pos_all_products_v9_<blog>_*`, `tgs_pos_search_rows_*`, `TGS_POS_Cache::invalidate('global.price'\|'global.pricing')`, `TGS_POS_Price_List::flush_cache()`; thêm `tgs_catalog_version` vào khoá v9 | ⛔ chờ tsm S001-C5 |  |
 | P001-T6 | open-pos | Smoke test bộ 3 plugin trên multisite mới: G1–G4 không fatal khi thiếu Viettel / loyalty / tgs-bc-tk / `TTCK_API` (đường tiền mặt); liệt kê fatal còn lại ở thanh toán QR | ☐ · đổi nghĩa: gỡ bridge thì **không fatal**, màn quản trị báo chưa kết nối; POS vẫn bán (I-0) |  |
@@ -344,7 +345,6 @@
 | S001-BR3 | PHASE-001 danh mục theo site | ❌ 21/11 |
 | S001-P1 | PHASE-001 danh mục theo site | ➡ P001-T1…T5 |
 | S001-P2 | PHASE-001 danh mục theo site | ➡ P001-T3 |
-| P001-T3 | PHASE-001 POS bảng theo blog | ⛔ chờ tsm S001-C11 · ⚠️ phần **tên bảng** theo D002-7; ❌ **bỏ phần luật DM14**: luật áp ở bộ kéo tsm, ghi sẵn vào bảng giá (D002-8) |
 | P001-T5 | PHASE-001 POS bảng theo blog | ❌ **huỷ** 21/11 07:30 PM: đổi hành vi màn bán (I-0). Index do tsm tạo, không sửa `search_products()` / `get_all_products_for_search()` |
 | P001-N3 | PHASE-001 POS bảng theo blog | ❌ **huỷ** 21/11 07:30 PM: `class-tgs-pos-order-mapper.php` thuộc danh mục cấm sửa (D002-6). Mapper giữ trả 422; kế toán tự gửi lại; bộ kéo 5 phút đưa mã về |
 | P001-P3 | PHASE-001 POS bảng theo blog | ❌ **huỷ** 21/11 07:30 PM: React giữ nguồn danh mục hiện tại (I-0, D002-1) |

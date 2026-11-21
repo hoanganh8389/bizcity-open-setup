@@ -38,14 +38,15 @@ Chương trình **đạt** khi:
 P0 ─► Lát dọc (S002) ─► M1 ─► M2 ─► M3 ─► M4
           │                     ▲
           │                     └── open-ketoan: K1 (con trỏ feed), K16 (thuế, hạn 31/12)
-          └── open-setup PHASE-001 + open-ketoan PHASE-039: cấp site / tenant (K10) ─────► M4
+          └── open-ketoan: cấp tenant cho shop (K10) ─────────────────────────────────► M4
 ```
 
 ## 4. Phụ thuộc giữa repo
+
+<!-- [2026-11-21 08:10 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — chủ: open-setup nắm giữ phase điều phối này; mô hình Site Manager không liên quan tới chương trình OKT. -->
 
 | Bên cần | Bên cấp | Thứ | Mã |
 |---|---|---|---|
 | open-pos-backend (bộ kéo) | bridge | client theo blog `for_blog()`, `tgs_okt_connected()` / trạng thái | B001-C2, C6 |
 | open-pos (đọc danh mục) | open-pos-backend | `tgs_catalog_table()` | S001-C11 |
 | bridge (gửi chứng từ) | open-ketoan | tenant cho từng shop, `documents/batch`, `intake/preflight` | K10, K13 |
-| cả chương trình | open-setup (Site Manager) | cấp site / tenant tự động | open-setup PHASE-001, open-ketoan PHASE-039 |
