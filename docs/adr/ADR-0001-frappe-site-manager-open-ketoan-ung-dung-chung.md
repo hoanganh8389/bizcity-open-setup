@@ -14,11 +14,12 @@ Ngày 2026-11-21 đã cài thử Frappe + ERPNext trên VPS và tạo `erp.btnet
 
 1. **Frappe = giao diện điều hành và quản lý site.** Chỉ có **một** Frappe site quản trị, database MariaDB riêng. Không cài ERPNext.
 2. **Open Kế Toán = ứng dụng dùng chung, độc lập với Frappe.** Một bản mã từ GitHub phục vụ mọi site. Open Kế Toán chạy được khi không có Frappe.
-3. **PostgreSQL = mỗi site một database.** Một site là một doanh nghiệp hoặc một chuỗi; bên trong vẫn có nhiều đơn vị và chi nhánh như hôm nay.
+3. **PostgreSQL = mỗi site một database và một vai trò riêng** (vai trò riêng chốt 2026-11-21; open-ketoan ADR-0036). <!-- [2026-11-21 09:18 PM Johnny Chu - Chu Hoàng Anh] ADR-0001 — vai trò riêng từng site --> Một site là một doanh nghiệp hoặc một chuỗi; bên trong vẫn có nhiều đơn vị và chi nhánh như hôm nay.
 4. **Mượn cơ chế của Frappe, không mượn dữ liệu.** Open Kế Toán tự có Site Registry (domain → database), Database Router, Site Provisioner, Migration Runner, Backup Manager — đây là PHASE-039 của repo `open-ketoan`.
 5. **Một app Frappe nhỏ `bizcity_site_manager`** giữ khách hàng, danh sách site, nhật ký việc và gọi **Provisioning API** của Open Kế Toán. Khi một thành viên tạo kế toán mới, app yêu cầu Open Kế Toán cấp database mới; **không** tạo thêm Frappe site.
 6. **Site Manager dùng MariaDB** để sau này nối với WordPress và `bizcity-llm-router` (cùng họ MySQL, cùng máy chủ).
 7. **API key do `bizcity-llm-router` quản lý** (chủ dự án chốt 2026-11-21). Plugin WordPress này cấp, thu hồi và kiểm khoá `biz-…`. Site Manager và Open Kế Toán không cấp khoá riêng cho khách. <!-- [2026-11-21 07:36 PM Johnny Chu - Chu Hoàng Anh] ADR-0001 — thêm điểm 7 -->
+8. **Luật nâng cấp một bản mã cho mọi site** (open-ketoan R-SITE-8): kéo mã → build → test → một phiên bản mới → migration từng site → chuyển ứng dụng → mọi site dùng chung mã mới. Site Manager không chạy migration; chỉ đọc trạng thái từ registry. <!-- [2026-11-21 09:18 PM Johnny Chu - Chu Hoàng Anh] ADR-0001 — điểm 8 -->
 
 ## Hệ quả
 

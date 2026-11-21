@@ -5,7 +5,7 @@
 Dự án: **Bizcity Open Setup** — nơi tạo và quản lý các site kế toán. Cùng hệ sinh thái với open-ketoan (lõi kế toán), open-kiot (bán lẻ) và Zalo Brain / Cell (trợ lý AI). Trước khi sửa gì, đọc [docs/00-CANON.md](docs/00-CANON.md) rồi [ADR-0001](docs/adr/ADR-0001-frappe-site-manager-open-ketoan-ung-dung-chung.md).
 
 > **Mô hình (Johnny Chu – Chu Hoàng Anh, 2026-11-21):**
-> **Frappe** = giao diện điều hành và quản lý site. **Open Kế Toán** = ứng dụng kế toán dùng chung, độc lập với Frappe. **PostgreSQL** = mỗi site một database.
+> **Frappe** = giao diện điều hành và quản lý site. **Open Kế Toán** = ứng dụng kế toán dùng chung, độc lập với Frappe. **PostgreSQL** = mỗi site một database và một vai trò riêng. <!-- [2026-11-21 09:18 PM Johnny Chu - Chu Hoàng Anh] ADR-0001 — vai trò riêng từng site -->
 
 > **Hiện trạng (2026-11-21):** repo có **tài liệu và script vận hành, chưa có mã app**. App Frappe `bizcity_site_manager` và Provisioning API của Open Kế Toán là **đích**; đừng giả định chúng đã tồn tại. Kiểm bằng cách đọc cây thư mục. Việc kế tiếp: [PHASE-001](docs/phases/PHASE-001-CONG-TU-TAO-KE-TOAN/README.md).
 

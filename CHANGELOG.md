@@ -5,6 +5,10 @@ Theo [Keep a Changelog](https://keepachangelog.com/); phiên bản theo SemVer k
 
 ## [Chưa phát hành]
 
+### 2026-11-21 (tối) — vai trò PostgreSQL riêng từng site, luật nâng cấp
+
+- Chủ dự án chốt: mỗi site một database **và một vai trò PostgreSQL riêng**, chung mã open-ketoan. Luật nâng cấp một bản mã cho mọi site ghi vào README, CANON, ADR-0001 (điểm 8). Bên open-ketoan: ADR-0036, luật R-SITE.
+
 ### 2026-11-21 (tối) — tên miền gốc động, khoá `biz-…` là khoá mềm
 
 - Chủ dự án chốt Q001-1: tên miền gốc là cấu hình động (`btnet.vn`, `bizcity.vn`, `*.<miền>` bất kỳ), mỗi miền khai cách nối `wildcard` hoặc `cpanel` (D001-2, R-DOMAIN-1).

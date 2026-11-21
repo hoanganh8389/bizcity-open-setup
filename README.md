@@ -1,6 +1,7 @@
 # Bizcity Open Setup
 
 <!-- [2026-11-21 06:33 PM Johnny Chu - Chu Hoàng Anh] INIT — khởi tạo Bizcity Open Setup: cổng tự tạo phần mềm kế toán tại open.bizcity.vn. -->
+<!-- [2026-11-21 09:18 PM Johnny Chu - Chu Hoàng Anh] ADR-0001 — vai trò PostgreSQL riêng từng site; luật nâng cấp một bản mã cho mọi site (open-ketoan ADR-0036, R-SITE). -->
 <!-- [2026-11-21 07:36 PM Johnny Chu - Chu Hoàng Anh] D001-9 — bizcity-llm-router quản lý API key. -->
 <!-- [2026-11-21 07:25 PM Johnny Chu - Chu Hoàng Anh] ADR-0001 — đổi mô hình: Frappe chỉ là Site Manager; Open Kế Toán là ứng dụng dùng chung; mỗi site một database PostgreSQL. -->
 
@@ -10,7 +11,7 @@
 
 > **Frappe** = giao diện điều hành và quản lý site.
 > **Open Kế Toán** = ứng dụng kế toán dùng chung, độc lập với Frappe.
-> **PostgreSQL** = mỗi site một database. Một chuỗi có thể có hàng trăm cửa hàng trong một site.
+> **PostgreSQL** = mỗi site một database và một vai trò PostgreSQL riêng. Một chuỗi có thể có hàng trăm cửa hàng trong một site.
 
 > **Hiện trạng (2026-11-21):** giai đoạn 0. Đã có: Frappe chạy bằng Docker trên VPS ([sổ tay](docs/van-hanh/CAI-FRAPPE-TREN-VPS.md)), tài liệu kiến trúc và phase. **Chưa có** app `bizcity_site_manager`, **chưa có** Provisioning API bên Open Kế Toán (PHASE-039 của repo `open-ketoan`). Lần cài thử ERPNext cho từng khách (`erp.btnet.vn`) là hướng **đã bỏ**, xem [ADR-0001](docs/adr/ADR-0001-frappe-site-manager-open-ketoan-ung-dung-chung.md).
 
@@ -31,11 +32,31 @@
 └───────────┬──────────────────────┬──────────────────────┬────────┘
             ▼                      ▼                      ▼
      SITE A  a.<miền>       SITE B  b.<miền>       SITE C  c.<miền>
-     DB A (PostgreSQL)      DB B                   DB C
+     DB A · vai trò A       DB B · vai trò B       DB C · vai trò C
      chuỗi 500 cửa hàng     chuỗi 20 cửa hàng      1 cửa hàng
 ```
 
-Tạo một site kế toán **không** tạo thêm Frappe site. Site Manager gọi Provisioning API; Open Kế Toán tạo database, chạy migration, ghi vào Site Registry và trả kết quả.
+Tạo một site kế toán **không** tạo thêm Frappe site. Site Manager gọi Provisioning API; Open Kế Toán tạo database và một cặp vai trò PostgreSQL riêng cho site, chạy migration, ghi vào Site Registry và trả kết quả.
+
+## Luật nâng cấp: một bản mã cho mọi site
+
+Open Kế Toán nâng cấp theo đúng thứ tự này ([open-ketoan ADR-0036](https://github.com/hoanganh8389/open-ketoan/blob/main/docs/adr/ADR-0036-mot-ban-ma-moi-site-mot-database.md), luật R-SITE-8..10):
+
+```text
+GitHub: open-ketoan
+        ↓
+Kéo mã · build · test                 (bản đang chạy vẫn phục vụ)
+        ↓
+Một phiên bản Open Kế Toán mới
+        ↓
+Migration từng site DB                (kt_template trước; sao lưu trước mỗi site)
+        ↓
+Chuyển ứng dụng sang phiên bản mới
+        ↓
+Tất cả site dùng chung mã mới
+```
+
+Ứng dụng chỉ phục vụ site có lược đồ đúng bản nó cần. Site nâng lỗi dừng riêng, các site khác chạy tiếp. Site Manager hiện trạng thái `upgrading` / `migration_failed` của từng site và không tự chạy migration.
 
 ## Ai làm việc gì
 
