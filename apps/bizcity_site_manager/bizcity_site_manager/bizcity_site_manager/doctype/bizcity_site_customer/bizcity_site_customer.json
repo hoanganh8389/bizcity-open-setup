@@ -1,0 +1,91 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "field:email",
+ "creation": "2026-11-21 22:48:00.000000",
+ "description": "Khách hàng của Site Manager. external_ref nối với người dùng WordPress (chủ khoá biz-… bên bizcity-llm-router).",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "full_name",
+  "company_name",
+  "email",
+  "email_verified",
+  "phone",
+  "province",
+  "external_ref"
+ ],
+ "fields": [
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "label": "Họ tên",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company_name",
+   "fieldtype": "Data",
+   "label": "Tên công ty",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email",
+   "reqd": 1,
+   "unique": 1,
+   "options": "Email",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "email_verified",
+   "fieldtype": "Check",
+   "label": "Email đã xác nhận",
+   "default": "0"
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Số điện thoại",
+   "options": "Phone"
+  },
+  {
+   "fieldname": "province",
+   "fieldtype": "Data",
+   "label": "Tỉnh / thành"
+  },
+  {
+   "fieldname": "external_ref",
+   "fieldtype": "Data",
+   "label": "Mã người dùng WordPress",
+   "unique": 1,
+   "description": "Ví dụ wp:12345 — do bizcity-llm-router gửi"
+  }
+ ],
+ "links": [],
+ "modified": "2026-11-21 22:48:00.000000",
+ "modified_by": "Administrator",
+ "module": "Bizcity Site Manager",
+ "name": "Bizcity Site Customer",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "email": 1,
+   "print": 1,
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "company_name",
+ "track_changes": 1
+}

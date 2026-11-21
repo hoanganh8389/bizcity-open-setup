@@ -5,3 +5,5 @@ dist/
 *.sqlite
 *.sqlite-*
 frappe-sites.txt
+__pycache__/
+*.pyc

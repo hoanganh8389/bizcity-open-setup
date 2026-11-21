@@ -1,0 +1,82 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-11-21 22:48:00.000000",
+ "description": "Cấu hình Site Manager. Khoá Provisioning nằm ở trường mật khẩu (R-KEY-1).",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "provisioning_url",
+  "provisioning_key",
+  "poll_seconds",
+  "max_sites",
+  "reserved_slugs",
+  "sec_domains",
+  "root_domains"
+ ],
+ "fields": [
+  {
+   "fieldname": "provisioning_url",
+   "fieldtype": "Data",
+   "label": "Địa chỉ Provisioning API",
+   "description": "Ví dụ https://admin.<miền điều hành> (không có /_sites/v1)"
+  },
+  {
+   "fieldname": "provisioning_key",
+   "fieldtype": "Password",
+   "label": "Khoá Provisioning (prov_…)"
+  },
+  {
+   "fieldname": "poll_seconds",
+   "fieldtype": "Int",
+   "label": "Hỏi trạng thái việc mỗi (giây)",
+   "default": "2"
+  },
+  {
+   "fieldname": "max_sites",
+   "fieldtype": "Int",
+   "label": "Trần số site",
+   "default": "200"
+  },
+  {
+   "fieldname": "reserved_slugs",
+   "fieldtype": "Small Text",
+   "label": "Tên cấm thêm (mỗi dòng một tên)"
+  },
+  {
+   "fieldname": "sec_domains",
+   "fieldtype": "Section Break",
+   "label": "Tên miền gốc"
+  },
+  {
+   "fieldname": "root_domains",
+   "fieldtype": "Table",
+   "label": "Tên miền gốc",
+   "options": "Bizcity Site Root Domain"
+  }
+ ],
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-11-21 22:48:00.000000",
+ "modified_by": "Administrator",
+ "module": "Bizcity Site Manager",
+ "name": "Bizcity Site Manager Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "email": 1,
+   "print": 1,
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
