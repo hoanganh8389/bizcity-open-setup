@@ -11,11 +11,13 @@
 > Ký hiệu: ☐ chưa làm · 🟡 có mã + test, chưa chạy thật · ✅ có bằng chứng chạy thật · ⛔ chờ chủ / repo khác.
 > Cột "Việc" chép nguyên văn từ repo nguồn lúc gom (link đã đổi thành tuyệt đối). Chi tiết kỹ thuật đọc ở tài liệu phase của repo đó.
 
-## 0. Số đếm (21/11 07:52 PM)
+<!-- [2026-11-21 08:20 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-4 / B001-C10 sang 🟡 (bridge PR #6). -->
+
+## 0. Số đếm (cập nhật 21/11 08:20 PM)
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 159 | 3 | 15 | 18 | 123 | 16 |
+| 159 | 3 | 17 | 18 | 121 | 16 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Ba việc ✅** đều là việc chủ trả lời / duyệt: S001-O1, O1b, O5.
@@ -40,7 +42,7 @@
 | S002-1 | open-ketoan | open-ketoan Docker + tenant `shopa`, khoá riêng _(bất biến I-1)_ | ☐ |  |
 | S002-2 | open-pos | `pos/tests/setup-localwp.php`: 2 blog, ba plugin, bỏ bật React, khoá theo blog, cron thật _(bất biến I-1)_ | ☐ |  |
 | S002-3 | open-pos-backend | `tools/lat-doc-seed.php`: nhóm, mã, bảng giá, gán blog, ĐVT, giá, nhập kho; chạy lại được _(bất biến —)_ | ☐ |  |
-| S002-4 | open-ketoan-bridge | `TGS_Acc_Source_Pos` (= B001-C10) + `ready()` + test _(bất biến I-3)_ | ☐ |  |
+| S002-4 | open-ketoan-bridge | `TGS_Acc_Source_Pos` (= B001-C10) + `ready()` + test _(bất biến I-3)_ | 🟡 2026-11-21 08:11 PM — mã + test (tests/source-pos-test.php, 38 phép kiểm đạt); nguồn sổ POS mặc định tắt, bật theo blog; chưa chạy trong WordPress thật | [bridge PR #6](https://github.com/hoanganh8389/open-ketoan-bridge/pull/6) |
 | S002-5 | open-ketoan-bridge | Option `tgs_acc_branch_code` theo blog; `ensure_branch` không tạo trùng _(bất biến I-4)_ | ☐ |  |
 | S002-6 | open-ketoan-bridge | `TGS_Acc_Money::split_vat` + làm tròn dòng; `unit` = ĐVT nhỏ nhất _(bất biến I-5)_ | ☐ |  |
 | S002-7 | open-ketoan-bridge | Thuế lẻ không khớp 6 mã → lỗi rõ, không gửi _(bất biến I-5)_ | ☐ |  |
@@ -307,7 +309,7 @@
 |---|---|---|---|---|
 | B001-C3 | open-ketoan-bridge | `TGS_Acc_Pusher::send()` :403, `TGS_Acc_Events::deliver()` :453-457, `day-ke-toan.php:115`, `doi-chieu.php:91`: client theo blog; không khoá riêng → `key_legacy()` kèm nhãn `legacy` trên kết quả / màn hình; không có cả hai → bỏ qua, ghi lý do; `--all` lặp blog | ☐ |  |
 | B001-C8 | open-ketoan-bridge | `tgs_acc_push_log(_tax)`: thêm `tenant VARCHAR(64)`, `server_url`; `UNIQUE(tenant, doc_key)`; `find_many` / `keys_in_range` / `search` / `stats` lọc theo tenant; DB_VERSION 4; bỏ cảnh báo admin :401-405 | ☐ |  |
-| B001-C10 | open-ketoan-bridge | `includes/class-tgs-acc-source-pos.php`: `sale_rows` / `return_rows` từ `{B}local_ledger` 10 / 11 (đã duyệt, không `pg:`), dòng từ phiếu xuất con loại 2 / phiếu hoàn (khuôn `supplier_doc_items`), không `invoice`; `TGS_Acc_Source::for_blog($blog)` chọn tgs-bc-tk nếu có, không thì POS; thay guard `ready()` ở gate :200, events :426, admin :247, day-ke-toan :109; danh sách shop = blog đã kết nối | ☐ (Q001-15 ✅ 21/11) |  |
+| B001-C10 | open-ketoan-bridge | `includes/class-tgs-acc-source-pos.php`: `sale_rows` / `return_rows` từ `{B}local_ledger` 10 / 11 (đã duyệt, không `pg:`), dòng từ phiếu xuất con loại 2 / phiếu hoàn (khuôn `supplier_doc_items`), không `invoice`; `TGS_Acc_Source::for_blog($blog)` chọn tgs-bc-tk nếu có, không thì POS; thay guard `ready()` ở gate :200, events :426, admin :247, day-ke-toan :109; danh sách shop = blog đã kết nối | 🟡 2026-11-21 08:11 PM — mã + test (tests/source-pos-test.php, 38 phép kiểm đạt); nguồn sổ POS mặc định tắt, bật theo blog; chưa chạy trong WordPress thật | [bridge PR #6](https://github.com/hoanganh8389/open-ketoan-bridge/pull/6) |
 | B001-C11 | open-ketoan-bridge | Bỏ `branchCode` chi nhánh (mapper 9 chỗ → chi nhánh mặc định của tenant từ `tgs_okt_connection()`), bỏ `ensure_branch` (pusher :405-424), gỡ `class-tgs-acc-branch-sync.php` + hook bootstrap :80, option `tgs_acc_known_branches(_tax)`, `tgs_acc_branch_sync_last`; chuyển kho / chuyển tiền chéo blog khác tenant → bỏ qua + log (00 §5) | ☐ |  |
 | B001-C12 | open-ketoan-bridge | SSO: `tenant` và URL theo blog đang đứng; `sso_tenant` xuống tầng B; `safe_return()` so với `url_for($blog)` | ☐ · ⚠️ chạm vé đăng nhập của POS React (`react-shell.php` đọc `sso_secret()` / `sso_tenant()`): một tenant thì hành vi **giống hệt**; ca đăng nhập React trước–sau (ADR-OKT-1 I-0) |  |
 | B001-C13 | open-ketoan-bridge | `TGS_Acc_Trade_Mapper::catalog()` :315-326 đọc `tgs_catalog_table('product', $blog)` | ⛔ chờ tsm S001-C11 |  |
