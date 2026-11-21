@@ -24,7 +24,6 @@ Mã nguồn được cấp phép **GPL-2.0-or-later** ([LICENSE](LICENSE)). GPL 
 
 - tên app Frappe `bizcity_site_manager` và các DocType `Bizcity …` của nó, khi bạn cài hoặc mở rộng chính app này
 - mã hợp đồng `bizcity_site_provisioning@N`
-- tiền tố khoá `prov_…` của Provisioning API
 
 App Frappe của riêng bạn đặt theo tên của bạn (ví dụ `acme_site_tools`), không mang tiền tố `bizcity`.
 

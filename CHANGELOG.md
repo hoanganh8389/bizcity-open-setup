@@ -5,6 +5,10 @@ Theo [Keep a Changelog](https://keepachangelog.com/); phiên bản theo SemVer k
 
 ## [Chưa phát hành]
 
+### 2026-11-21 (tối) — bizcity-llm-router quản lý API key
+
+- Chủ dự án chốt Q001-2: `bizcity-llm-router` cấp, thu hồi và kiểm API key (`biz-…`). Bỏ DocType `Bizcity Site Api Key`; D001-9, D001-11, R-KEY-1 viết lại.
+
 ### 2026-11-21 (tối) — ADR-0001: Frappe là Site Manager, Open Kế Toán dùng chung, mỗi site một database
 
 - Chủ dự án chốt mô hình: Frappe = giao diện điều hành và quản lý site; Open Kế Toán = ứng dụng kế toán dùng chung, độc lập với Frappe; PostgreSQL = mỗi site một database.

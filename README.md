@@ -1,6 +1,7 @@
 # Bizcity Open Setup
 
 <!-- [2026-11-21 06:33 PM Johnny Chu - Chu Hoàng Anh] INIT — khởi tạo Bizcity Open Setup: cổng tự tạo phần mềm kế toán tại open.bizcity.vn. -->
+<!-- [2026-11-21 07:36 PM Johnny Chu - Chu Hoàng Anh] D001-9 — bizcity-llm-router quản lý API key. -->
 <!-- [2026-11-21 07:25 PM Johnny Chu - Chu Hoàng Anh] ADR-0001 — đổi mô hình: Frappe chỉ là Site Manager; Open Kế Toán là ứng dụng dùng chung; mỗi site một database PostgreSQL. -->
 
 **Nơi tạo và quản lý các site kế toán.** Người dùng mở **open.bizcity.vn**, điền một form ngắn và nhận một phần mềm kế toán riêng ở tên miền riêng.
@@ -17,7 +18,7 @@
 ┌──────────────────────────────────────────────────────────────────┐
 │  FRAPPE — SITE MANAGER            (repo này)                     │
 │  Một Frappe site quản trị · database MariaDB riêng               │
-│  App bizcity_site_manager: khách hàng · danh sách site · khoá    │
+│  App bizcity_site_manager: khách hàng · danh sách site · việc    │
 └──────────────────────────────┬───────────────────────────────────┘
                                │  Provisioning API  bizcity_site_provisioning@1
                                ▼
@@ -42,9 +43,11 @@ Tạo một site kế toán **không** tạo thêm Frappe site. Site Manager g�
 | Danh sách site (bản điều hành) | **chủ** bản điều hành, đồng bộ từ registry | **chủ** Site Registry (domain → database) |
 | Tạo / khoá / mở / xoá site | ra lệnh qua API | **thực hiện** |
 | Database, migration, sao lưu | không chạm | **chủ** |
-| Khoá API của site | xin cấp, lưu tiền tố và nhãn | **cấp và kiểm** |
+| API key của khách (`biz-…`) | không giữ | hỏi `bizcity-llm-router` để kiểm |
 | Sổ sách kế toán | không có | **chủ** |
-| Nối WordPress / `bizcity-llm-router` | cửa REST của Frappe | không biết |
+| Nối WordPress | cửa REST của Frappe cho `bizcity-llm-router` gọi | không biết |
+
+**`bizcity-llm-router` (plugin WordPress) là chủ API key** và là nơi người dùng bấm "tạo kế toán". Nó giữ người dùng, ví và khoá; Site Manager giữ site; Open Kế Toán giữ sổ.
 
 ## Tài liệu
 

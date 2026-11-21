@@ -1,4 +1,5 @@
 # Hướng dẫn cho AI agent (Claude Code, Copilot, Codex, Cursor…)
+<!-- [2026-11-21 07:36 PM Johnny Chu - Chu Hoàng Anh] R-KEY-1 — câu 4: API key thuộc bizcity-llm-router. -->
 <!-- [2026-11-21 07:25 PM Johnny Chu - Chu Hoàng Anh] INIT — hướng dẫn chuẩn cho mọi agent làm việc trong repo Bizcity Open Setup. -->
 
 Dự án: **Bizcity Open Setup** — nơi tạo và quản lý các site kế toán. Cùng hệ sinh thái với open-ketoan (lõi kế toán), open-kiot (bán lẻ) và Zalo Brain / Cell (trợ lý AI). Trước khi sửa gì, đọc [docs/00-CANON.md](docs/00-CANON.md) rồi [ADR-0001](docs/adr/ADR-0001-frappe-site-manager-open-ketoan-ung-dung-chung.md).
@@ -10,10 +11,10 @@ Dự án: **Bizcity Open Setup** — nơi tạo và quản lý các site kế to
 
 ## Bốn câu không thương lượng
 
-1. **Frappe không giữ dữ liệu kế toán.** Site Manager chỉ giữ danh sách site, khách hàng, khoá và nhật ký việc. Sổ sách nằm trong database của từng site bên Open Kế Toán.
+1. **Frappe không giữ dữ liệu kế toán.** Site Manager chỉ giữ danh sách site, khách hàng và nhật ký việc. Sổ sách nằm trong database của từng site bên Open Kế Toán.
 2. **Một site kế toán không phải một Frappe site.** Tạo site kế toán = gọi Provisioning API của Open Kế Toán để cấp một database. Không `bench new-site` cho từng khách.
 3. **Site Manager không chạm PostgreSQL.** Mọi việc tạo / khoá / sao lưu / xoá đi qua Provisioning API (`bizcity_site_provisioning@1`). Open Kế Toán là chủ của Site Registry.
-4. **Khoá hiện một lần, chỉ lưu dấu vết.** Khoá Provisioning nằm ở trường mật khẩu của Frappe. Khoá API của site chỉ lưu tiền tố và nhãn, không lưu giá trị.
+4. **API key thuộc `bizcity-llm-router`.** Plugin đó cấp, thu hồi và kiểm khoá `biz-…` của khách. Site Manager không cấp, không lưu khoá của khách. Khoá Provisioning (máy chủ gọi máy chủ) nằm ở trường mật khẩu của Frappe.
 
 ## Bước 0: giữ chỗ trước khi nhận việc (R-FLOW)
 

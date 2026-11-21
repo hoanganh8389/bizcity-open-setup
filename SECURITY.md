@@ -34,6 +34,8 @@ Dự án ở giai đoạn 0 (tài liệu và script vận hành, chưa có bản
 - script trong `ops/`;
 - cách app giữ và dùng khoá Provisioning.
 
+API key của khách (`biz-…`) thuộc plugin `bizcity-llm-router`; lỗ hổng về khoá đó báo cho chủ plugin.
+
 **Ngoài phạm vi:**
 - lỗ hổng của Frappe Framework, của Open Kế Toán (báo ở repo `open-ketoan`), của cPanel / Imunify360;
 - cấu hình sai của từng bản cài (lộ cổng CSDL, mật khẩu yếu);

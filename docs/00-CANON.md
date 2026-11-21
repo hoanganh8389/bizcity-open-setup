@@ -1,5 +1,6 @@
 # CANON — Chỉ mục luật Bizcity Open Setup
 <!-- [2026-11-21 06:33 PM Johnny Chu - Chu Hoàng Anh] INIT — khởi tạo chỉ mục luật Open Setup. -->
+<!-- [2026-11-21 07:36 PM Johnny Chu - Chu Hoàng Anh] R-KEY-1 — bizcity-llm-router là chủ API key; Site Manager không cấp, không lưu khoá của khách. -->
 <!-- [2026-11-21 07:25 PM Johnny Chu - Chu Hoàng Anh] ADR-0001 — viết lại theo mô hình Frappe Site Manager + Open Kế Toán dùng chung + mỗi site một database. -->
 
 > **Phiên bản:** 0.2 · 2026-11-21 · **Trạng thái:** Đề xuất, chưa có mã app · **Người giữ:** chủ dự án
@@ -17,7 +18,7 @@ Ba vai, không lẫn:
 
 ## 1. Bốn câu không thương lượng
 
-1. **Frappe không giữ dữ liệu kế toán.** Site Manager chỉ giữ khách hàng, danh sách site, khoá và nhật ký việc (R-ROLE-1).
+1. **Frappe không giữ dữ liệu kế toán.** Site Manager chỉ giữ khách hàng, danh sách site và nhật ký việc (R-ROLE-1).
 2. **Một site kế toán không phải một Frappe site.** Chỉ có một Frappe site quản trị. Tạo site kế toán là gọi Provisioning API để Open Kế Toán cấp một database (R-ROLE-2).
 3. **Site Manager không chạm PostgreSQL.** Tạo / khoá / mở / sao lưu / xoá đều qua `bizcity_site_provisioning@1`. Open Kế Toán là chủ Site Registry (R-ROLE-3).
 4. **Không xoá dữ liệu của khách mà không sao lưu trước.** Hết hạn thì khoá. Xoá chỉ chạy sau khi có bản sao lưu đã kiểm (R-DATA-1).
@@ -30,7 +31,7 @@ Ba vai, không lẫn:
 | R-ROLE-2 | 0 | Không `bench new-site` cho từng khách | tìm `new-site` trong mã app và `ops/` (chỉ được có ở phần dựng site quản trị) |
 | R-ROLE-3 | 0 | App không có chuỗi kết nối PostgreSQL, không gọi `psql` / `pg_dump` | tìm `postgres://`, `psycopg`, `pg_dump` trong mã app |
 | R-DATA-1 | 0 | Khoá trước, sao lưu trước, xoá sau | lệnh xoá bị API từ chối khi chưa có bản sao lưu mới; nhật ký việc có dòng `backup ok` trước dòng `drop` |
-| R-KEY-1 | 0 | Khoá Provisioning ở trường `Password` của Frappe; khoá API của site chỉ lưu tiền tố + nhãn; khoá hiện đúng một lần | đọc DocType; tìm khoá dạng rõ trong CSDL quản trị phải ra rỗng |
+| R-KEY-1 | 0 | **API key của khách do `bizcity-llm-router` cấp, thu hồi và kiểm** (khoá `biz-…`). Site Manager không có DocType khoá. Khoá Provisioning (máy chủ gọi máy chủ) ở trường `Password` của Frappe | đọc danh sách DocType; tìm `biz-` trong CSDL quản trị phải ra rỗng |
 | R-PRIV-1 | 0 | Tiến trình web không có quyền root; script root tự kiểm tham số | đọc sudoers; ca thử tham số độc bị từ chối |
 | R-IDEM-1 | 1 | Mọi lệnh ghi gửi sang Open Kế Toán có `Idempotency-Key`; gửi lại không tạo site thứ hai | ca thử gửi trùng |
 | R-JOB-1 | 1 | Mỗi lệnh là một việc có nhật ký từng bước; hỏng thì dừng, báo câu dễ hiểu kèm mã việc | đọc `Bizcity Provision Job` |
