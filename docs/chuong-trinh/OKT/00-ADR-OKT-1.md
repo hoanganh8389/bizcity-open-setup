@@ -24,7 +24,7 @@ Ngày 21/11, hướng kiến trúc đổi ba lần:
 2. bắt buộc open-ketoan;
 3. bảng local ở giữa, admin chọn nguồn theo blog.
 
-Mỗi lần đổi, quyết định nằm thêm ở một tệp mới (PHASE-001 doc 26, 27, 28), còn tệp cũ chỉ được gắn banner. Bản đánh giá cuối ngày chỉ ra mười chỗ chưa ổn ở góc nhìn người dựng hệ thống: quyết định chưa đứng yên, hai máy bán với hai đường ghi, định danh suy đoán, nhất quán cuối cùng mà không có quan sát, và các chỗ khác. Kết luận: **dừng viết thêm, chốt bất biến, làm một lát dọc chạy được.**
+Mỗi lần đổi, quyết định nằm thêm ở một tệp mới (PHASE-001 doc 26, 27, 28), còn tệp cũ chỉ được gắn banner. _(22/11: ba tệp đã gộp vào §3b, §5 và chuyển `archive/`.)_ Bản đánh giá cuối ngày chỉ ra mười chỗ chưa ổn ở góc nhìn người dựng hệ thống: quyết định chưa đứng yên, hai máy bán với hai đường ghi, định danh suy đoán, nhất quán cuối cùng mà không có quan sát, và các chỗ khác. Kết luận: **dừng viết thêm, chốt bất biến, làm một lát dọc chạy được.**
 
 ## 2. Tám bất biến
 
@@ -54,8 +54,27 @@ Mỗi lần đổi, quyết định nằm thêm ở một tệp mới (PHASE-001
 | **D002-8** | **Luật giá DM14 áp ở bộ kéo, ghi thành dữ liệu.** Bộ kéo C8 tính giá đã áp luật (hàng chính lấy giá công ty; thiếu giá chi nhánh thì lùi về giá công ty), rồi ghi sẵn vào bảng giá của blog. POS đọc giá như cũ, **không** sửa `TGS_POS_Price_List`. Thay Q001-7 / D001-13 | chủ 21/11 07:30 PM |
 | **D002-4** | **Một nguồn quyết định.** Bất biến ở tệp này. **Trạng thái mọi việc của chương trình chỉ ở [open-setup 40-CHECKLIST](40-CHECKLIST.md)** (chủ chốt 21/11 07:52 PM); checklist ở từng repo giữ mô tả kỹ thuật, không giữ trạng thái. Câu hỏi chờ chủ ở [90](90-CAU-HOI-CHO-CHU.md). PHASE-001 doc 26, 27, 28 gộp vào đây, tệp cũ chuyển `archive/` | đánh giá 21/11, mục 1 |
 
+## 3b. Quyết định gộp từ PHASE-001 doc 26, 27, 28 (S002-0b)
+
+<!-- [2026-11-22 09:00 AM Johnny Chu - Chu Hoàng Anh] S002-0b — gộp phần còn hiệu lực của open-pos-backend PHASE-001 doc 26, 27, 28 vào ADR; ba tệp cũ chuyển archive/. -->
+
+Ba tệp cũ nằm ở `open-pos-backend/docs/phases/PHASE-001-…/archive/`, chỉ để truy vết. Mọi chỗ còn hiệu lực ở dưới đây.
+
+| # | Quyết định | Nguồn |
+|---|---|---|
+| ~~D001-15~~ | ~~open-ketoan bắt buộc, bỏ standalone~~. **Đã thay** bởi D001-18…20 | 26 → 28 |
+| **D001-16** | Repo GitHub: `tgs_pos` → **`open-pos`**, `tgs_shop_management` → **`open-pos-backend`**. Thư mục plugin giữ tên cũ (`tgs_pos`, `tgs_shop_management`, `open-ketoan-bridge`) | 26, chủ 21/11 |
+| **D001-17** | `bizcity-open-kiot` **dừng** (đã archive). Phần đáng giữ (khảo sát tgs_pos, ý sổ bán lẻ ADR-0010) chỉ để tham khảo | 26, chủ 21/11 |
+| **D001-18** | **Bảng local ở giữa, luôn có.** Mỗi blog có bảng danh mục và sổ bán của riêng nó. Mọi màn bán và quản trị **chỉ đọc / ghi bảng local**; không màn bán nào đọc thẳng kế toán | 28, chủ 21/11 05:18 PM |
+| **D001-19** | **Admin chọn nguồn danh mục theo blog**: `tgs_catalog_source = local \| ketoan` (= I-2). Blog mới mặc định `local` (Q001-24, mặc định tạm). `tgs_catalog_source` (ai là gốc) **khác** `tgs_catalog_store` (đọc bảng global hay theo prefix, chỉ để lùi lúc chuyển bảng) | 28 |
+| **D001-20** | **Kế toán tắt thì quầy vẫn bán, không mất đơn; giữ nguyên đường ghi của từng máy bán** (= I-0, I-3). POS cũ ghi `local_ledger`, bridge gửi sau. POS React giữ D1 + chế độ dự phòng có sẵn. Ca dự phòng không đỡ được thì chuyển shop sang POS cũ | 28, sửa theo I-0 21/11 06:55 PM |
+
 ## 4. Hệ quả
 
 - PHASE-001 giữ vai **hồ sơ nghiên cứu và đặc tả** (doc 16 chuẩn hàng hoá, 25 bảng theo prefix, 29 bảng điểm, 81 bộ kéo). Phần **quyết định** của nó lấy theo tệp này.
 - Mỗi PR mã từ nay ghi trong mô tả: chạm bất biến nào, kiểm bằng gì.
 - Đo lại bảng điểm PHASE-001 doc 29 **sau** lát dọc, bằng bằng chứng (I-7).
+
+## 5. Trạng thái một blog và chuyển nguồn
+
+#
