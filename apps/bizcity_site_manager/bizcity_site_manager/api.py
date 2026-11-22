@@ -26,17 +26,22 @@ def _fail(code: str) -> dict:
 	return body
 
 
+# [2026-11-22 11:00 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 W0-2 — thử trên bench thật: dùng đúng luật của DocType (bảng tên miền gốc rỗng = không nhận, trần số site, slug cấm) để trả lỗi có mã thay vì ValidationError 417
+def _settings():
+	return frappe.get_cached_doc("Bizcity Site Manager Settings")
+
+
 def _reserved() -> set[str]:
-	raw = frappe.db.get_single_value("Bizcity Site Manager Settings", "reserved_slugs") or ""
-	return {s.strip().lower() for s in raw.replace(",", "\n").splitlines() if s.strip()}
+	return set(_settings().extra_reserved())
 
 
 def _root_allowed(root_domain: str) -> bool:
-	"""Tên miền gốc phải có trong bảng tên miền gốc đang bật; bảng rỗng thì nhận mọi tên (đang dựng)."""
-	rows = frappe.get_all("Bizcity Site Root Domain", filters={"parenttype": "Bizcity Site Manager Settings"}, fields=["domain", "enabled"])
-	if not rows:
-		return True
-	return any(r.enabled and (r.domain or "").strip().lower() == root_domain for r in rows)
+	return root_domain in _settings().enabled_root_domains()
+
+
+def _limit_reached() -> bool:
+	limit = _settings().max_sites
+	return bool(limit) and frappe.db.count("Bizcity Ketoan Site", {"status": ["!=", "deleted"]}) >= limit
 
 
 @frappe.whitelist(methods=["POST"])
@@ -61,6 +66,8 @@ def create_site(
 		return _fail("ROOT_DOMAIN_NOT_ALLOWED")
 	if frappe.db.exists("Bizcity Ketoan Site", slug):
 		return _fail("SITE_SLUG_TAKEN")
+	if _limit_reached():
+		return _fail("SITE_LIMIT_REACHED")
 
 	customer = frappe.db.get_value("Bizcity Site Customer", {"email": email}, "name")
 	if customer and frappe.db.count("Bizcity Ketoan Site", {"customer": customer, "status": ["not in", ["failed", "deleted"]]}):

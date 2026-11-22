@@ -37,7 +37,7 @@ def start(site_name: str, kind: str) -> str:
 	}).insert(ignore_permissions=True)
 	frappe.enqueue(
 		"bizcity_site_manager.site_manager.run",
-		job_name=job.name,
+		provision_job=job.name,  # [2026-11-22 11:00 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 W0-2 — thử trên bench: job_name là tham số riêng của frappe.enqueue (tên việc RQ), không tới run() → đổi tên
 		queue="long",
 		timeout=POLL_TIMEOUT + 120,
 		enqueue_after_commit=True,
@@ -45,9 +45,9 @@ def start(site_name: str, kind: str) -> str:
 	return job.name
 
 
-def run(job_name: str) -> None:
+def run(provision_job: str) -> None:
 	"""Chạy một việc. Chạy lại được: cùng Idempotency-Key nên Open Kế Toán trả đúng việc cũ, không tạo site thứ hai."""
-	job = frappe.get_doc(JOB, job_name)
+	job = frappe.get_doc(JOB, provision_job)
 	site = frappe.get_doc(SITE, job.site)
 	settings = frappe.get_single(SETTINGS)
 	job.db_set("attempts", (job.attempts or 0) + 1)

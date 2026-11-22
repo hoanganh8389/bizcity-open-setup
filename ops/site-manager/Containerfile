@@ -1,0 +1,16 @@
+# [2026-11-22 11:00 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 W0-2 — image Site Manager: frappe/erpnext (cùng bản đang chạy ở /opt/frappe) + app bizcity_site_manager
+# App nằm ở thư mục con apps/bizcity_site_manager nên không dùng được apps.json của frappe_docker (cần app ở gốc repo).
+# Build (đứng ở gốc repo):
+#   docker build -f ops/site-manager/Containerfile --build-arg ERPNEXT_VERSION=v15.125.0 -t bizcity/site-manager:v15.125.0-<sha> .
+ARG ERPNEXT_VERSION=v15.125.0
+FROM frappe/erpnext:${ERPNEXT_VERSION}
+
+COPY --chown=frappe:frappe apps/bizcity_site_manager /home/frappe/frappe-bench/apps/bizcity_site_manager
+
+# Cài vào env của bench (mọi container dùng chung image: backend, worker, scheduler) và ghi vào danh sách app của image.
+# apps.txt của image KHÔNG có xuống dòng cuối — thêm trước khi ghi (không thì thành "erpnextbizcity_site_manager").
+# Volume `sites` đã có từ trước KHÔNG nhận apps.txt mới của image — thêm tay một lần (sổ tay, bước "bật app").
+RUN /home/frappe/frappe-bench/env/bin/pip install --no-cache-dir -e /home/frappe/frappe-bench/apps/bizcity_site_manager \
+ && cd /home/frappe/frappe-bench/sites \
+ && sed -i -e '$a\' apps.txt \
+ && { grep -qx bizcity_site_manager apps.txt || echo bizcity_site_manager >> apps.txt; }
