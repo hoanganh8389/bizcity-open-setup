@@ -39,7 +39,7 @@ Mã nằm ở các repo làm việc. Repo này không chứa mã của open-pos.
 | [40-CHECKLIST](40-CHECKLIST.md) | **Nguồn trạng thái duy nhất** của 158 việc (S002, S001, SW, P001, B001, K) |
 | [50-PHAN-VIEC](50-PHAN-VIEC.md) | Lane, người nhận, luật nhận việc, định nghĩa xong, mẫu mô tả PR |
 | [60-DANH-GIA](60-DANH-GIA.md) | Mục tiêu → tín hiệu đo; cách tính tiến độ (chỉ có bằng chứng); mốc đo theo ngày; tiêu chí duyệt PR |
-| [70-SCOREBOARD-KET-NOI](70-SCOREBOARD-KET-NOI.md) | Điểm kết nối open-pos → open-pos-backend → open-ketoan: 14 miền, 46 tiêu chí, 28 tình huống ánh xạ; 52,2 % / pilot 72,5 % (22/11 04:40 PM) |
+| [70-SCOREBOARD-KET-NOI](70-SCOREBOARD-KET-NOI.md) | Điểm kết nối open-pos → open-pos-backend → open-ketoan: 14 miền, 46 tiêu chí, 28 tình huống ánh xạ; 54,2 % / pilot 72,5 % (22/11 05:50 PM) |
 | [75-LUAT-TU-KIEM](75-LUAT-TU-KIEM.md) | **Luật tối thượng I-8**: tự kiểm theo cặp blog → tenant qua API, SC-0…SC-12, khi chạy, đỏ thì làm gì |
 | [mockups/](mockups/README.md) | Mockup 3 màn: scoreboard, tự kiểm blog → tenant, trace dòng chảy hai chiều ([canvas](https://claude.ai/artifact/NSxgh5KUvmP5cq8gcGCDhu)) |
 | [90-CAU-HOI-CHO-CHU](90-CAU-HOI-CHO-CHU.md) | Câu hỏi đang mở của cả chương trình |
