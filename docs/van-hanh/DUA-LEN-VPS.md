@@ -155,3 +155,37 @@ define('BIZCITY_KETOAN_ROOT_DOMAINS', 'bizcity.vn=openketoan.com');
 ```
 
 Trang `/dung-pm-ke-toan-mien-phi/` (`[bizcity_trial_ketoan]`, để Riêng tư) → tạo thử một phần mềm → nghiệm thu theo bizcity-web PHASE-02 `50-LEN-MAY-THAT.md` §5.
+
+## 8. Kinh nghiệm thật khi dựng (2026-11-22 → 23) — tình huống, nguyên nhân, cách xử lý
+<!-- [2026-11-23 01:40 AM Johnny Chu - Chu Hoàng Anh] OPS-VPS — ghi lại mọi tình huống gặp khi chủ dự án chạy sổ tay này trên VPS; script ở ops/vps/ -->
+
+Script đi kèm (đứng ở `/opt/open-setup`, `git pull` trước):
+
+| Script | Làm gì |
+|---|---|
+| `ops/vps/go-container.sh` | gỡ container khi `overlay2 … busy` (`chan-doan` / `go` / `du-an`) — xem [DOCKER-OVERLAY2-BUSY.md](DOCKER-OVERLAY2-BUSY.md) |
+| `ops/vps/proxy-domain.sh` | chuyển tên miền cPanel (kể cả `*.miền`) về cổng container, rebuild Apache, kiểm `Include` đã bật, curl từ ngoài |
+| `ops/vps/okt-prov-key.sh` | khoá `prov_…`: tạo thẳng vào tệp (màn hình chỉ in tiền tố), `ds`, `thu-hoi <tiền tố>`, `kiem <tệp>` |
+
+| # | Tình huống | Nguyên nhân | Xử lý |
+|---|---|---|---|
+| 1 | `ssh: Could not resolve hostname github-open-setup` | chưa thêm `Host github-open-setup` vào `~/.ssh/config` | repo đã công khai → clone HTTPS (§1) |
+| 2 | `Permission denied (publickey)` khi clone | khoá deploy chưa thêm vào GitHub | như trên |
+| 3 | Lệnh sau chạy ở sai thư mục, `TAG` thiếu mã commit, `sed` đã sửa `erp.yaml` sang image không tồn tại | dán cả khối khi lệnh đầu lỗi | **chạy từng khối**, xem kết quả rồi mới chạy tiếp; lùi `erp.yaml` bằng bản `.bak` |
+| 4 | `cp: overwrite …?` nuốt dòng kế tiếp | root có alias `cp -i` | dùng `\cp -f` |
+| 5 | `pull access denied for bizcity/site-manager` | `erp.yaml` của frappe_docker có `pull_policy: always` | `docker compose … up -d --pull never` |
+| 6 | `bench: command not found` | `bench` chỉ có trong container | `$DC exec backend bench …` |
+| 7 | `ModuleNotFoundError: bizcity_site_manager` khi `new-site` | container vẫn chạy image cũ (bước `up` chưa xong) nhưng `apps.txt` đã có app | `up -d --pull never` cho xong → `install-app`; nếu thiếu DocType thì `bench --site … migrate` |
+| 8 | `install-app` không in "Updating DocTypes" | lần cài trước hỏng giữa chừng | `bench --site … migrate` (tạo đủ DocType, chạy `after_migrate`) |
+| 9 | `overlay2 … device or resource busy` (mọi lần thay container) | **cPanel virtfs**: jail `/home/virtfs/vibeyeuc/` bind-mount `/var/lib` → chép mount overlay của container | `ops/vps/go-container.sh du-an <project>` trước `compose up`; sửa tận gốc ở DOCKER-OVERLAY2-BUSY.md |
+| 10 | Sau reboot `curl :4000/healthz` từ chối | zca-bridge **đã gỡ** 2026-10-14 | bỏ qua; chỉ kiểm zalo-hub `:3900/api/health` |
+| 11 | `getaddrinfo ENOTFOUND db` (api lặp khởi động) | container `db` kẹt `Removal In Progress` (busy) | như #9 rồi `compose up -d` |
+| 12 | `/_sites/v1/health` trả HTML (`<title>ERP`) | nginx của ảnh `web` thiếu `location /_sites/` | đã sửa open-ketoan PR #602 → `git pull` + `docker compose build web` + thay container `web` |
+| 13 | `git pull` "Already up to date" ngay sau khi merge | kéo trước lúc merge xong | kéo lại; kiểm `grep -c "location /_sites/" docker/nginx.conf` = 1; build mà dòng `COPY docker/nginx.conf` còn `CACHED` là chưa có mã mới |
+| 14 | `createdb kt_template` không chạy | dán nhiều dòng, dòng bị nuốt | chạy từng dòng; kiểm `select datname … like 'kt_%'` |
+| 15 | `*.openketoan.com` → 403 / 500, `openketoan.com` → 200 | vhost wildcard của cPanel đọc userdata ở **`wildcard_safe.<miền>`**, không phải `_wildcard_.<miền>` | `ops/vps/proxy-domain.sh --wildcard openketoan.com 8088` |
+| 16 | `Include …/*.conf` có `#` đằng trước | thư mục userdata chưa có tệp lúc rebuild | ghi tệp rồi `rebuildhttpdconf` (script làm sẵn) |
+| 17 | Khoá `prov_…` / khoá Frappe / khoá `kt_…` lộ vì dán ảnh / chat | lệnh in khoá ra màn hình | `okt-prov-key.sh tao` (ghi vào tệp); khoá Frappe: chạy lại `create_operator_user` (khoá cũ hết dùng) |
+| 18 | `UPDATE provision_keys … WHERE prefix = '<cả khoá>'` → `UPDATE 0` | cột `prefix` chỉ giữ **11 ký tự đầu** | `okt-prov-key.sh thu-hoi prov_xxxxxx` |
+| 19 | `cap-nhat.sh` xong, db-migrate in `+ Đơn vị demo` | database `ketoan` của bản demo đang trống | bình thường cho bản demo; bản có dữ liệu thật thì kiểm bản sao lưu `backups/ketoan-*.sql.gz` trước |
+| 20 | `cap-nhat.sh` / compose `web` tranh cổng 8088 với `ketoan-web-run` | web từng chạy ngoài compose (cách né busy cũ) | gỡ `ketoan-web-run` trước (`go-container.sh go ketoan-web-run`) |
