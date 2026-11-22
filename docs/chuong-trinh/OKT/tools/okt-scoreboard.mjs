@@ -4,8 +4,8 @@
 const D = [
   ['A', 'Định danh & kết nối', [
     ['A1', 'Khoá + URL theo blog; không khoá chung cả mạng (I-1)', 4, 3, 4, 'bridge `tests/config-test.php` (PR #2), `for_blog()` (PR #8)', 'chưa chạy trong WordPress thật', 'S002-C0'],
-    ['A2', 'Chứng minh được khoá của blog trỏ **đúng tenant** (gọi `/api/v1/tenant`, so mã lưu)', 3, 0, 4, '`/tenant` trả `code` với khoá API (đo 22/11 trên okt-thu)', 'chưa có mã so', 'OKT-SC-1'],
-    ['A3', 'Một tenant ↔ một blog: phát hiện hai blog chung tenant (G12)', 3, 1, 4, 'ADR §5.1 dòng 🔴', 'chưa có mã', 'OKT-SC-1'],
+    ['A2', 'Chứng minh được khoá của blog trỏ **đúng tenant** (gọi `/api/v1/tenant`, so mã lưu)', 3, 3, 4, '`TGS_Acc_Selfcheck` SC-2, test 41/41; chạy thật okt-thu (bridge PR #12)', 'chưa chạy trong WP', 'OKT-SC-1'],
+    ['A3', 'Một tenant ↔ một blog: phát hiện hai blog chung tenant (G12)', 3, 3, 4, 'SC-3 bản đồ blog → tenant, test 41/41 (bridge PR #12)', 'chưa chạy trong WP; tự tạm dừng ở OKT-SC-2', 'OKT-SC-1'],
     ['A4', 'Chi nhánh khai theo blog, mã sai thì báo, không tạo chi nhánh trống', 2, 3, 4, '`tests/branch-unit-test.php` 17 phép (PR #7)', '—', 'S002-C0'],
   ]],
   ['B', 'Danh mục hàng hoá', [
@@ -73,7 +73,7 @@ const D = [
   ]],
   ['N', 'Kiểm chứng', [
     ['N1', 'I-0: census `--check=I0` + ca bán chuẩn', 3, 3, 4, 'PR #33, selftest 13, open-pos main xanh', 'ca bán chuẩn chưa chạy đơn thật', 'S002-C14'],
-    ['N2', '**Tự kiểm theo cặp blog → tenant qua API** (luật I-8)', 4, 0, 4, 'luật mới (tệp 75)', 'chưa có mã', 'OKT-SC-1'],
+    ['N2', '**Tự kiểm theo cặp blog → tenant qua API** (luật I-8)', 4, 3, 4, '`wp tgs-acc selfcheck` SC-1…SC-11, test 41/41, chạy thật okt-thu 3 ca (bridge PR #12)', 'cron + Cổng kế toán (OKT-SC-2); chưa chạy trong WP', 'OKT-SC-1'],
     ['N3', 'Golden G0–G17 chạy lại được bằng script', 2, 1, 4, '01 viết lại 22/11; setup-lat-doc + seed', 'chưa có WP thử', 'S002-C0'],
   ]],
 ];

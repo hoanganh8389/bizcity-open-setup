@@ -29,11 +29,11 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 168 | 6 | 31 | 17 | 114 | 16 |
+| 168 | 6 | 32 | 17 | 113 | 16 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
-- **22/11 11:00 AM:** thêm 5 việc tự kiểm OKT-SC-0…4 (luật I-8) → 168 việc còn hiệu lực. Điểm kết nối ở [70](70-SCOREBOARD-KET-NOI.md): **36,8 %**, pilot cần 72,5 %.
+- **22/11 11:00 AM:** thêm 5 việc tự kiểm OKT-SC-0…4 (luật I-8) → 168 việc còn hiệu lực. Điểm kết nối ở [70](70-SCOREBOARD-KET-NOI.md): **41,4 %** (11:50 AM, sau OKT-SC-1), pilot cần 72,5 %.
 - **22/11 09:30 AM:** thêm 4 việc sinh từ câu chủ chốt (S002-17, S002-18, S001-C8b, S001-C8c) → 163 việc còn hiệu lực.
 - **Chưa có việc mã nào ✅.** Việc mã gần nhất là B001-C1 (bridge PR #2, đã merge, chưa chạy trong WordPress thật) ở mức 🟡.
 - **Thứ tự làm** (chi tiết ở [10-ROADMAP](10-ROADMAP.md)): PHASE-002 lát dọc **trước**, rồi các mốc M1–M4 của PHASE-001.
@@ -45,7 +45,7 @@
 | ID | Repo | Việc | Trạng thái | Bằng chứng |
 |---|---|---|---|---|
 | OKT-SC-0 | open-setup | Luật I-8 vào ADR; đặc tả 75; scoreboard 70 + `tools/okt-scoreboard.mjs` | 🟡 2026-11-22 11:00 AM — PR này | 70, 75 |
-| OKT-SC-1 | open-ketoan-bridge | `wp tgs-acc selfcheck --blog=N\|--all`: SC-1…SC-11 qua API bằng khoá của blog; lưu `tgs_acc_tenant_code` khi admin xác nhận; kết quả `tgs_acc_selfcheck_last`; JSON cho `evidence/` _(bất biến I-8, I-1, I-4)_ | ☐ |  |
+| OKT-SC-1 | open-ketoan-bridge | `wp tgs-acc selfcheck --blog=N\|--all`: SC-1…SC-11 qua API bằng khoá của blog; lưu `tgs_acc_tenant_code` khi admin xác nhận; kết quả `tgs_acc_selfcheck_last`; JSON cho `evidence/` _(bất biến I-8, I-1, I-4)_ | 🟡 2026-11-22 11:45 AM — mã + `tests/selfcheck-test.php` 41/41; `tests/selfcheck-live.php` chạy thật vào okt-thu: đơn TM xanh, đơn QR-VTB-CT + R04 + XTA đỏ đúng ba mã, khoá sai 401; chưa chạy trong WordPress | [bridge PR #12](https://github.com/hoanganh8389/open-ketoan-bridge/pull/12) |
 | OKT-SC-2 | open-ketoan-bridge | Cron 02:30 mọi blog có khoá; Cổng kế toán hiện kết luận; SC-2 / SC-3 đỏ → tự tạm dừng gửi; cảnh báo hàng chờ ≥ 6 ngày; giữ hàng chờ quá 7 ngày _(I-8, I-3, I-6)_ | ☐ |  |
 | OKT-SC-3 | cả ba repo mã | Mỗi repo một lệnh `selfcheck` ngoại tuyến (mọi test + `--check=I0`); ghi vào mẫu mô tả PR _(I-8, I-0)_ | ☐ |  |
 | OKT-SC-4 | open-ketoan | Đưa I-8 vào CANON (R-OKT-CONN-13) | ⛔ chủ |  |
