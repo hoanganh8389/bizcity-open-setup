@@ -25,7 +25,8 @@ Mỗi phép trả `pass` / `warn` / `fail` + dữ liệu. Phép "30 ngày" đọ
 | # | Kiểm gì | Cách (API / sổ) | `fail` khi | `warn` khi |
 |---|---|---|---|---|
 | **SC-0** | Ngoại tuyến: test của repo + `--check=I0` | mỗi repo một lệnh `selfcheck` | test đỏ / I-0 đỏ | — |
-| **SC-1** | Cấu hình của blog — **theo mô hình P-0** (82) | bizcity: khoá riêng, URL · nhiều cửa hàng: khoá cài đặt hợp lệ + blog đã được open-ketoan duyệt · một cửa hàng: khoá + URL | bizcity: thiếu khoá riêng mà nguồn `ketoan` · nhiều cửa hàng: blog bị thu hồi | bizcity: khoá chung (giai đoạn chuyển) · nhiều cửa hàng: blog chờ duyệt · chưa khai mô hình |
+<!-- [2026-11-23 04:10 PM Johnny Chu - Chu Hoàng Anh] OKT-TOPO-11 — SC-1 nhánh nhiều cửa hàng theo mã nối (ADR-0037, thi hành bridge 0.6.0). -->
+| **SC-1** | Cấu hình của blog — **theo mô hình P-0** (82) | bizcity: khoá riêng, URL · nhiều cửa hàng: khoá cài đặt + blog **đã được kế toán nối** vào sổ (mã nối ở tenant đích) · một cửa hàng: khoá + URL | bizcity: thiếu khoá riêng mà nguồn `ketoan` · nhiều cửa hàng: blog bị thu hồi bên open-ketoan | bizcity: khoá chung (giai đoạn chuyển) · nhiều cửa hàng: blog chưa đăng ký / chờ mã nối — dừng ở SC-1, không gọi API, đơn giữ trong hàng chờ · chưa khai mô hình |
 | **SC-2** | **Danh tính tenant** | `GET /api/v1/tenant` → `code`; so với mã tenant **đã lưu** của blog (`tgs_acc_tenant_code`) | khác mã đã lưu (khoá trỏ đơn vị khác) | chưa lưu mã (lần đầu: admin xác nhận rồi lưu) |
 | **SC-3** | **Một tenant ↔ một blog** (cả ba mô hình) | so mã tenant của mọi blog có khoá | hai blog cùng tenant (G12) — tự tạm dừng; **trừ** blog dùng khoá chung `legacy` | blog khoá chung trùng tenant: vàng, **không** tự tạm dừng (OKT-TOPO-8) |
 | **SC-4** | Quyền của khoá | `GET catalog/feed/meta`, `GET documents?search=`, `POST intake/preflight {save:false}` | một lời gọi 401 / 403 | — |
