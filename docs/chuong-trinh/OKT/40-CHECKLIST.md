@@ -20,6 +20,7 @@
 <!-- [2026-11-22 06:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — chủ xác nhận máy chủ thật chạy PHP-FPM; thêm OKT-CD-1 (cầu dao, bridge #17) → 171 việc; OKT-I3 đã merge (c104e31). -->
 <!-- [2026-11-22 07:50 PM Johnny Chu - Chu Hoàng Anh] OKT-H2 — thêm dòng OKT-H2 (kho theo kết nối của blog, SC-7 kho mặc định, bridge #18) → 172 việc. -->
 <!-- [2026-11-22 09:20 PM Johnny Chu - Chu Hoàng Anh] OKT-MA-TRAN — thêm OKT-MT-1 (🟡), OKT-MT-3, OKT-MT-5 (☐) → 175 việc. -->
+<!-- [2026-11-22 10:15 PM Johnny Chu - Chu Hoàng Anh] OKT-H4 — thêm OKT-H4 (🟡), OKT-MT-3 ☐ → 🟡 (bridge #20) → 176 việc. -->
 <!-- [2026-11-22 05:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-C10 sang 🟡 (bridge #16: quầy không chờ kế toán, hàng chờ gửi bù được); scoreboard đo lại. -->
 <!-- [2026-11-22 04:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — lát dọc L0 → L7 chạy trên WordPress multisite thật (Docker okt-wp): S002-C0, C2, C6, C7 sang 🟡 (open-pos-backend #41); sửa lỗi chỉ WP thật bắt được (open-pos-backend #40, bridge #15, open-pos #26); scoreboard 52,2 %. -->
 <!-- [2026-11-22 02:55 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — OKT-SC-2 sang 🟡 (bridge #14, open-pos-backend #40); S001-MD3 đã merge (bf73d65, c4d8b38); scoreboard 44,6 %. -->
@@ -36,7 +37,7 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 175 | 6 | 43 | 17 | 109 | 16 |
+| 176 | 6 | 45 | 17 | 108 | 16 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
@@ -61,7 +62,8 @@
 | OKT-CD-1 | open-ketoan-bridge | Cầu dao theo blog: kế toán không tới được thì không gửi trong request (máy chủ thật PHP-FPM — chủ xác nhận 22/11: tiến trình FPM bị giữ tới khi hết giờ); gửi tức thời chờ 5 s; đệm kho theo kết nối của blog _(bất biến I-3, I-1)_ | 🟡 2026-11-22 06:50 PM — nginx + PHP-FPM (4 tiến trình), kế toán treo, 8 đơn cùng lúc: trang chủ 60,1 s → 5,3 s (đợt 1) → 0,18 s (cầu dao mở); phục hồi 24 nhóm / 1,3 s, 0 trùng; tests/breaker-test.php 11/11 | [bridge PR #17](https://github.com/hoanganh8389/open-ketoan-bridge/pull/17) |
 | OKT-H2 | open-ketoan-bridge | Kho WP ↔ kho của tenant: đơn POS không ghi kho → kế toán ghi vào kho mặc định của chi nhánh (đo thật); phân kho chép theo kết nối của TỪNG blog (cron cũ dùng khoá site chính); SC-7 kiểm chi nhánh có kho mặc định. Khi làm `tgs_catalog_source`: blog `local` không bị sync ghi đè phân kho _(bất biến I-1, I-2, I-8)_ | 🟡 2026-11-22 07:50 PM — okt-thu tạo KCN01 mặc định, bán 1 đơn HTTP thật: movement + bút toán mang KCN01; `wp tgs-acc selfcheck --shop=2` SC-7 🟢; tests/warehouse-sync-test.php 16/16, selfcheck-test 47/47. Còn: phiếu nhập seed lát dọc không lên kế toán (sửa trước H4) | [bridge PR #18](https://github.com/hoanganh8389/open-ketoan-bridge/pull/18) |
 | OKT-MT-1 | open-setup | Ma trận tuân thủ I-0…I-8 × G-1…G-6 chạy thật ([65](65-MA-TRAN-TUAN-THU.md)); chạy lại sau mỗi mốc _(I-7, I-8)_ | 🟡 2026-11-22 09:20 PM — lượt 1 trên okt-wp: I-0 ✅, I-7 ✅, G-1/G-4/G-5 ✅ (thử); tìm và sửa MT-1 (chụp ca bán), MT-2 (SC-9 mẫu cũ nhất) | [open-pos-backend PR #43](https://github.com/hoanganh8389/open-pos-backend/pull/43), [bridge PR #19](https://github.com/hoanganh8389/open-ketoan-bridge/pull/19) |
-| OKT-MT-3 | open-ketoan-bridge + OPS | Máy chủ thật: cron hệ thống gọi WP-Cron của **site chính** mỗi phút (gửi lại, kéo trạng thái, tự kiểm hằng ngày đều là lịch của site chính); tự kiểm báo khi lịch quá hạn _(I-3, I-8)_ | ☐ — đo thật: `DISABLE_WP_CRON` không có cron hệ thống → ba lịch quá hạn nhiều giờ, không báo |  |
+| OKT-H4 | open-ketoan-bridge | Đối chiếu WP ↔ kế toán: chứng từ thiếu / mồ côi / chờ huỷ / chờ / lỗi / bản cũ + tồn theo SKU (WP = KT + chưa định khoản); `wp tgs-acc reconcile`, tự kiểm SC-12 _(I-6, I-8)_ | 🟡 2026-11-22 10:15 PM — WP thử 4 trạng thái: mồ côi chờ huỷ 🟡 8↔7 → kế toán duyệt huỷ 🟢 8=8 → tạm dừng bán 1 đơn 🟡 thiếu 2, lệch 0 → định khoản 🟢 7=7; tests/reconcile-test.php 20/20, selfcheck-test 56/56. Còn: site thật; theo kho | [bridge PR #20](https://github.com/hoanganh8389/open-ketoan-bridge/pull/20) |
+| OKT-MT-3 | open-ketoan-bridge + OPS | Máy chủ thật: cron hệ thống gọi WP-Cron của **site chính** mỗi phút (gửi lại, kéo trạng thái, tự kiểm hằng ngày đều là lịch của site chính); tự kiểm báo khi lịch quá hạn _(I-3, I-8)_ | 🟡 2026-11-22 10:15 PM — phần mã xong: SC-10 vàng khi gửi lại quá 15 phút / kéo trạng thái 30 phút / tự kiểm hằng ngày 2 ngày, đỏ khi > 6 giờ hoặc chưa lên lịch; bắt thật "quá hạn 22 phút" trên WP thử, chạy cron → xanh. Còn: OPS cài cron hệ thống ở máy chủ thật | [bridge PR #20](https://github.com/hoanganh8389/open-ketoan-bridge/pull/20) |
 | OKT-MT-5 | open-ketoan (tenant) | Nhận tenant: khai hồ sơ kế toán trước khi bật gửi (preflight `IN-CFG-001` trên mọi đơn của tenant thử) _(I-5, I-6)_ | ☐ |  |
 
 ### PHASE-002 lát dọc — S0 — chuẩn bị

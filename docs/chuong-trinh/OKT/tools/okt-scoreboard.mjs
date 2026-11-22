@@ -47,7 +47,7 @@ const D = [
     ['H1', 'Tồn ở WP tính từ sổ local; bán / nhập đúng (POS không đổi, I-0)', 3, 4, 4, 'tồn WP 10 → 9 sau một đơn, nhập qua đường nhập thật — lát dọc L0→L7 trên WP thật (open-pos-backend PR #41)', 'chưa đối chiếu với tồn kế toán', 'S002-C2'],
     ['H2', 'Kho WP ↔ `warehouseCode` của tenant', 3, 4, 4, 'warehouse-sync.php: phân kho chép theo kết nối của từng blog (I-1), SC-7 kiểm kho mặc định (bridge PR #18); đã chạy thật: đơn POS không ghi kho → kế toán ghi vào kho mặc định KCN01 (movement + bút toán)', 'chưa chạy ở site thật; Tính giá vốn tháng có kho chưa chạy (phiếu nhập lát dọc chưa lên kế toán); I-2: blog local chưa được miễn sync', 'OKT-SC-1'],
     ['H3', 'Nhập mua / trả NCC / chuyển kho / kiểm kê → chứng từ', 2, 2, 3, 'mapper `supplier_doc`, `adjust`, `gt-in/out`', 'ngoài lát dọc', 'PHASE-001'],
-    ['H4', 'Đối chiếu tồn WP ↔ kế toán theo SKU', 2, 0, 3, 'kế toán có `/inventory/reconcile`', 'chưa có', 'OKT-SC-2'],
+    ['H4', 'Đối chiếu tồn WP ↔ kế toán theo SKU', 2, 4, 3, 'wp tgs-acc reconcile + SC-12 (bridge PR #20): chứng từ thiếu / mồ côi / chờ huỷ + tồn WP = KT + chưa định khoản; WP thật 4 trạng thái: mồ côi 8↔7 → duyệt huỷ 8=8 → tạm dừng thiếu 2, lệch 0 → định khoản 7=7', 'chưa ở site thật; theo chi nhánh, chưa theo kho; chuyển kho / điều chỉnh chưa định khoản không vào phần chờ', 'OKT-SC-2'],
     ['H5', 'Thiếu tồn không chặn quầy; kế toán ghi cờ', 1, 1, 3, 'ADR D001-18, 28 §4', 'chưa kiểm', 'S002-C2'],
   ]],
   ['I', 'Khách hàng', [
@@ -72,8 +72,8 @@ const D = [
     ['M1', 'Đóng REST công khai (C1), gỡ token demo (C2)', 2, 1, 4, 'PHASE-001 doc 31', 'chưa làm', 'PHASE-001'],
   ]],
   ['N', 'Kiểm chứng', [
-    ['N1', 'I-0: census `--check=I0` + ca bán chuẩn', 3, 3, 4, 'PR #33, selftest 13, open-pos main xanh', 'ca bán chuẩn chưa chạy đơn thật', 'S002-C14'],
-    ['N2', '**Tự kiểm theo cặp blog → tenant qua API** (luật I-8)', 4, 4, 4, 'wp tgs-acc selfcheck --shop=2 trong WP, trước và sau khi bán — lát dọc L0→L7 trên WP thật (open-pos-backend PR #41)', 'cron 02:30 chưa chạy thật', 'OKT-SC-1'],
+    ['N1', 'I-0: census `--check=I0` + ca bán chuẩn', 3, 4, 4, 'census cả chương trình xanh (open-pos e2e2778 → 9eace43, 0 tệp D002-6); ca bán chuẩn đơn thật M1 (sống) = M2 (tạm dừng) = M4 (kế toán tắt) — ma trận 65, open-pos-backend PR #43', 'chưa so ca bán trước / sau ở site thật', 'S002-C14'],
+    ['N2', '**Tự kiểm theo cặp blog → tenant qua API** (luật I-8)', 4, 4, 4, 'wp tgs-acc selfcheck --shop=2 trong WP, trước và sau khi bán — lát dọc L0→L7 trên WP thật (open-pos-backend PR #41)', 'chưa chạy ở site thật; site thật cần cron hệ thống (SC-10 nay báo khi lịch site chính quá hạn — bridge PR #20)', 'OKT-SC-1'],
     ['N3', 'Golden G0–G17 chạy lại được bằng script', 2, 3, 4, 'setup-lat-doc + seed + sale-l2 chạy lại được (tools/lat-doc-docker) — lát dọc L0→L7 trên WP thật (open-pos-backend PR #41)', 'chưa đủ G0–G17; một blog, một máy chủ kế toán', 'S002-C0'],
   ]],
 ];
