@@ -17,6 +17,7 @@
 
 <!-- [2026-11-21 08:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-9, 10, 12 sang 🟡 (bridge PR #8); S002-5, 6 đã merge (bridge PR #7, 96a1f1c). -->
 
+<!-- [2026-11-22 01:35 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S001-MD3 sang 🟡 (open-pos-backend #39, bridge #13); OKT-SC-1 đã merge (572b3ad); scoreboard 43,6 %. -->
 <!-- [2026-11-22 11:00 AM Johnny Chu - Chu Hoàng Anh] OKT-P0 — chủ: scoreboard kết nối (70) + luật tối thượng tự kiểm theo cặp blog → tenant qua API (I-8, đặc tả 75). -->
 <!-- [2026-11-22 09:30 AM Johnny Chu - Chu Hoàng Anh] OKT-P0 — chủ duyệt gợi ý cho mọi câu mở ("ok"): Q-OKT-2, Q002-1, Q002-2, Q001-16…20, 24, 25. Sinh việc S002-17, S002-18, S001-C8b, S001-C8c. -->
 <!-- [2026-11-22 09:00 AM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-0b sang 🟡 (ADR §3b, §5 + open-pos-backend PR #34, open-pos PR #24, bridge PR #11); S002-16 đã merge (57785ec). -->
@@ -25,15 +26,15 @@
 <!-- [2026-11-21 09:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-2 (open-pos PR #22), S002-3 (open-pos-backend PR #32) sang 🟡; S002-8, 11, 13 đã merge (bridge PR #9, 1832956). -->
 <!-- [2026-11-21 09:05 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-8, 11, 13 sang 🟡 (bridge PR #9); S002-9, 10, 12 đã merge (bridge PR #8, 155c66e). -->
 
-## 0. Số đếm (cập nhật 22/11 11:00 AM)
+## 0. Số đếm (cập nhật 22/11 01:35 PM)
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 168 | 6 | 32 | 17 | 113 | 16 |
+| 168 | 6 | 33 | 17 | 112 | 16 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
-- **22/11 11:00 AM:** thêm 5 việc tự kiểm OKT-SC-0…4 (luật I-8) → 168 việc còn hiệu lực. Điểm kết nối ở [70](70-SCOREBOARD-KET-NOI.md): **41,4 %** (11:50 AM, sau OKT-SC-1), pilot cần 72,5 %.
+- **22/11 11:00 AM:** thêm 5 việc tự kiểm OKT-SC-0…4 (luật I-8) → 168 việc còn hiệu lực. Điểm kết nối ở [70](70-SCOREBOARD-KET-NOI.md): **43,6 %** (01:35 PM, sau S001-MD3), pilot cần 72,5 %.
 - **22/11 09:30 AM:** thêm 4 việc sinh từ câu chủ chốt (S002-17, S002-18, S001-C8b, S001-C8c) → 163 việc còn hiệu lực.
 - **Chưa có việc mã nào ✅.** Việc mã gần nhất là B001-C1 (bridge PR #2, đã merge, chưa chạy trong WordPress thật) ở mức 🟡.
 - **Thứ tự làm** (chi tiết ở [10-ROADMAP](10-ROADMAP.md)): PHASE-002 lát dọc **trước**, rồi các mốc M1–M4 của PHASE-001.
@@ -202,7 +203,7 @@
 | S001-MD0 | open-pos-backend | Census `--check=MD`: chấm tự động bảng 19 nhóm (bảng theo blog, cổng ghi phủ bao nhiêu hàm, ánh xạ lưu mã hay suy ra); ghi mốc vào 41 | ☐ M0 |  |
 | S001-MD1 | open-pos-backend | Màn ĐVT và màn bảng giá theo blog (chưa có ở đâu); ghi giá khi tạo mã | ☐ M1 |  |
 | S001-MD2 | open-pos-backend | Một bảng ánh xạ thuế dùng chung tsm + bridge (bỏ R00 / R08 mâu thuẫn); xử lý mã `8` sau 2026-12-31 | ☐ **trước 2026-12-31** |  |
-| S001-MD3 | open-pos-backend | `{p}tgs_okt_map(kind, local_code, remote_code)` tự dựng từ `/posting/payment-methods`, `/posting/reasons`, `/branches`, `/warehouses`, feed/meta; màn xem / sửa | ☐ M2 |  |
+| S001-MD3 | open-pos-backend | `{p}tgs_okt_map(kind, local_code, remote_code)` tự dựng từ `/posting/payment-methods`, `/posting/reasons`, `/branches`, `/warehouses`, feed/meta; màn xem / sửa | 🟡 2026-11-22 01:35 PM — bảng {p}tgs_okt_map + TGS_Okt_Map + màn Ánh xạ kế toán (test 34/34); bridge dịch mã khi dựng chứng từ + `wp tgs-acc map` (test 18/18); trọn vòng okt-thu: QR-VTB-CT → QR, XTA → XTA1.4, R04 không đoán; chưa chạy trong WordPress | [open-pos-backend PR #39](https://github.com/hoanganh8389/open-pos-backend/pull/39), [bridge PR #13](https://github.com/hoanganh8389/open-ketoan-bridge/pull/13) |
 | S001-MD5 | open-pos-backend | Sửa lỗi đứng: không repo nào tạo `wp_blogs.tgs_site_code`; danh bạ khách chung cả mạng | ☐ M0 |  |
 | S001-MD6 | open-pos-backend | Môi trường thử (29 §6) + SEED-B 200 mã theo chuẩn doc 16 (29 §7) | ☐ M0 |  |
 
