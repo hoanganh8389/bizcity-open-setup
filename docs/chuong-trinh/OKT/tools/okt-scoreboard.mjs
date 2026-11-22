@@ -29,7 +29,7 @@ const D = [
     ['E3', 'Sửa / xoá đơn sau khi gửi → phiên bản mới / huỷ', 3, 2, 4, '`deleted_keys()`, `changed_before()`', 'chưa có test riêng', 'S002-C9'],
     ['E4', 'Lý do xuất POS → mã lý do tenant', 2, 3, 3, 'kind reason trong {p}tgs_okt_map; gợi ý XTA → XTA1.4 khi đúng một mã khớp; trọn vòng okt-thu (bridge PR #13)', 'chưa chạy trong WP', 'S001-MD3'],
     ['E5', 'Bill Z / chứng từ nội bộ (`internalOnly`)', 1, 2, 3, 'mapper `is_z`', 'nguồn sổ POS quyết `is_z` chưa kiểm', 'S002-C5'],
-    ['E6', 'Không gọi HTTP trong request bán (I-3)', 4, 2, 4, 'sự kiện ghi JSONL, gửi sau', 'chưa đo; thiếu `fastcgi_finish_request` có thể treo 60 s', 'S002-C2'],
+    ['E6', 'Không gọi HTTP trong request bán (I-3)', 4, 4, 4, 'đo request bán HTTP thật trên WP (Apache mod_php): trước 16–30 s khi kế toán tắt / treo → sau 250–1.491 ms, gửi nền (bridge PR #16)', 'máy chủ thật: kiểm loại PHP (FPM / LiteSpeed / mod_php) và loopback', 'S002-C2'],
   ]],
   ['F', 'Thanh toán', [
     ['F1', 'Mã phương thức **lưu sẵn**, không suy từ nhãn (I-4)', 4, 3, 4, '{p}tgs_okt_map + TGS_Okt_Map (open-pos-backend PR #39, test 34/34); bridge dịch mã khi dựng (bridge PR #13, test 18/18); trọn vòng okt-thu: QR-VTB-CT → QR', 'chưa chạy trong WP; nhãn lạ (MOMO…) phải xác nhận tay', 'S001-MD3'],
@@ -58,7 +58,7 @@ const D = [
     ['J1', 'Nhân viên bán → `employee` của tenant', 1, 2, 3, 'mapper `employee()`', 'chưa đối chiếu danh mục tenant', 'OKT-SC-1'],
   ]],
   ['K', 'Độ bền khi kế toán tắt / dừng', [
-    ['K1', 'Kế toán tắt: vẫn bán, hàng chờ 7 ngày, gửi bù theo thứ tự', 4, 3, 4, 'PR #8, #9; test 21 + 20', 'chưa chạy L10', 'S002-C10'],
+    ['K1', 'Kế toán tắt: vẫn bán, hàng chờ 7 ngày, gửi bù theo thứ tự', 4, 4, 4, 'kế toán tắt / treo trên WP thật: đơn vào hàng chờ, nối lại → hàng chờ 0, mọi chứng từ v1, 0 trùng (bridge PR #16)', 'chưa chạy cron thật (DISABLE_WP_CRON); chưa chạy trên shop thật', 'S002-C10'],
     ['K2', 'Tạm dừng / bỏ tạm dừng theo shop, gửi bù không trùng', 2, 3, 4, '`tests/pause-cli-test.php` 20 phép; nút Cổng kế toán (PR #10)', '—', 'S002-C11'],
     ['K3', 'Kéo trạng thái `pending` → `posted` / `remote_error`', 2, 4, 4, 'kế toán định khoản → TGS_Acc_Events::pull_status đổi pending → posted — lát dọc L0→L7 trên WP thật (open-pos-backend PR #41)', 'chưa chạy cron thật (DISABLE_WP_CRON)', 'S002-C7'],
     ['K4', 'Dừng quá 7 ngày không mất chứng từ', 2, 3, 3, 'shop tạm dừng: cửa sổ đọc tới 90 ngày, bỏ tạm dừng chép nhóm còn mở sang hôm nay; tests/sc2-test.php 24/24 (bridge PR #14)', 'chưa chạy trong WP', 'OKT-SC-2'],

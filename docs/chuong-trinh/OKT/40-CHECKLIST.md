@@ -17,6 +17,7 @@
 
 <!-- [2026-11-21 08:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-9, 10, 12 sang 🟡 (bridge PR #8); S002-5, 6 đã merge (bridge PR #7, 96a1f1c). -->
 
+<!-- [2026-11-22 05:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-C10 sang 🟡 (bridge #16: quầy không chờ kế toán, hàng chờ gửi bù được); scoreboard đo lại. -->
 <!-- [2026-11-22 04:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — lát dọc L0 → L7 chạy trên WordPress multisite thật (Docker okt-wp): S002-C0, C2, C6, C7 sang 🟡 (open-pos-backend #41); sửa lỗi chỉ WP thật bắt được (open-pos-backend #40, bridge #15, open-pos #26); scoreboard 52,2 %. -->
 <!-- [2026-11-22 02:55 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — OKT-SC-2 sang 🟡 (bridge #14, open-pos-backend #40); S001-MD3 đã merge (bf73d65, c4d8b38); scoreboard 44,6 %. -->
 <!-- [2026-11-22 01:35 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S001-MD3 sang 🟡 (open-pos-backend #39, bridge #13); OKT-SC-1 đã merge (572b3ad); scoreboard 43,6 %. -->
@@ -28,15 +29,15 @@
 <!-- [2026-11-21 09:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-2 (open-pos PR #22), S002-3 (open-pos-backend PR #32) sang 🟡; S002-8, 11, 13 đã merge (bridge PR #9, 1832956). -->
 <!-- [2026-11-21 09:05 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-8, 11, 13 sang 🟡 (bridge PR #9); S002-9, 10, 12 đã merge (bridge PR #8, 155c66e). -->
 
-## 0. Số đếm (cập nhật 22/11 04:40 PM)
+## 0. Số đếm (cập nhật 22/11 05:50 PM)
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 170 | 6 | 39 | 17 | 108 | 16 |
+| 170 | 6 | 40 | 17 | 107 | 16 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
-- **22/11 11:00 AM:** thêm 5 việc tự kiểm OKT-SC-0…4 (luật I-8) → 168 việc còn hiệu lực. **03:25 PM:** thêm OKT-TR-1, TR-2 (trace theo mockup màn 3) → 170. Điểm kết nối ở [70](70-SCOREBOARD-KET-NOI.md): **52,2 %** (04:40 PM, sau lát dọc L0→L7 trên WP thật), pilot cần 72,5 %.
+- **22/11 11:00 AM:** thêm 5 việc tự kiểm OKT-SC-0…4 (luật I-8) → 168 việc còn hiệu lực. **03:25 PM:** thêm OKT-TR-1, TR-2 (trace theo mockup màn 3) → 170. Điểm kết nối ở [70](70-SCOREBOARD-KET-NOI.md): **54,2 %** (05:50 PM, sau OKT-I3), pilot cần 72,5 %.
 - **22/11 09:30 AM:** thêm 4 việc sinh từ câu chủ chốt (S002-17, S002-18, S001-C8b, S001-C8c) → 163 việc còn hiệu lực.
 - **Chưa có việc mã nào ✅.** Việc mã gần nhất là B001-C1 (bridge PR #2, đã merge, chưa chạy trong WordPress thật) ở mức 🟡.
 - **Thứ tự làm** (chi tiết ở [10-ROADMAP](10-ROADMAP.md)): PHASE-002 lát dọc **trước**, rồi các mốc M1–M4 của PHASE-001.
@@ -91,12 +92,12 @@
 | ID | Repo | Việc | Trạng thái | Bằng chứng |
 |---|---|---|---|---|
 | S002-C0 | open-pos-backend | L0 môi trường | 🟡 2026-11-22 04:40 PM — WordPress multisite thật (Docker okt-wp) + okt-thu: 2 blog, 3 plugin, bảng theo blog, blog A nối kế toán; tools/lat-doc-docker dựng lại được | [open-pos-backend PR #41](https://github.com/hoanganh8389/open-pos-backend/pull/41) |
-| S002-C2 | open-pos-backend | L2 bán 1 đơn, không gọi HTTP trong request bán | 🟡 2026-11-22 04:40 PM — bán 1 Cái × 11.000 qua AJAX tgs_pos_save_order của POS cũ (main, không sửa): phiếu 10 + 7 + 2, tồn 10 → 9. Phần "không gọi HTTP trong request bán" chưa đo (cần request HTTP thật) | [open-pos-backend PR #41](https://github.com/hoanganh8389/open-pos-backend/pull/41) |
+| S002-C2 | open-pos-backend | L2 bán 1 đơn, không gọi HTTP trong request bán | 🟡 2026-11-22 04:40 PM — bán 1 Cái × 11.000 qua AJAX tgs_pos_save_order của POS cũ (main, không sửa): phiếu 10 + 7 + 2, tồn 10 → 9. Phần "không gọi HTTP trong request bán" đo bằng request HTTP thật: trên Apache mod_php bán phải chờ kế toán — sửa ở bridge PR #16 (gửi nền) | [open-pos-backend PR #41](https://github.com/hoanganh8389/open-pos-backend/pull/41) |
 | S002-C5 | open-pos-backend | L5 preflight 0 lỗi | ☐ |  |
 | S002-C6 | open-pos-backend | L6 gửi → `pending` × 2 | 🟡 2026-11-22 04:40 PM — bridge tự gửi sau khi lưu đơn → btsoft:2:sale:2 + btsoft:2:receipt:3 pending v1 ở kế toán, tổng 11.000, CN01 (2 chứng từ như thiết kế lát dọc) | [open-pos-backend PR #41](https://github.com/hoanganh8389/open-pos-backend/pull/41) |
 | S002-C7 | open-pos-backend | L7 duyệt → `posted` trong nhật ký gửi | 🟡 2026-11-22 04:40 PM — kế toán định khoản 0 lỗi (BT26-0000001, BT26-0000002; chi nhánh chưa có kho vẫn được) → pull_status đổi pending → posted | [open-pos-backend PR #41](https://github.com/hoanganh8389/open-pos-backend/pull/41) |
 | S002-C9 | open-pos-backend | L9 gửi lại / sửa / huỷ | ☐ |  |
-| S002-C10 | open-pos-backend | L10 K-A: tắt kế toán 2 phút (POS cũ) | ☐ |  |
+| S002-C10 | open-pos-backend | L10 K-A: tắt kế toán 2 phút (POS cũ) | 🟡 2026-11-22 05:50 PM — WP thật: kế toán tắt / treo → quầy lưu đơn trong 250–1.491 ms (trước sửa 16–30 s), đơn vào hàng chờ; nối lại → hàng chờ 0, mọi chứng từ v1, 0 trùng. Tìm ra + sửa 4 lỗi (gửi trong request bán, cron đọc site chính, nuốt lỗi ghi tệp, gửi bù lên v2) | [bridge PR #16](https://github.com/hoanganh8389/open-ketoan-bridge/pull/16) |
 | S002-C11 | open-pos-backend | L11 K-C + K-D: tạm dừng kết nối, bán 3 đơn, nối lại, gửi bù không trùng | ☐ |  |
 | S002-C12 | open-pos-backend | L12 K-B: kế toán tắt trước khi mở ca, chuyển shop React → POS cũ | ☐ |  |
 | S002-C13 | open-pos-backend | L13 K-A với POS React (chế độ dự phòng có sẵn), chỉ ghi nhận | ☐ |  |

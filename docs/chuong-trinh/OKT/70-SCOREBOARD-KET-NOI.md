@@ -2,7 +2,7 @@
 
 <!-- [2026-11-22 11:00 AM Johnny Chu - Chu Hoàng Anh] OKT-P0 — chủ yêu cầu scoreboard đánh giá kết nối open-pos (blog) qua open-pos-backend tới open-ketoan (tenant), từ góc kiến trúc / system builder / domain translator; chấm bằng bằng chứng (I-7), đo lại mỗi mốc. Luật tự kiểm ở 75. -->
 
-> **Điểm hiện tại (22/11/2026 04:40 PM): 52,2 %** · **mức cần cho pilot: 72,5 %** · thang 0–5 có trọng số, chấm theo bằng chứng (I-7).
+> **Điểm hiện tại (22/11/2026 05:50 PM): 54,2 %** · **mức cần cho pilot: 72,5 %** · thang 0–5 có trọng số, chấm theo bằng chứng (I-7).
 > Bảng này **không** giữ trạng thái việc (trạng thái ở [40](40-CHECKLIST.md)); nó đo **khả năng của đường nối** và trỏ việc sẽ nâng điểm. Đo lại sau mỗi mốc, ghi một dòng ở §6.
 
 ## 0. Thang điểm
@@ -68,13 +68,13 @@ Chiều **bán** (sổ → kế toán) đi qua bridge, **sau** khi đơn đã gh
 | B | Danh mục hàng hoá | 14 | 29 % |
 | C | Giá | 8 | 57 % |
 | D | Thuế | 5 | 56 % |
-| E | Bán hàng | 18 | 56 % |
+| E | Bán hàng | 18 | 64 % |
 | F | Thanh toán | 14 | 50 % |
 | G | Trả hàng / đổi trả | 5 | 52 % |
 | H | Tồn kho | 11 | 36 % |
 | I | Khách hàng | 3 | 20 % |
 | J | Nhân viên | 1 | 40 % |
-| K | Độ bền khi kế toán tắt / dừng | 12 | 63 % |
+| K | Độ bền khi kế toán tắt / dừng | 12 | 70 % |
 | L | Quan sát (I-6) | 4 | 60 % |
 | M | Bảo mật | 2 | 20 % |
 | N | Kiểm chứng | 9 | 69 % |
@@ -101,7 +101,7 @@ Chiều **bán** (sổ → kế toán) đi qua bridge, **sau** khi đơn đã gh
 | E3 | Sửa / xoá đơn sau khi gửi → phiên bản mới / huỷ | 3 | **2** | 4 | — | `deleted_keys()`, `changed_before()` | chưa có test riêng | S002-C9 |
 | E4 | Lý do xuất POS → mã lý do tenant | 2 | **3** | 3 | ✅ | kind reason trong {p}tgs_okt_map; gợi ý XTA → XTA1.4 khi đúng một mã khớp; trọn vòng okt-thu (bridge PR #13) | chưa chạy trong WP | S001-MD3 |
 | E5 | Bill Z / chứng từ nội bộ (`internalOnly`) | 1 | **2** | 3 | — | mapper `is_z` | nguồn sổ POS quyết `is_z` chưa kiểm | S002-C5 |
-| E6 | Không gọi HTTP trong request bán (I-3) | 4 | **2** | 4 | — | sự kiện ghi JSONL, gửi sau | chưa đo; thiếu `fastcgi_finish_request` có thể treo 60 s | S002-C2 |
+| E6 | Không gọi HTTP trong request bán (I-3) | 4 | **4** | 4 | ✅ | đo request bán HTTP thật trên WP (Apache mod_php): trước 16–30 s khi kế toán tắt / treo → sau 250–1.491 ms, gửi nền (bridge PR #16) | máy chủ thật: kiểm loại PHP (FPM / LiteSpeed / mod_php) và loopback | S002-C2 |
 | F1 | Mã phương thức **lưu sẵn**, không suy từ nhãn (I-4) | 4 | **3** | 4 | — | {p}tgs_okt_map + TGS_Okt_Map (open-pos-backend PR #39, test 34/34); bridge dịch mã khi dựng (bridge PR #13, test 18/18); trọn vòng okt-thu: QR-VTB-CT → QR | chưa chạy trong WP; nhãn lạ (MOMO…) phải xác nhận tay | S001-MD3 |
 | F2 | Phiếu thu ghép đúng hoá đơn (`invoiceDocKey` = id phiếu loại 10) | 3 | **4** | 4 | ✅ | phiếu thu btsoft:2:receipt:3 trỏ btsoft:2:sale:2, kế toán định khoản thu tiền BT26-0000002 — lát dọc L0→L7 trên WP thật (open-pos-backend PR #41) | chưa chạy trên shop thật | S002-C6 |
 | F3 | Thanh toán tách nhiều phương thức | 2 | **2** | 3 | — | `split_parent` | chưa test | S002-17 |
@@ -118,7 +118,7 @@ Chiều **bán** (sổ → kế toán) đi qua bridge, **sau** khi đơn đã gh
 | I1 | Đối tượng theo **mã lưu**, không theo SĐT (I-4) | 2 | **1** | 3 | — | mapper dùng SĐT làm `partner.code` | trái I-4; khách đổi SĐT tách hai đối tượng | S001-MD3 |
 | I2 | Danh bạ khách theo blog (Q001-14) | 1 | **1** | 3 | — | Q001-14 chốt | chưa có mã | PHASE-001 |
 | J1 | Nhân viên bán → `employee` của tenant | 1 | **2** | 3 | — | mapper `employee()` | chưa đối chiếu danh mục tenant | OKT-SC-1 |
-| K1 | Kế toán tắt: vẫn bán, hàng chờ 7 ngày, gửi bù theo thứ tự | 4 | **3** | 4 | — | PR #8, #9; test 21 + 20 | chưa chạy L10 | S002-C10 |
+| K1 | Kế toán tắt: vẫn bán, hàng chờ 7 ngày, gửi bù theo thứ tự | 4 | **4** | 4 | ✅ | kế toán tắt / treo trên WP thật: đơn vào hàng chờ, nối lại → hàng chờ 0, mọi chứng từ v1, 0 trùng (bridge PR #16) | chưa chạy cron thật (DISABLE_WP_CRON); chưa chạy trên shop thật | S002-C10 |
 | K2 | Tạm dừng / bỏ tạm dừng theo shop, gửi bù không trùng | 2 | **3** | 4 | — | `tests/pause-cli-test.php` 20 phép; nút Cổng kế toán (PR #10) | — | S002-C11 |
 | K3 | Kéo trạng thái `pending` → `posted` / `remote_error` | 2 | **4** | 4 | ✅ | kế toán định khoản → TGS_Acc_Events::pull_status đổi pending → posted — lát dọc L0→L7 trên WP thật (open-pos-backend PR #41) | chưa chạy cron thật (DISABLE_WP_CRON) | S002-C7 |
 | K4 | Dừng quá 7 ngày không mất chứng từ | 2 | **3** | 3 | ✅ | shop tạm dừng: cửa sổ đọc tới 90 ngày, bỏ tạm dừng chép nhóm còn mở sang hôm nay; tests/sc2-test.php 24/24 (bridge PR #14) | chưa chạy trong WP | OKT-SC-2 |
@@ -137,13 +137,13 @@ Chiều **bán** (sổ → kế toán) đi qua bridge, **sau** khi đơn đã gh
 | 1 | H2 | Kho WP ↔ `warehouseCode` của tenant | 1.5 % | OKT-SC-1 |
 | 2 | B1 | Định danh mặt hàng ổn định: `sku` + `itemId` lưu ở blog, đổi mã không mất dòng (I-4) | 1.4 % | S001-C8 |
 | 3 | B4 | Kéo danh mục theo blog, chỉ cột `erp`, đối chứng lệch 0 | 1.4 % | S001-C8 |
-| 4 | E6 | Không gọi HTTP trong request bán (I-3) | 1.4 % | S002-C2 |
-| 5 | C2 | Bảng giá theo chi nhánh khai theo blog, lùi bảng giá công ty, DM14 ở bộ kéo | 1.0 % | S001-C8c |
-| 6 | E3 | Sửa / xoá đơn sau khi gửi → phiên bản mới / huỷ | 1.0 % | S002-C9 |
-| 7 | H4 | Đối chiếu tồn WP ↔ kế toán theo SKU | 1.0 % | OKT-SC-2 |
-| 8 | M1 | Đóng REST công khai (C1), gỡ token demo (C2) | 1.0 % | PHASE-001 |
-| 9 | B3 | Đơn tới trước mã (mã trơn): không mất barcode / ĐVT của shop | 0.7 % | S001-C8b |
-| 10 | D2 | Đổi mã thuế sau 2026-12-31 | 0.7 % | S001-K16 |
+| 4 | C2 | Bảng giá theo chi nhánh khai theo blog, lùi bảng giá công ty, DM14 ở bộ kéo | 1.0 % | S001-C8c |
+| 5 | E3 | Sửa / xoá đơn sau khi gửi → phiên bản mới / huỷ | 1.0 % | S002-C9 |
+| 6 | H4 | Đối chiếu tồn WP ↔ kế toán theo SKU | 1.0 % | OKT-SC-2 |
+| 7 | M1 | Đóng REST công khai (C1), gỡ token demo (C2) | 1.0 % | PHASE-001 |
+| 8 | B3 | Đơn tới trước mã (mã trơn): không mất barcode / ĐVT của shop | 0.7 % | S001-C8b |
+| 9 | D2 | Đổi mã thuế sau 2026-12-31 | 0.7 % | S001-K16 |
+| 10 | E2 | `docKey` bất biến + `version`; gửi lại không trùng | 0.7 % | S002-C9 |
 
 ## 4. Tình huống ánh xạ dữ liệu (ca kiểm của đường nối)
 
@@ -182,7 +182,7 @@ Mỗi ca là một ca kiểm: lát dọc (L*), golden (G*) hoặc tự kiểm (S
 
 ## 5. Đọc bảng
 
-- **Mạnh:** định danh & kết nối (A, 75 %), độ bền khi kế toán tắt / dừng (K, 63 %), trả hàng (G, 52 %), kiểm chứng (N, 69 %), bán hàng (E, 56 %). Đây là phần PHASE-002 và OKT-SC-1 đã làm, có test.
+- **Mạnh:** định danh & kết nối (A, 75 %), độ bền khi kế toán tắt / dừng (K, 70 %), trả hàng (G, 52 %), kiểm chứng (N, 69 %), bán hàng (E, 64 %). Đây là phần PHASE-002 và OKT-SC-1 đã làm, có test.
 - **Yếu nhất và nặng nhất:** tồn kho (H, 36 %), danh mục (B, 29 %), thanh toán (F, 50 %), thuế (D, 56 %).
 - **Mười chỗ nâng điểm nhiều nhất tới mức pilot** (§3 cuối): đứng đầu là **ánh xạ kho** (H2) và **bộ kéo danh mục** (S001-C8: B1, B4). Bảng ánh xạ mã (S001-MD3) đã làm 22/11 01:35 PM: tự kiểm phát hiện mã thiếu, bảng ánh xạ sửa chúng. Thứ tự code tiếp: OKT-SC-2 (bridge: cron, Cổng kế toán, tự tạm dừng) → lát dọc trên WP thử → S001-C8.
 - Lần đo 11:00 AM xếp bốn chỗ đầu vào tự kiểm (OKT-SC-1); đã làm ở bridge PR #12, điểm 36,8 % → 41,4 %.
@@ -197,5 +197,6 @@ Mỗi ca là một ca kiểm: lát dọc (L*), golden (G*) hoặc tự kiểm (S
 | 22/11/2026 01:35 PM | 43,6 % | 72,5 % | S001-MD3 (open-pos-backend #39, bridge #13): F1, E4, D1 lên mức 3 |
 | 22/11/2026 02:55 PM | 44,6 % | 72,5 % | OKT-SC-2 (bridge #14, open-pos-backend #40): K4 lên 3, L2 lên 2 |
 | 22/11/2026 04:40 PM | 52,2 % | 72,5 % | lát dọc L0→L7 trên WP thật (open-pos-backend #41): 11 tiêu chí lên mức 4 |
+| 22/11/2026 05:50 PM | 54,2 % | 72,5 % | OKT-I3 (bridge #16): E6, K1 lên mức 4 — quầy không chờ kế toán, hàng chờ gửi bù được |
 
 Cách đo lại: sửa dữ liệu chấm trong `tools/okt-scoreboard.mjs` (cột mức + bằng chứng), chạy `node tools/okt-scoreboard.mjs`, dán bảng, thêm một dòng ở đây.
