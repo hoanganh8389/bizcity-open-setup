@@ -28,7 +28,7 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 163 | 5 | 30 | 16 | 112 | 16 |
+| 163 | 5 | 31 | 16 | 111 | 16 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Năm việc ✅** đều là việc chủ trả lời / duyệt: S001-O1, O1b, O5, S002-0d, SW0-3.
@@ -51,7 +51,7 @@
 
 | ID | Repo | Việc | Trạng thái | Bằng chứng |
 |---|---|---|---|---|
-| S002-1 | open-ketoan | open-ketoan Docker + tenant `shopa`, khoá riêng _(bất biến I-1)_ | ☐ |  |
+| S002-1 | open-ketoan | open-ketoan Docker + tenant `shopa`, khoá riêng _(bất biến I-1)_ | 🟡 2026-11-22 10:25 AM — stack `okt-thu` (127.0.0.1:8098, DB 5444) chạy trên máy dev, open-ketoan `71fa48e2`; khoá `shopa` đọc feed / documents; preflight phiếu bán 0 lỗi chặn (1 cảnh báo hồ sơ kế toán chưa khai). WordPress thử: chủ để sau | [open-pos-backend PR #38](https://github.com/hoanganh8389/open-pos-backend/pull/38) |
 | S002-2 | open-pos | `tests/setup-lat-doc.php`: 2 blog, ba plugin, bỏ bật React, khoá theo blog, cron thật _(bất biến I-1)_ | 🟡 2026-11-21 09:15 PM — script dựng blog A (nối kế toán, nguồn sổ POS, CN01) + blog B (tự quản), tạo bảng theo blog, kiểm feed/meta; cron thật chạy tay theo hướng dẫn đầu file; chưa chạy trên LocalWP thật | [open-pos PR #22](https://github.com/hoanganh8389/open-pos/pull/22) (đã merge 8f882a6) |
 | S002-3 | open-pos-backend | `tools/lat-doc-seed.php`: nhóm, mã, bảng giá, gán blog, ĐVT, giá, nhập kho; chạy lại được _(bất biến —)_ | 🟡 2026-11-21 09:40 PM — seed blog A: nhóm LATDOC, SKU 900000001 (Cái, 10 %), bảng giá LATDOC gán blog A, 11.000 gồm VAT, nhập 10 qua create_import_ledger + duyệt; php -l sạch; chưa chạy trên LocalWP thật | [open-pos-backend PR #32](https://github.com/hoanganh8389/open-pos-backend/pull/32) (đã merge 93e477f) |
 | S002-4 | open-ketoan-bridge | `TGS_Acc_Source_Pos` (= B001-C10) + `ready()` + test _(bất biến I-3)_ | 🟡 2026-11-21 08:11 PM — mã + test (tests/source-pos-test.php, 38 phép kiểm đạt); nguồn sổ POS mặc định tắt, bật theo blog; chưa chạy trong WordPress thật | [bridge PR #6](https://github.com/hoanganh8389/open-ketoan-bridge/pull/6) (đã merge 4701eef) |
