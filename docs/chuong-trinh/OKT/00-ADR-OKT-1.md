@@ -26,7 +26,9 @@ Ngày 21/11, hướng kiến trúc đổi ba lần:
 
 Mỗi lần đổi, quyết định nằm thêm ở một tệp mới (PHASE-001 doc 26, 27, 28), còn tệp cũ chỉ được gắn banner. _(22/11: ba tệp đã gộp vào §3b, §5 và chuyển `archive/`.)_ Bản đánh giá cuối ngày chỉ ra mười chỗ chưa ổn ở góc nhìn người dựng hệ thống: quyết định chưa đứng yên, hai máy bán với hai đường ghi, định danh suy đoán, nhất quán cuối cùng mà không có quan sát, và các chỗ khác. Kết luận: **dừng viết thêm, chốt bất biến, làm một lát dọc chạy được.**
 
-## 2. Tám bất biến
+<!-- [2026-11-22 11:00 AM Johnny Chu - Chu Hoàng Anh] OKT-P0 — chủ: scoreboard kết nối (70) + luật tối thượng tự kiểm theo cặp blog → tenant qua API (I-8, đặc tả 75). -->
+
+## 2. Chín bất biến
 
 <!-- [2026-11-21 06:55 PM Johnny Chu - Chu Hoàng Anh] PHASE-002 D2 — chủ: "luồng bán hàng, logic bán hàng, ledger như cũ vẫn phải giữ nguyên; mục tiêu là để open-pos linh hoạt, chủ động hơn khi open-ketoan không hoạt động, dừng kết nối". Thêm I-0, sửa I-3, D002-1; thêm D002-5, D002-6. -->
 
@@ -40,6 +42,7 @@ Mỗi lần đổi, quyết định nằm thêm ở một tệp mới (PHASE-001
 | **I-5** | **Một hàm tiền.** Một hàm duy nhất tách VAT và làm tròn cho mọi chứng từ: giá bảng giá **gồm VAT**, dòng chứng từ gửi **trước VAT** + tiền thuế, tổng khớp tuyệt đối; số lượng gửi theo **ĐVT gốc** | test với các ví dụ chuẩn `docs/api/vi-du/ban-hang.json`, `ban-noi-bo.json`, `tra-hang-ban.json` của open-ketoan; preflight 0 lỗi |
 | **I-6** | **Quan sát trước khi bật.** Không bật gửi hay kéo cho blog nào khi chưa có: nhật ký từng lượt, đếm hàng chờ, đếm đơn `pending` quá 24 giờ, kết quả đối chứng, cảnh báo khi vượt ngưỡng | màn Đồng bộ hiện đủ năm số; cảnh báo thử bắn được |
 | **I-7** | **Xong = có bằng chứng chạy.** Tiến độ chỉ tính việc có tín hiệu đo: test có tên, ca chạy được, hoặc bản ghi trong `evidence/` có ngày giờ và người chạy. Không tính % bằng thang tự chấm khi đã có lát dọc | checklist chỉ cho ✅ khi cột bằng chứng có đường dẫn |
+| **I-8** | **Tự kiểm luôn xanh** (luật tối thượng, cùng hạng I-0). Một cặp **blog → tenant** chỉ được coi là đang kết nối khi tự kiểm của **chính cặp đó** xanh: chạy qua **đúng API** đường nối dùng, bằng **đúng khoá của blog**, đọc **đúng sổ của blog**; không suy từ cấu hình, không lấy kết quả của blog khác, không cũ quá 24 giờ. Chạy trước khi bật, mỗi ngày, sau khi đổi khoá, sau mỗi deploy; phần ngoại tuyến (test + `--check=I0`) trong mọi PR. Sai / trùng tenant thì tự tạm dừng gửi, quầy vẫn bán | `wp tgs-acc selfcheck` SC-1…SC-11 ([75](75-LUAT-TU-KIEM.md)); scoreboard [70](70-SCOREBOARD-KET-NOI.md) chỉ cho mức 5 khi tự kiểm xanh liên tục |
 
 ## 3. Quyết định đi kèm
 
