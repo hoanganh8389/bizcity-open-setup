@@ -104,6 +104,11 @@ def _route(state: FakeState, method: str, p: list[str], body: dict[str, Any]) ->
                     site["status"] = "deleted"
         out = {k: v for k, v in job.items() if k not in ("polls", "_owner_sent")}
         # [2026-11-22 08:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 B2 — bước theo hợp đồng; mật khẩu ban đầu chỉ ở lần đọc đầu tiên sau khi xong
+        if job["kind"] == "reset_owner_password":  # [2026-11-22 10:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 W1c
+            out["steps"] = [{"key": "reset_password", "status": "done" if job["status"] == "done" else "running"}]
+            if job["status"] == "done" and not job.get("_owner_sent"):
+                job["_owner_sent"] = True
+                out["owner"] = {"email": state.sites[job["siteId"]]["_owner_email"], "initialPassword": "Pw-" + uuid.uuid4().hex[:10]}
         if job["kind"] == "provision":
             keys = ("validate", "create_database", "seed_owner", "activate")
             n = 4 if job["status"] == "done" else min(job["polls"], 3)
@@ -120,6 +125,11 @@ def _route(state: FakeState, method: str, p: list[str], body: dict[str, Any]) ->
             return 200, site
         if len(p) == 3 and method == "POST" and p[2] in ("suspend", "resume", "backups"):
             return 202, {"jobId": _new_job(state, site["siteId"], {"backups": "backup"}.get(p[2], p[2]))}
+        # [2026-11-22 10:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 W1c — lệnh đặt lại mật khẩu chủ site (open-ketoan PR #590)
+        if len(p) == 4 and method == "POST" and p[2:] == ["owner", "reset-password"]:
+            if site["status"] != "active":
+                return _err("SITE_STATE_INVALID", 409)
+            return 202, {"jobId": _new_job(state, site["siteId"], "reset_owner_password")}
         if len(p) == 3 and method == "PUT" and p[2] == "license":
             site["license"] = {"status": "ok" if str(body.get("key", "")).startswith("biz-") else "missing"}
             return 200, site

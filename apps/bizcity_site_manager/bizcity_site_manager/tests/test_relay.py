@@ -51,6 +51,34 @@ class RelayLiveTest(unittest.TestCase):
         self.assertTrue(site["sample"])
         self.assertEqual(site["externalRef"], "7")
 
+    # [2026-11-22 10:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 W1c — đặt lại mật khẩu chủ site: mật khẩu mới một lần; site khoá thì từ chối
+    def test_dat_lai_mat_khau_chu_site(self) -> None:
+        job_id = self._create("anphat-reset")
+        poll_job(self.client, job_id, 0, 30, sleep=lambda s: None)
+        site_id = next(s["siteId"] for s in self.state.sites.values() if s["slug"] == "anphat-reset")
+        out = self.client.reset_owner_password(site_id, uuid.uuid4().hex)
+        result = poll_job(self.client, out["jobId"], 0, 30, sleep=lambda s: None)
+        self.assertEqual(result["status"], "done")
+        self.assertEqual(result["steps"], [{"key": "reset_password", "status": "done"}])
+        owner = owner_from_result(result)
+        self.assertIsNotNone(owner)
+        self.assertEqual(owner[0], "chu@anphat.vn")
+        self.assertIsNone(owner_from_result(self.client.get_job(out["jobId"])))
+
+    def test_dat_lai_mat_khau_site_dang_khoa(self) -> None:
+        job_id = self._create("anphat-khoa")
+        poll_job(self.client, job_id, 0, 30, sleep=lambda s: None)
+        site_id = next(s["siteId"] for s in self.state.sites.values() if s["slug"] == "anphat-khoa")
+        self.state.sites[site_id]["status"] = "suspended"
+        with self.assertRaises(ProvisioningError) as ctx:
+            self.client.reset_owner_password(site_id, uuid.uuid4().hex)
+        self.assertEqual(ctx.exception.code, "SITE_STATE_INVALID")
+
+    def test_ma_loi_lenh_dat_lai(self) -> None:
+        self.assertEqual(error_body("SITE_NOT_ACTIVE")[0], 409)
+        self.assertEqual(error_body("SITE_NOT_FOUND")[0], 404)
+        self.assertEqual(error_body("SITE_BUSY")[0], 409)
+
     def test_qua_gio(self) -> None:
         job_id = self._create("anphat-timeout")
         t = [0.0]

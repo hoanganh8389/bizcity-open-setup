@@ -119,6 +119,10 @@ class ProvisioningClient:
     def delete(self, site_id: str, idempotency_key: str) -> dict[str, Any]:
         return self._call("DELETE", f"/sites/{_seg(site_id)}", None, idempotency_key)
 
+    # [2026-11-22 10:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 W1c — lệnh mới của open-ketoan PR #590 (S039-22): mật khẩu ban đầu mới cho chủ site, trả một lần ở GET /jobs
+    def reset_owner_password(self, site_id: str, idempotency_key: str) -> dict[str, Any]:
+        return self._call("POST", f"/sites/{_seg(site_id)}/owner/reset-password", {}, idempotency_key)
+
     def set_license(self, site_id: str, license_key: str, idempotency_key: str) -> dict[str, Any]:
         """Gắn khoá bản quyền `biz-…` cho site (chỉ để cảnh báo hết hạn, D039-17). Site Manager không lưu khoá này."""
         return self._call("PUT", f"/sites/{_seg(site_id)}/license", {"key": license_key}, idempotency_key)

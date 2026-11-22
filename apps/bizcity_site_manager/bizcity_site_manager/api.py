@@ -112,6 +112,24 @@ def sites_of(external_ref: str) -> list[dict]:
 	)
 
 
+# [2026-11-22 10:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 W1c — khách quên mật khẩu (trang dùng thử bizcity-web gửi email liên kết một lần → gọi lệnh này)
+@frappe.whitelist(methods=["POST"])
+def reset_owner_password(site: str, external_ref: str) -> dict:
+	"""Mật khẩu ban đầu mới cho chủ site. Chỉ khi `external_ref` trùng khách của site và site đang chạy.
+	Trả `{"job": …}`; hỏi `job_status(job, external_ref)` tới `done` — lần đầu kèm `owner` (mật khẩu mới), rồi xoá."""
+	frappe.only_for(ALLOWED_ROLES)
+	row = frappe.db.get_value("Bizcity Ketoan Site", site, ["customer", "status", "site_id"], as_dict=True) if site else None
+	stored = frappe.db.get_value("Bizcity Site Customer", row.customer, "external_ref") if row and row.customer else None
+	if not row or not ref_matches(stored, external_ref):
+		return _fail("SITE_NOT_FOUND")
+	if row.status != "active" or not row.site_id:
+		return _fail("SITE_NOT_ACTIVE")
+	busy = frappe.db.exists("Bizcity Provision Job", {"site": site, "status": ["in", ["queued", "running"]]})
+	if busy:
+		return _fail("SITE_BUSY")
+	return {"job": site_manager.start(site, "reset_owner_password")}
+
+
 @frappe.whitelist(methods=["GET"])
 def job_status(job: str, external_ref: str | None = None) -> dict:
 	"""Trạng thái việc, đọc ngay từ bản ghi (việc nền ghi bước sau mỗi lần hỏi Open Kế Toán).
@@ -130,7 +148,7 @@ def job_status(job: str, external_ref: str | None = None) -> dict:
 		stored = frappe.db.get_value("Bizcity Site Customer", site.customer, "external_ref") if site.customer else None
 		if not ref_matches(stored, external_ref):
 			return _fail("JOB_NOT_FOUND")
-		if d.kind == "provision" and d.status == "done":
+		if d.kind in ("provision", "reset_owner_password") and d.status == "done":  # [2026-11-22 10:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 W1c
 			owner = site_manager.take_owner(d.name)
 
 	return public_job(
