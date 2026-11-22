@@ -5,6 +5,14 @@
 
 ## 1. Nguyên nhân (đã bắt được 2026-11-22)
 
+> **THỦ PHẠM THẬT <!-- [2026-11-23 12:45 AM Johnny Chu - Chu Hoàng Anh] OPS-VPS — đã tìm ra thủ phạm -->: cPanel virtfs.** `grep <lớp> /proc/1/mountinfo` cho ra `/home/virtfs/vibeyeuc/var/lib/docker/overlay2/<lớp>/merged` (cờ `unbindable`). cPanel dựng **jail** cho người dùng `vibeyeuc` (jailshell, cron / Apache chạy kiểu jail) ở `/home/virtfs/vibeyeuc/` và bind-mount một phần hệ thống — cả `/var/lib` — vào đó, nên chép luôn mount overlay của container đang chạy lúc dựng jail. Bản chép ở chính namespace của máy → Docker không xoá được `merged`. Không có CageFS; `fs.may_detach_mounts` không tồn tại trên kernel 4.18 (EL8) — không phải nguyên nhân.
+>
+> **Gỡ ngay:** `grep <lớp> /proc/1/mountinfo | awk '{print $5}' | grep ^/home/virtfs/ | xargs -r -n1 umount` rồi `docker rm -f <container>`. Script v3 làm bước này đầu tiên.
+>
+> **Sửa tận gốc (việc mở):** cho người dùng `vibeyeuc` dùng shell thường thay jailshell (WHM › Manage Shell Access), hoặc tắt "Jail Apache Virtual Hosts" / jail cron nếu không cần; sau đó `/scripts/clear_orphaned_virtfs_mounts --clearall`. Kiểm lại bằng `grep -c /home/virtfs /proc/1/mountinfo` (kỳ vọng 0).
+
+Phần dưới là các giả thuyết đã thử trước khi tìm ra (giữ lại làm vết):
+
 Docker gỡ container thì phải bỏ mount lớp overlay (`/var/lib/docker/overlay2/<lớp>/merged`). Trên máy cPanel / Imunify, một số tiến trình chạy trong **mount namespace riêng** (PHP của người dùng trong CageFS, con của Apache…). Namespace đó **sao chép mọi mount lúc nó được tạo** — kể cả lớp overlay của container đang chạy — và giữ lại. Docker bỏ mount ở máy thì được, nhưng bản sao trong namespace kia vẫn còn → `unlinkat … merged: device or resource busy`, container kẹt `Dead` / `Removal In Progress`.
 
 Bằng chứng: khi lỗi, `grep <lớp> /proc/*/mountinfo` thấy hơn 500 tiến trình; lọc bỏ namespace của máy (PID 1) chỉ còn `httpd <defunct>` và các tiến trình sống rất ngắn. **Chỉ `restartsrv_httpd` là chưa đủ** (đã thử) — namespace của CageFS sống qua lần khởi động lại Apache.

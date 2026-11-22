@@ -11,9 +11,10 @@
 #   bash ops/vps/go-container.sh du-an [--kill-orphans] <project>        `go` mọi container có nhãn com.docker.compose.project=<project>
 #
 # Không bao giờ: restart docker, xoá gì trong /var/lib/docker, xoá volume, kill tiến trình NGOÀI container đã chết.
-# Bước giải phóng (dừng ngay khi gỡ được): umount `merged` của container đã chết (không ai dùng) → cagefsctl --remount-all (nếu có)
+# Bước giải phóng (dừng ngay khi gỡ được): umount bản chép trong /home/virtfs (v3) → umount `merged` của container đã chết (không ai dùng) → cagefsctl --remount-all (nếu có)
 # → /scripts/restartsrv_httpd → /scripts/restartsrv_apache_php_fpm → umount -l → (--kill-orphans) dừng tiến trình mồ côi có root
 # nằm trong `merged` của container đó. httpd / php-fpm làm web nháy 1–2 giây.
+# [2026-11-23 12:45 AM Johnny Chu - Chu Hoàng Anh] OPS-VPS — v3: THỦ PHẠM THẬT = cPanel virtfs (jail của người dùng, /home/virtfs/<user>/…) bind-mount cả /var/lib → chép mount overlay của container đang chạy vào jail (unbindable, ở chính namespace của máy). Bỏ mount bản chép đó trước mọi bước khác.
 set -uo pipefail
 
 LOG=/var/log/bizcity-docker-go.log
@@ -34,6 +35,9 @@ layer_of() {
 }
 
 merged_of() { printf '%s/%s/merged' "$OVL" "$1"; }
+
+# Mọi điểm mount ở namespace của máy có chứa lớp $1 mà KHÔNG phải `merged` chuẩn — vd bản chép trong jail virtfs của cPanel.
+copies_of() { awk -v l="$1" -v m="$2" 'index($5, l) && $5 != m { print $5 }' /proc/1/mountinfo | sort -r; }
 
 # `merged` còn là mount ở namespace của máy không.
 host_mounted() { awk -v m="$1" '$5 == m { f = 1 } END { exit !f }' /proc/1/mountinfo; }
@@ -65,6 +69,9 @@ report() {
   m=$(merged_of "$layer")
   say "Lớp overlay: $layer"
   if host_mounted "$m"; then say "Mount ở máy: CÒN ($m)"; else say "Mount ở máy: không"; fi
+  local cp; cp=$(copies_of "$layer" "$m")
+  if [ -n "$cp" ]; then say "Bản chép mount ở chỗ khác (virtfs / bind):"; while IFS= read -r line; do say "   $line"; done <<< "$cp"
+  else say "Bản chép mount ở chỗ khác: không"; fi
   u=$(users_of "$m")
   if [ -n "$u" ]; then say "Tiến trình đang dùng (root/cwd trong merged):"; while IFS= read -r line; do say "   $line"; done <<< "$u"
   else say "Tiến trình đang dùng: không"; fi
@@ -91,6 +98,9 @@ release_step() {
   local step=$1 layer=$2 m u pids
   m=$(merged_of "$layer")
   case $step in
+    copies)
+      local cp x; cp=$(copies_of "$layer" "$m"); [ -n "$cp" ] || return 1
+      while IFS= read -r x; do say "  → umount bản chép $x"; umount "$x" >>"$LOG" 2>&1 || umount -l "$x" >>"$LOG" 2>&1; done <<< "$cp" ;;
     umount)
       host_mounted "$m" || return 1
       u=$(users_of "$m"); [ -z "$u" ] || { say "  · bỏ qua umount: còn tiến trình dùng merged"; return 1; }
@@ -136,7 +146,7 @@ go_one() {
   if try_rm "$c"; then say "  ✔ đã gỡ"; return 0; fi
   say "  bận (overlay2 busy) — giải phóng mount"
   [ -n "$layer" ] || { say "  ✘ không đọc được lớp overlay — dừng"; return 2; }
-  for step in umount cagefs httpd phpfpm lazy orphans; do
+  for step in copies umount cagefs httpd phpfpm lazy orphans; do
     release_step "$step" "$layer" || continue
     sleep 2
     if try_rm "$c"; then say "  ✔ đã gỡ sau bước $step"; return 0; fi
