@@ -29,6 +29,10 @@ API_ERRORS: dict[str, tuple[int, str]] = {
     "TRIAL_EXISTS": (409, "Email này đã có một phần mềm kế toán dùng thử."),
     "SITE_LIMIT_REACHED": (503, FRIENDLY["SITE_LIMIT_REACHED"]),
     "JOB_NOT_FOUND": (404, "Không tìm thấy việc."),
+    # [2026-11-22 10:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 W1c: lệnh đặt lại mật khẩu chủ site
+    "SITE_NOT_FOUND": (404, FRIENDLY["SITE_NOT_FOUND"]),
+    "SITE_NOT_ACTIVE": (409, "Phần mềm kế toán đang không chạy (đang tạo, đang khoá hoặc lỗi) — thử lại sau."),
+    "SITE_BUSY": (409, FRIENDLY["SITE_BUSY"]),
 }
 
 

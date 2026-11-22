@@ -37,7 +37,7 @@
    "fieldtype": "Select",
    "label": "Lệnh",
    "reqd": 1,
-   "options": "provision\nsuspend\nresume\nbackup\ndelete",
+   "options": "provision\nsuspend\nresume\nbackup\ndelete\nreset_owner_password",
    "in_list_view": 1
   },
   {
@@ -123,7 +123,7 @@
   }
  ],
  "links": [],
- "modified": "2026-11-22 20:05:00.000000",
+ "modified": "2026-11-22 22:05:00.000000",
  "modified_by": "Administrator",
  "module": "Bizcity Site Manager",
  "name": "Bizcity Provision Job",

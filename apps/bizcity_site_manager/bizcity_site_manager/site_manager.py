@@ -19,7 +19,7 @@ JOB = "Bizcity Provision Job"
 SITE = "Bizcity Ketoan Site"
 SETTINGS = "Bizcity Site Manager Settings"
 POLL_TIMEOUT = 600  # giây
-WRITE_KINDS = ("provision", "suspend", "resume", "backup", "delete")
+WRITE_KINDS = ("provision", "suspend", "resume", "backup", "delete", "reset_owner_password")  # [2026-11-22 10:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 W1c: + reset_owner_password
 LICENSE_STATES = ("ok", "expiring", "expired", "missing", "unknown")
 OWNER_KEEP_HOURS = 24  # [2026-11-22 08:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 B2 — mật khẩu ban đầu chưa ai nhận thì xoá sau 24 giờ (khách đặt lại qua email)
 
@@ -70,7 +70,8 @@ def run(job_name: str) -> None:
 
 		result = poll_job(client, out["jobId"], max(1, settings.poll_seconds or 2), POLL_TIMEOUT, on_progress=progress)
 		# [2026-11-22 08:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 B2 — lần đọc cuối là lần duy nhất Open Kế Toán trả mật khẩu ban đầu → giữ mã hoá ngay (relay.py)
-		owner = owner_from_result(result) if job.kind == "provision" else None
+		# [2026-11-22 10:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 W1c: lệnh đặt lại mật khẩu chủ site cũng trả mật khẩu một lần
+		owner = owner_from_result(result) if job.kind in ("provision", "reset_owner_password") else None
 		if owner:
 			keep_owner(job, owner)
 		job.db_set({"steps": json.dumps(result.get("steps") or [], ensure_ascii=False, indent=1), "status": result["status"]})
