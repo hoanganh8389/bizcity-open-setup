@@ -2,7 +2,7 @@
 
 <!-- [2026-11-22 11:00 AM Johnny Chu - Chu Hoàng Anh] OKT-P0 — chủ yêu cầu scoreboard đánh giá kết nối open-pos (blog) qua open-pos-backend tới open-ketoan (tenant), từ góc kiến trúc / system builder / domain translator; chấm bằng bằng chứng (I-7), đo lại mỗi mốc. Luật tự kiểm ở 75. -->
 
-> **Điểm hiện tại (22/11/2026 01:35 PM): 43,6 %** · **mức cần cho pilot: 72,5 %** · thang 0–5 có trọng số, chấm theo bằng chứng (I-7).
+> **Điểm hiện tại (22/11/2026 02:55 PM): 44,6 %** · **mức cần cho pilot: 72,5 %** · thang 0–5 có trọng số, chấm theo bằng chứng (I-7).
 > Bảng này **không** giữ trạng thái việc (trạng thái ở [40](40-CHECKLIST.md)); nó đo **khả năng của đường nối** và trỏ việc sẽ nâng điểm. Đo lại sau mỗi mốc, ghi một dòng ở §6.
 
 ## 0. Thang điểm
@@ -74,8 +74,8 @@ Chiều **bán** (sổ → kế toán) đi qua bridge, **sau** khi đơn đã gh
 | H | Tồn kho | 11 | 25 % |
 | I | Khách hàng | 3 | 20 % |
 | J | Nhân viên | 1 | 40 % |
-| K | Độ bền khi kế toán tắt / dừng | 12 | 53 % |
-| L | Quan sát (I-6) | 4 | 40 % |
+| K | Độ bền khi kế toán tắt / dừng | 12 | 60 % |
+| L | Quan sát (I-6) | 4 | 50 % |
 | M | Bảo mật | 2 | 20 % |
 | N | Kiểm chứng | 9 | 51 % |
 
@@ -121,10 +121,10 @@ Chiều **bán** (sổ → kế toán) đi qua bridge, **sau** khi đơn đã gh
 | K1 | Kế toán tắt: vẫn bán, hàng chờ 7 ngày, gửi bù theo thứ tự | 4 | **3** | 4 | — | PR #8, #9; test 21 + 20 | chưa chạy L10 | S002-C10 |
 | K2 | Tạm dừng / bỏ tạm dừng theo shop, gửi bù không trùng | 2 | **3** | 4 | — | `tests/pause-cli-test.php` 20 phép; nút Cổng kế toán (PR #10) | — | S002-C11 |
 | K3 | Kéo trạng thái `pending` → `posted` / `remote_error` | 2 | **3** | 4 | — | `tests/status-test.php`; `/documents?search` 200 trên okt-thu | — | S002-C7 |
-| K4 | Dừng quá 7 ngày không mất chứng từ | 2 | **1** | 3 | — | ghi chú giới hạn | tệp thử lại chỉ giữ 7 ngày | OKT-SC-2 |
+| K4 | Dừng quá 7 ngày không mất chứng từ | 2 | **3** | 3 | ✅ | shop tạm dừng: cửa sổ đọc tới 90 ngày, bỏ tạm dừng chép nhóm còn mở sang hôm nay; tests/sc2-test.php 24/24 (bridge PR #14) | chưa chạy trong WP | OKT-SC-2 |
 | K5 | Chuyển máy bán React → POS cũ khi kế toán tắt trước ca | 2 | **3** | 4 | — | `tests/test-engine-switch.php` 14 phép (PR #23) | — | S002-C12 |
 | L1 | Năm số theo shop: hàng chờ, `pending` > 24 h, lỗi, lần gửi cuối, tạm dừng | 2 | **3** | 4 | — | `wp tgs-acc status` (PR #9), cột Kết nối (PR #10) | — | S002-C0 |
-| L2 | Cảnh báo khi vượt ngưỡng | 2 | **1** | 3 | — | I-6 | chưa có | OKT-SC-2 |
+| L2 | Cảnh báo khi vượt ngưỡng | 2 | **2** | 3 | — | tổng kết tự kiểm hằng ngày (cấp mạng) + chỉ báo ở Cổng kế toán và ô Kết nối kế toán (bridge PR #14, open-pos-backend PR #40) | chưa có thông báo đẩy (email / Zalo) khi vượt ngưỡng | OKT-SC-2 |
 | M1 | Đóng REST công khai (C1), gỡ token demo (C2) | 2 | **1** | 4 | — | PHASE-001 doc 31 | chưa làm | PHASE-001 |
 | N1 | I-0: census `--check=I0` + ca bán chuẩn | 3 | **3** | 4 | — | PR #33, selftest 13, open-pos main xanh | ca bán chuẩn chưa chạy đơn thật | S002-C14 |
 | N2 | **Tự kiểm theo cặp blog → tenant qua API** (luật I-8) | 4 | **3** | 4 | — | `wp tgs-acc selfcheck` SC-1…SC-11, test 41/41, chạy thật okt-thu 3 ca (bridge PR #12) | cron + Cổng kế toán (OKT-SC-2); chưa chạy trong WP | OKT-SC-1 |
@@ -182,7 +182,7 @@ Mỗi ca là một ca kiểm: lát dọc (L*), golden (G*) hoặc tự kiểm (S
 
 ## 5. Đọc bảng
 
-- **Mạnh:** định danh & kết nối (A, 60 %), độ bền khi kế toán tắt / dừng (K, 53 %), trả hàng (G, 52 %), kiểm chứng (N, 51 %), bán hàng (E, 51 %). Đây là phần PHASE-002 và OKT-SC-1 đã làm, có test.
+- **Mạnh:** định danh & kết nối (A, 60 %), độ bền khi kế toán tắt / dừng (K, 60 %), trả hàng (G, 52 %), kiểm chứng (N, 51 %), bán hàng (E, 51 %). Đây là phần PHASE-002 và OKT-SC-1 đã làm, có test.
 - **Yếu nhất và nặng nhất:** tồn kho (H, 25 %), danh mục (B, 29 %), thanh toán (F, 41 %), thuế (D, 32 %).
 - **Mười chỗ nâng điểm nhiều nhất tới mức pilot** (§3 cuối): đứng đầu là **ánh xạ kho** (H2) và **bộ kéo danh mục** (S001-C8: B1, B4). Bảng ánh xạ mã (S001-MD3) đã làm 22/11 01:35 PM: tự kiểm phát hiện mã thiếu, bảng ánh xạ sửa chúng. Thứ tự code tiếp: OKT-SC-2 (bridge: cron, Cổng kế toán, tự tạm dừng) → lát dọc trên WP thử → S001-C8.
 - Lần đo 11:00 AM xếp bốn chỗ đầu vào tự kiểm (OKT-SC-1); đã làm ở bridge PR #12, điểm 36,8 % → 41,4 %.
@@ -195,5 +195,6 @@ Mỗi ca là một ca kiểm: lát dọc (L*), golden (G*) hoặc tự kiểm (S
 | 2026-11-22 11:00 AM | 36,8 % | 72,5 % | lần đo đầu; sau PHASE-002 S002-2…16, okt-thu chạy |
 | 22/11/2026 11:50 AM | 41,4 % | 72,5 % | OKT-SC-1 (bridge PR #12): A2, A3, N2 lên mức 3 |
 | 22/11/2026 01:35 PM | 43,6 % | 72,5 % | S001-MD3 (open-pos-backend #39, bridge #13): F1, E4, D1 lên mức 3 |
+| 22/11/2026 02:55 PM | 44,6 % | 72,5 % | OKT-SC-2 (bridge #14, open-pos-backend #40): K4 lên 3, L2 lên 2 |
 
 Cách đo lại: sửa dữ liệu chấm trong `tools/okt-scoreboard.mjs` (cột mức + bằng chứng), chạy `node tools/okt-scoreboard.mjs`, dán bảng, thêm một dòng ở đây.

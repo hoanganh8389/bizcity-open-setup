@@ -61,12 +61,12 @@ const D = [
     ['K1', 'Kế toán tắt: vẫn bán, hàng chờ 7 ngày, gửi bù theo thứ tự', 4, 3, 4, 'PR #8, #9; test 21 + 20', 'chưa chạy L10', 'S002-C10'],
     ['K2', 'Tạm dừng / bỏ tạm dừng theo shop, gửi bù không trùng', 2, 3, 4, '`tests/pause-cli-test.php` 20 phép; nút Cổng kế toán (PR #10)', '—', 'S002-C11'],
     ['K3', 'Kéo trạng thái `pending` → `posted` / `remote_error`', 2, 3, 4, '`tests/status-test.php`; `/documents?search` 200 trên okt-thu', '—', 'S002-C7'],
-    ['K4', 'Dừng quá 7 ngày không mất chứng từ', 2, 1, 3, 'ghi chú giới hạn', 'tệp thử lại chỉ giữ 7 ngày', 'OKT-SC-2'],
+    ['K4', 'Dừng quá 7 ngày không mất chứng từ', 2, 3, 3, 'shop tạm dừng: cửa sổ đọc tới 90 ngày, bỏ tạm dừng chép nhóm còn mở sang hôm nay; tests/sc2-test.php 24/24 (bridge PR #14)', 'chưa chạy trong WP', 'OKT-SC-2'],
     ['K5', 'Chuyển máy bán React → POS cũ khi kế toán tắt trước ca', 2, 3, 4, '`tests/test-engine-switch.php` 14 phép (PR #23)', '—', 'S002-C12'],
   ]],
   ['L', 'Quan sát (I-6)', [
     ['L1', 'Năm số theo shop: hàng chờ, `pending` > 24 h, lỗi, lần gửi cuối, tạm dừng', 2, 3, 4, '`wp tgs-acc status` (PR #9), cột Kết nối (PR #10)', '—', 'S002-C0'],
-    ['L2', 'Cảnh báo khi vượt ngưỡng', 2, 1, 3, 'I-6', 'chưa có', 'OKT-SC-2'],
+    ['L2', 'Cảnh báo khi vượt ngưỡng', 2, 2, 3, 'tổng kết tự kiểm hằng ngày (cấp mạng) + chỉ báo ở Cổng kế toán và ô Kết nối kế toán (bridge PR #14, open-pos-backend PR #40)', 'chưa có thông báo đẩy (email / Zalo) khi vượt ngưỡng', 'OKT-SC-2'],
   ]],
   ['M', 'Bảo mật', [
     ['M1', 'Đóng REST công khai (C1), gỡ token demo (C2)', 2, 1, 4, 'PHASE-001 doc 31', 'chưa làm', 'PHASE-001'],

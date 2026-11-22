@@ -17,6 +17,7 @@
 
 <!-- [2026-11-21 08:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-9, 10, 12 sang 🟡 (bridge PR #8); S002-5, 6 đã merge (bridge PR #7, 96a1f1c). -->
 
+<!-- [2026-11-22 02:55 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — OKT-SC-2 sang 🟡 (bridge #14, open-pos-backend #40); S001-MD3 đã merge (bf73d65, c4d8b38); scoreboard 44,6 %. -->
 <!-- [2026-11-22 01:35 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S001-MD3 sang 🟡 (open-pos-backend #39, bridge #13); OKT-SC-1 đã merge (572b3ad); scoreboard 43,6 %. -->
 <!-- [2026-11-22 11:00 AM Johnny Chu - Chu Hoàng Anh] OKT-P0 — chủ: scoreboard kết nối (70) + luật tối thượng tự kiểm theo cặp blog → tenant qua API (I-8, đặc tả 75). -->
 <!-- [2026-11-22 09:30 AM Johnny Chu - Chu Hoàng Anh] OKT-P0 — chủ duyệt gợi ý cho mọi câu mở ("ok"): Q-OKT-2, Q002-1, Q002-2, Q001-16…20, 24, 25. Sinh việc S002-17, S002-18, S001-C8b, S001-C8c. -->
@@ -26,15 +27,15 @@
 <!-- [2026-11-21 09:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-2 (open-pos PR #22), S002-3 (open-pos-backend PR #32) sang 🟡; S002-8, 11, 13 đã merge (bridge PR #9, 1832956). -->
 <!-- [2026-11-21 09:05 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-8, 11, 13 sang 🟡 (bridge PR #9); S002-9, 10, 12 đã merge (bridge PR #8, 155c66e). -->
 
-## 0. Số đếm (cập nhật 22/11 01:35 PM)
+## 0. Số đếm (cập nhật 22/11 02:55 PM)
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 168 | 6 | 33 | 17 | 112 | 16 |
+| 168 | 6 | 34 | 17 | 111 | 16 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
-- **22/11 11:00 AM:** thêm 5 việc tự kiểm OKT-SC-0…4 (luật I-8) → 168 việc còn hiệu lực. Điểm kết nối ở [70](70-SCOREBOARD-KET-NOI.md): **43,6 %** (01:35 PM, sau S001-MD3), pilot cần 72,5 %.
+- **22/11 11:00 AM:** thêm 5 việc tự kiểm OKT-SC-0…4 (luật I-8) → 168 việc còn hiệu lực. Điểm kết nối ở [70](70-SCOREBOARD-KET-NOI.md): **44,6 %** (02:55 PM, sau OKT-SC-2), pilot cần 72,5 %.
 - **22/11 09:30 AM:** thêm 4 việc sinh từ câu chủ chốt (S002-17, S002-18, S001-C8b, S001-C8c) → 163 việc còn hiệu lực.
 - **Chưa có việc mã nào ✅.** Việc mã gần nhất là B001-C1 (bridge PR #2, đã merge, chưa chạy trong WordPress thật) ở mức 🟡.
 - **Thứ tự làm** (chi tiết ở [10-ROADMAP](10-ROADMAP.md)): PHASE-002 lát dọc **trước**, rồi các mốc M1–M4 của PHASE-001.
@@ -47,7 +48,7 @@
 |---|---|---|---|---|
 | OKT-SC-0 | open-setup | Luật I-8 vào ADR; đặc tả 75; scoreboard 70 + `tools/okt-scoreboard.mjs` | 🟡 2026-11-22 11:00 AM — PR này | 70, 75 |
 | OKT-SC-1 | open-ketoan-bridge | `wp tgs-acc selfcheck --blog=N\|--all`: SC-1…SC-11 qua API bằng khoá của blog; lưu `tgs_acc_tenant_code` khi admin xác nhận; kết quả `tgs_acc_selfcheck_last`; JSON cho `evidence/` _(bất biến I-8, I-1, I-4)_ | 🟡 2026-11-22 11:45 AM — mã + `tests/selfcheck-test.php` 41/41; `tests/selfcheck-live.php` chạy thật vào okt-thu: đơn TM xanh, đơn QR-VTB-CT + R04 + XTA đỏ đúng ba mã, khoá sai 401; chưa chạy trong WordPress | [bridge PR #12](https://github.com/hoanganh8389/open-ketoan-bridge/pull/12) |
-| OKT-SC-2 | open-ketoan-bridge | Cron 02:30 mọi blog có khoá; Cổng kế toán hiện kết luận; SC-2 / SC-3 đỏ → tự tạm dừng gửi; cảnh báo hàng chờ ≥ 6 ngày; giữ hàng chờ quá 7 ngày _(I-8, I-3, I-6)_ | ☐ |  |
+| OKT-SC-2 | open-ketoan-bridge | Cron 02:30 mọi blog có khoá; Cổng kế toán hiện kết luận; SC-2 / SC-3 đỏ → tự tạm dừng gửi; cảnh báo hàng chờ ≥ 6 ngày; giữ hàng chờ quá 7 ngày _(I-8, I-3, I-6)_ | 🟡 2026-11-22 02:55 PM — cron 02:30; tự tạm dừng khi SC-2 sai tenant / SC-3 trùng tenant (không khi chỉ không gọi được); hàng chờ shop tạm dừng giữ tới 90 ngày; tab Tự kiểm ở Cổng kế toán; ô Kết nối kế toán ở open-pos-backend; tắt plugin gỡ lịch; tests/sc2-test.php 24/24; chạy thật okt-thu (nhầm tenant → tự dừng); chưa xem trong WordPress | [bridge PR #14](https://github.com/hoanganh8389/open-ketoan-bridge/pull/14), [open-pos-backend PR #40](https://github.com/hoanganh8389/open-pos-backend/pull/40) |
 | OKT-SC-3 | cả ba repo mã | Mỗi repo một lệnh `selfcheck` ngoại tuyến (mọi test + `--check=I0`); ghi vào mẫu mô tả PR _(I-8, I-0)_ | ☐ |  |
 | OKT-SC-4 | open-ketoan | Đưa I-8 vào CANON (R-OKT-CONN-13) | ⛔ chủ |  |
 
