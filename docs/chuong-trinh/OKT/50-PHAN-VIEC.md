@@ -48,5 +48,5 @@ I-… (ADR-OKT-1) — kiểm bằng …
 
 ## Tự kiểm (I-8)
 SC-0: <lệnh selfcheck của repo> → <kết quả>
-SC-1…SC-11 (nếu chạm đường nối): wp tgs-acc selfcheck --blog=<id> --format=json → <link evidence>
+SC-1…SC-11 (nếu chạm đường nối): wp tgs-acc selfcheck --shop=<id> --format=json → <link evidence>
 ```

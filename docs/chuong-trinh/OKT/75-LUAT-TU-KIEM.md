@@ -53,7 +53,7 @@ Tự kiểm **không ghi** gì vào kế toán (preflight `save:false`) và **kh
 ## 4. Lệnh và đầu ra
 
 ```
-wp tgs-acc selfcheck --blog=<id> | --all  [--samples=5] [--format=table|json]
+wp tgs-acc selfcheck --shop=<id> | --all  [--samples=5] [--format=table|json]
 ```
 
 - Thoát `0` = mọi phép `pass` / `warn`; `1` = có `fail`; `2` = không chạy được (thiếu bridge, lỗi tham số).
