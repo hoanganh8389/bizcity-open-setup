@@ -27,6 +27,9 @@
 <!-- [2026-11-23 01:30 AM Johnny Chu - Chu Hoàng Anh] OKT-TOPO — ba kiểu cài (80): thêm OKT-TOPO-0…6 (🟡 1, ⛔ 2, ☐ 4); SW1-4 🟡 phần 4a (#47) → 183 việc. -->
 <!-- [2026-11-23 03:10 AM Johnny Chu - Chu Hoàng Anh] OKT-TOPO-2 ⛔ → 🟡 (bridge #21, mặc định tạm Q-OKT-4 = B); thêm OKT-TOPO-7 (⛔ Q-OKT-6) → 184 việc. -->
 <!-- [2026-11-23 03:30 AM Johnny Chu - Chu Hoàng Anh] Q-OKT-6 chủ chốt: mỗi chủ shop có tenant + API key riêng → OKT-TOPO-7 huỷ → 183 việc. -->
+<!-- [2026-11-23 04:00 AM Johnny Chu - Chu Hoàng Anh] OKT-P-0 — nguyên tắc hai mô hình (81): thêm OKT-TOPO-8…11 (☐ 2, ⛔ 2); B001-C7 đổi phạm vi (không gỡ bộ kéo global) → 187 việc. -->
+<!-- [2026-11-23 05:00 AM Johnny Chu - Chu Hoàng Anh] Q-OKT-7 chủ chốt (a): mỗi blog một tenant, một khoá chung (khoá cài đặt). 82: ma trận cài đặt + sơ đồ + ping; thêm OKT-SET-1…4 (🟡 1, ⛔ 1, ☐ 2); OKT-TOPO-9 ⛔ → ☐, OKT-TOPO-11 ⛔ → ☐ (đổi nội dung); B001-C7 giữ việc gỡ → 191 việc (✅ 6 · 🟡 52 · ⛔ 19 · ☐ 114). -->
+<!-- [2026-11-23 05:40 AM Johnny Chu - Chu Hoàng Anh] P-0 ý 3 (mỗi book là một pháp nhân, không pháp nhân theo tenant id) ghi ở 4 repo (open-ketoan #577, bridge #22, open-pos-backend #48, tệp này); Q-OKT-4 / 5 / 8 ✅ theo đề xuất; thêm OKT-P0-3 (☐) → 192 việc. -->
 <!-- [2026-11-22 05:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-C10 sang 🟡 (bridge #16: quầy không chờ kế toán, hàng chờ gửi bù được); scoreboard đo lại. -->
 <!-- [2026-11-22 04:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — lát dọc L0 → L7 chạy trên WordPress multisite thật (Docker okt-wp): S002-C0, C2, C6, C7 sang 🟡 (open-pos-backend #41); sửa lỗi chỉ WP thật bắt được (open-pos-backend #40, bridge #15, open-pos #26); scoreboard 52,2 %. -->
 <!-- [2026-11-22 02:55 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — OKT-SC-2 sang 🟡 (bridge #14, open-pos-backend #40); S001-MD3 đã merge (bf73d65, c4d8b38); scoreboard 44,6 %. -->
@@ -43,7 +46,7 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 183 | 6 | 51 | 18 | 108 | 17 |
+| 192 | 6 | 52 | 19 | 115 | 17 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
@@ -78,6 +81,15 @@
 | OKT-TOPO-4 | open-pos | P3: lớp bao ở open-pos (63 lời gọi; tệp D002-6 chỉ theo D002-7) _(I-0)_ | ☐ |  |
 | OKT-TOPO-5 | open-ketoan-bridge + open-pos-backend | P4: kiểu 1 "chuỗi" — SC-3 theo kiểu (cùng tenant, khác chi nhánh = xanh), bộ kéo C8 chế độ `network` vào bảng global thay `TGS_Acc_Catalog_Sync` | ☐ ⛔ Q-OKT-3 |  |
 | OKT-TOPO-6 | open-pos-backend + open-setup | P5: `ma-tran.sh --kieu=1|2|3`; ma trận 80 §5 (14 năng lực × 3 kiểu) xanh; thêm cột T1 / T2 / T3 vào ma trận tuân thủ 65 | ☐ |  |
+| OKT-TOPO-8 | open-ketoan-bridge | **Lỗi trái P-0 (82 B-8)**: mạng dùng khoá chung hôm nay dồn mọi site vào một tenant → SC-3 + `enforce()` tự tạm dừng **cả mạng** sau lượt tự kiểm đầu. Sửa: blog khoá chung (`legacy`) không bị tự tạm dừng vì SC-3, chỉ vàng + hướng dẫn chuyển khoá _(P-0, I-8)_ | ☐ **ưu tiên cao nhất** | [82 §4](82-CAI-DAT-KET-NOI-BA-MO-HINH.md) |
+| OKT-TOPO-9 | open-ketoan-bridge | 82 B-1 + B-5: `TGS_Acc_Profile::current()` = bizcity \| chain \| single (hằng `TGS_ACC_DEPLOYMENT` → option mạng → một site); SC-0b in mô hình; SC-1 theo nhánh; không đoán từ khoá | ☐ |  |
+| OKT-TOPO-10 | open-ketoan | Sửa CANON R-OKT-CONN-2/3 ("khoá theo blog, không dùng một khoá cho cả mạng") theo P-0: đúng cho bizcity; selfhost khoá chung cả mạng là đường chính | ☐ (lane OK) |  |
+| OKT-TOPO-11 | open-setup | ADR I-1 / I-8: thêm nhánh "nhiều cửa hàng: open-ketoan đổi (bản cài, blog) → tenant" (I-1 giữ: mỗi blog một tenant) | ☐ |  |
+| OKT-SET-1 | open-ketoan | 82 K-1…K-5: **khoá cài đặt** (`installations`), bảng đăng ký `installation_blogs` (blog → tenant, duyệt), xác thực `X-OKT-Blog` → tenant + RLS, API đăng ký / trạng thái / ping _(Q-OKT-7 a)_ | ☐ (lane OK) | [82 §3](82-CAI-DAT-KET-NOI-BA-MO-HINH.md) |
+| OKT-SET-2 | open-ketoan-bridge | 82 B-3, B-4, B-6: client theo nhánh (khoá cài đặt + `X-OKT-Blog`), đăng ký cửa hàng, `BLOG_NOT_LINKED` → xếp hàng, ping 5 phút theo nhánh | ☐ ⛔ OKT-SET-1 |  |
+| OKT-SET-3 | open-ketoan-bridge + open-ketoan | 82 B-2, B-7, K-6: màn **Cài đặt** (ma trận ba lựa chọn, khoá theo môi trường), màn **Sơ đồ kết nối** (ping từng site, từng máy), màn open-ketoan **Kết nối open-pos** (blog, trạng thái, ping, duyệt) — theo mockup `mockups/okt-cai-dat-ket-noi.html` | 🟡 2026-11-23 05:00 AM — mockup 4 tab | [mockup](mockups/okt-cai-dat-ket-noi.html) |
+| OKT-SET-4 | open-pos-backend + open-setup | 82 §5: ma trận kiểm thử ba mô hình (9 ca × 3) chạy thật, `ma-tran.sh --mo-hinh=bizcity\|chain\|single` | ☐ |  |
+| OKT-P0-3 | open-ketoan | P-0 ý 3 "mỗi book là một pháp nhân, không có pháp nhân theo tenant id": hồ sơ kế toán (`accounting_profiles`, loại pháp nhân) hôm nay khoá theo `tenant_id` → chuyển sang khoá theo **sổ (book)**; tên / MST pháp nhân lấy từ sổ, không từ tenant _(P-0)_ | ☐ (lane OK) | open-ketoan #577 |
 
 ### PHASE-002 lát dọc — S0 — chuẩn bị
 
@@ -357,7 +369,7 @@
 | ID | Repo | Việc | Trạng thái | Bằng chứng |
 |---|---|---|---|---|
 | B001-C5 | open-ketoan-bridge | `/ketoan-events`: xác thực → `tenantId` → blog (bản đồ C6) → `switch_to_blog` → mirror; không tìm ra → 404; `/catalog-changed`: xác thực theo tenant (khoá của blog hoặc chữ ký), phát `tgs_okt_catalog_changed($blog, $payload)`, **không kéo**; `/pending`, `/sites`: blog theo tenant của khoá gọi, bỏ `?shops=` và `branchCode` | ⛔ chờ tsm S001-C8 (có người lắng hook) |  |
-| B001-C7 | open-ketoan-bridge | Gỡ `includes/class-tgs-acc-catalog-sync.php` (require ở bootstrap :68 / :82), `tools/danh-muc-hang.php`, option `catalog_from_erp` (config :34 / :236-238 / :166-167, admin :390), 5 site option `tgs_acc_catalog_*`, filter `tgs_catalog_readonly` / `tgs_price_edit_locked`; giữ §4 doc 10 làm tham chiếu cho tsm | ⛔ chờ tsm S001-C8 chạy trên site thử · gỡ **cùng lúc** bộ kéo C8 chạy, không để khoảng trống ở bảng POS đọc (ADR-OKT-1 I-0) |  |
+| B001-C7 | open-ketoan-bridge | Gỡ `includes/class-tgs-acc-catalog-sync.php` (require ở bootstrap :68 / :82), `tools/danh-muc-hang.php`, option `catalog_from_erp` (config :34 / :236-238 / :166-167, admin :390), 5 site option `tgs_acc_catalog_*`, filter `tgs_catalog_readonly` / `tgs_price_edit_locked`; giữ §4 doc 10 làm tham chiếu cho tsm | ⛔ chờ tsm S001-C8 chạy trên site thử · gỡ **cùng lúc** bộ kéo C8 chạy, không để khoảng trống ở bảng POS đọc (ADR-OKT-1 I-0) — 23/11: Q-OKT-7 = (a) mỗi blog một tenant ở cả ba mô hình → **giữ việc gỡ** (bộ kéo vào bảng global không còn chỗ dùng; 81 §3)|  |
 | B001-C9 | open-ketoan-bridge | `TGS_Acc_Lists` cache khoá `blog\|kind`, client theo blog; `TGS_Acc_Warehouse_Sync` map theo blog, `sync()` theo khoá blog; `TGS_Acc_Supplier_Sync` **tạm tắt** cho blog không có bảng NCC theo blog (mua hàng ngoài phase) | ☐ |  |
 
 ### PHASE-001 kết nối theo blog — M4 — chứng từ theo tenant
