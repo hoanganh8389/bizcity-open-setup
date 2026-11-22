@@ -40,6 +40,7 @@ Mã nằm ở các repo làm việc. Repo này không chứa mã của open-pos.
 | [50-PHAN-VIEC](50-PHAN-VIEC.md) | Lane, người nhận, luật nhận việc, định nghĩa xong, mẫu mô tả PR |
 | [60-DANH-GIA](60-DANH-GIA.md) | Mục tiêu → tín hiệu đo; cách tính tiến độ (chỉ có bằng chứng); mốc đo theo ngày; tiêu chí duyệt PR |
 | [65-MA-TRAN-TUAN-THU](65-MA-TRAN-TUAN-THU.md) | Ma trận tuân thủ: chín bất biến × sáu mục tiêu, chấm bằng lượt chạy thật trên WP thử; phát hiện MT-1…MT-6 |
+| [80-BA-KIEU-CAI-DAT](80-BA-KIEU-CAI-DAT.md) | Ba kiểu cài (chuỗi multisite · blog trên bizcity · một site): bảng local vs global, đo thật một site, phương án lớp bao, ma trận 3 × 14, lộ trình P0–P5 |
 | [70-SCOREBOARD-KET-NOI](70-SCOREBOARD-KET-NOI.md) | Điểm kết nối open-pos → open-pos-backend → open-ketoan: 14 miền, 46 tiêu chí, 28 tình huống ánh xạ; 54,7 % / pilot 72,5 % (22/11 06:50 PM) |
 | [75-LUAT-TU-KIEM](75-LUAT-TU-KIEM.md) | **Luật tối thượng I-8**: tự kiểm theo cặp blog → tenant qua API, SC-0…SC-12, khi chạy, đỏ thì làm gì |
 | [mockups/](mockups/README.md) | Mockup 3 màn: scoreboard, tự kiểm blog → tenant, trace dòng chảy hai chiều ([canvas](https://claude.ai/artifact/NSxgh5KUvmP5cq8gcGCDhu)) |

@@ -24,6 +24,7 @@
 <!-- [2026-11-22 11:00 PM Johnny Chu - Chu Hoàng Anh] SW1-1 ☐ → 🟡 (open-pos-backend #44); thứ tự SW1 → SW3 → SW4 → SW2 (Q001-17): bộ kéo C8 sau SW1. -->
 <!-- [2026-11-22 11:30 PM Johnny Chu - Chu Hoàng Anh] SW1-2 ☐ → 🟡 (open-pos-backend #45). -->
 <!-- [2026-11-23 12:05 AM Johnny Chu - Chu Hoàng Anh] SW1-3 ☐ → 🟡 (open-pos-backend #46). -->
+<!-- [2026-11-23 01:30 AM Johnny Chu - Chu Hoàng Anh] OKT-TOPO — ba kiểu cài (80): thêm OKT-TOPO-0…6 (🟡 1, ⛔ 2, ☐ 4); SW1-4 🟡 phần 4a (#47) → 183 việc. -->
 <!-- [2026-11-22 05:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-C10 sang 🟡 (bridge #16: quầy không chờ kế toán, hàng chờ gửi bù được); scoreboard đo lại. -->
 <!-- [2026-11-22 04:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — lát dọc L0 → L7 chạy trên WordPress multisite thật (Docker okt-wp): S002-C0, C2, C6, C7 sang 🟡 (open-pos-backend #41); sửa lỗi chỉ WP thật bắt được (open-pos-backend #40, bridge #15, open-pos #26); scoreboard 52,2 %. -->
 <!-- [2026-11-22 02:55 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — OKT-SC-2 sang 🟡 (bridge #14, open-pos-backend #40); S001-MD3 đã merge (bf73d65, c4d8b38); scoreboard 44,6 %. -->
@@ -40,7 +41,7 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 176 | 6 | 48 | 17 | 105 | 16 |
+| 183 | 6 | 50 | 19 | 108 | 16 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
@@ -68,6 +69,13 @@
 | OKT-H4 | open-ketoan-bridge | Đối chiếu WP ↔ kế toán: chứng từ thiếu / mồ côi / chờ huỷ / chờ / lỗi / bản cũ + tồn theo SKU (WP = KT + chưa định khoản); `wp tgs-acc reconcile`, tự kiểm SC-12 _(I-6, I-8)_ | 🟡 2026-11-22 10:15 PM — WP thử 4 trạng thái: mồ côi chờ huỷ 🟡 8↔7 → kế toán duyệt huỷ 🟢 8=8 → tạm dừng bán 1 đơn 🟡 thiếu 2, lệch 0 → định khoản 🟢 7=7; tests/reconcile-test.php 20/20, selfcheck-test 56/56. Còn: site thật; theo kho | [bridge PR #20](https://github.com/hoanganh8389/open-ketoan-bridge/pull/20) |
 | OKT-MT-3 | open-ketoan-bridge + OPS | Máy chủ thật: cron hệ thống gọi WP-Cron của **site chính** mỗi phút (gửi lại, kéo trạng thái, tự kiểm hằng ngày đều là lịch của site chính); tự kiểm báo khi lịch quá hạn _(I-3, I-8)_ | 🟡 2026-11-22 10:15 PM — phần mã xong: SC-10 vàng khi gửi lại quá 15 phút / kéo trạng thái 30 phút / tự kiểm hằng ngày 2 ngày, đỏ khi > 6 giờ hoặc chưa lên lịch; bắt thật "quá hạn 22 phút" trên WP thử, chạy cron → xanh. Còn: OPS cài cron hệ thống ở máy chủ thật | [bridge PR #20](https://github.com/hoanganh8389/open-ketoan-bridge/pull/20) |
 | OKT-MT-5 | open-ketoan (tenant) | Nhận tenant: khai hồ sơ kế toán trước khi bật gửi (preflight `IN-CFG-001` trên mọi đơn của tenant thử) _(I-5, I-6)_ | ☐ |  |
+| OKT-TOPO-0 | open-setup | Ba kiểu cài (chuỗi multisite + đệm global · blog trên bizcity · một site): đo, so bảng local / global, phương án, ma trận 3 × 14, lộ trình P0–P5 ([80](80-BA-KIEU-CAI-DAT.md)) _(I-1, I-2, I-8)_ | 🟡 2026-11-23 01:30 AM — đo thật kiểu 3 trên `okt-wp1`: kích hoạt được, tự kiểm / tạm dừng / `tgs-catalog status` fatal | tài liệu 80 |
+| OKT-TOPO-1 | OPS | Đếm dòng `wp_{N}_local_product_name` / `_cat` trên site thật (chỉ đọc) — biết blog nào còn dữ liệu cũ cần chép (80 §1.3) | ☐ |  |
+| OKT-TOPO-2 | open-ketoan-bridge | P1: lớp bao `TGS_Acc_Site` (option theo blog, `in_blog`, `blogs`, `main`, `topology`); thay 40 lời gọi; SC-0b kiểu cài; nhật ký gửi tạo bảng lúc kích hoạt; census `--check=MS0` _(I-8)_ | ☐ ⛔ Q-OKT-4 (mặc định tạm B) |  |
+| OKT-TOPO-3 | open-pos-backend | P2: lớp bao cùng API ở tsm; sửa `wp tgs-catalog status` fatal ở một site (`class-tgs-catalog-store.php:268`); thay 59 lời gọi | ☐ |  |
+| OKT-TOPO-4 | open-pos | P3: lớp bao ở open-pos (63 lời gọi; tệp D002-6 chỉ theo D002-7) _(I-0)_ | ☐ |  |
+| OKT-TOPO-5 | open-ketoan-bridge + open-pos-backend | P4: kiểu 1 "chuỗi" — SC-3 theo kiểu (cùng tenant, khác chi nhánh = xanh), bộ kéo C8 chế độ `network` vào bảng global thay `TGS_Acc_Catalog_Sync` | ☐ ⛔ Q-OKT-3 |  |
+| OKT-TOPO-6 | open-pos-backend + open-setup | P5: `ma-tran.sh --kieu=1|2|3`; ma trận 80 §5 (14 năng lực × 3 kiểu) xanh; thêm cột T1 / T2 / T3 vào ma trận tuân thủ 65 | ☐ |  |
 
 ### PHASE-002 lát dọc — S0 — chuẩn bị
 
@@ -250,7 +258,7 @@
 | SW1-1 | open-pos-backend | `tgs_catalog_table()`, cờ `tgs_catalog_store`, DDL **6** bảng `tgs_catalog_*` (thêm `price_list_blog`: POS JOIN bảng này, D002-7 chỉ cho đổi tên bảng), tạo khi `wp_initialize_site` + `admin_init`, cờ phiên bản ghi sau | 🟡 2026-11-22 11:00 PM — Q001-18 ✅ bảng mới cùng cột: `CREATE TABLE … LIKE` bảng global; cờ mặc định `global` (không đổi hành vi); test trên CSDL thật 21/21; ca bán chuẩn giống hệt trước thay đổi; census G0 283 / T2 123 = main | [open-pos-backend PR #44](https://github.com/hoanganh8389/open-pos-backend/pull/44) |
 | SW1-2 | open-pos-backend | 15 hằng + 62 chỗ `wp_` → `base_prefix` | 🟡 2026-11-22 11:30 PM — census T2 123 → **0**, G0 giữ 283; 16 tệp, 119 chỗ, chỉ đổi biểu thức tên bảng; kiểm tĩnh `global $wpdb` đạt (có đối chứng âm); WP thật: ca bán chuẩn giống hệt, seed chạy, log sạch | [open-pos-backend PR #45](https://github.com/hoanganh8389/open-pos-backend/pull/45) |
 | SW1-3 | open-pos-backend | Gỡ chuyển hướng `TGS_Shop_Query` + test | 🟡 2026-11-23 12:05 AM — chỉ xoá (185 dòng); test CSDL thật: mã cũ 8/11 (bẫy là thật: ghi `wp_local_product_name` ở site chính sang bảng global, mất id), mã mới 11/11; Q0 11 → 0, G0 283 → 272; ca bán chuẩn giống hệt | [open-pos-backend PR #46](https://github.com/hoanganh8389/open-pos-backend/pull/46) |
-| SW1-4 | open-pos-backend | 6 đường tạo mã + update / tax / category → `tgs_catalog_table()`; kiểm SKU gồm dòng xoá; ĐVT bắt buộc; thuế qua hàm; hook `tgs_catalog_changed` | ☐ |  |
+| SW1-4 | open-pos-backend | 6 đường tạo mã + update / tax / category → `tgs_catalog_table()`; kiểm SKU gồm dòng xoá; ĐVT bắt buộc; thuế qua hàm; hook `tgs_catalog_changed`. **Tách hai PR** (doc 14 §4): **4a** chỉ đổi tên bảng · **4b** đổi luật + hằng bảng cũ T1 | 🟡 2026-11-23 12:50 AM — **4a**: 30 chỗ / 7 tệp; test AJAX thật `TGS_Shop_Ajax_Product::create`: mã cũ 7/9 (bật local vẫn ghi bảng global) → mới 9/9; ca bán chuẩn giống hệt; G0 283 → 253. **4b** ☐. Chưa bật `local` cho blog đang bán tới SW1-8 | [open-pos-backend PR #47](https://github.com/hoanganh8389/open-pos-backend/pull/47) |
 | SW1-5 | open-pos-backend | Ghi giá theo blog khi tạo mã; màn giá standalone; `TGS_Price_List` đọc bảng giá blog | ☐ |  |
 | SW1-6 | open-pos-backend | Nhập: Excel (ĐVT, giá), "Nhập từ danh mục mạng" (`TGS_Shop_Sync_Product::sync`), tool chép giữ id | ☐ |  |
 | SW1-7 | open-pos-backend | `TGS_Global_Product_Source::product_table()` → `tgs_catalog_table()` | ☐ |  |
