@@ -26,6 +26,7 @@
 <!-- [2026-11-23 12:05 AM Johnny Chu - Chu Hoàng Anh] SW1-3 ☐ → 🟡 (open-pos-backend #46). -->
 <!-- [2026-11-23 01:30 AM Johnny Chu - Chu Hoàng Anh] OKT-TOPO — ba kiểu cài (80): thêm OKT-TOPO-0…6 (🟡 1, ⛔ 2, ☐ 4); SW1-4 🟡 phần 4a (#47) → 183 việc. -->
 <!-- [2026-11-23 03:10 AM Johnny Chu - Chu Hoàng Anh] OKT-TOPO-2 ⛔ → 🟡 (bridge #21, mặc định tạm Q-OKT-4 = B); thêm OKT-TOPO-7 (⛔ Q-OKT-6) → 184 việc. -->
+<!-- [2026-11-23 03:30 AM Johnny Chu - Chu Hoàng Anh] Q-OKT-6 chủ chốt: mỗi chủ shop có tenant + API key riêng → OKT-TOPO-7 huỷ → 183 việc. -->
 <!-- [2026-11-22 05:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-C10 sang 🟡 (bridge #16: quầy không chờ kế toán, hàng chờ gửi bù được); scoreboard đo lại. -->
 <!-- [2026-11-22 04:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — lát dọc L0 → L7 chạy trên WordPress multisite thật (Docker okt-wp): S002-C0, C2, C6, C7 sang 🟡 (open-pos-backend #41); sửa lỗi chỉ WP thật bắt được (open-pos-backend #40, bridge #15, open-pos #26); scoreboard 52,2 %. -->
 <!-- [2026-11-22 02:55 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — OKT-SC-2 sang 🟡 (bridge #14, open-pos-backend #40); S001-MD3 đã merge (bf73d65, c4d8b38); scoreboard 44,6 %. -->
@@ -42,7 +43,7 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 184 | 6 | 51 | 19 | 108 | 16 |
+| 183 | 6 | 51 | 18 | 108 | 17 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
@@ -77,7 +78,6 @@
 | OKT-TOPO-4 | open-pos | P3: lớp bao ở open-pos (63 lời gọi; tệp D002-6 chỉ theo D002-7) _(I-0)_ | ☐ |  |
 | OKT-TOPO-5 | open-ketoan-bridge + open-pos-backend | P4: kiểu 1 "chuỗi" — SC-3 theo kiểu (cùng tenant, khác chi nhánh = xanh), bộ kéo C8 chế độ `network` vào bảng global thay `TGS_Acc_Catalog_Sync` | ☐ ⛔ Q-OKT-3 |  |
 | OKT-TOPO-6 | open-pos-backend + open-setup | P5: `ma-tran.sh --kieu=1|2|3`; ma trận 80 §5 (14 năng lực × 3 kiểu) xanh; thêm cột T1 / T2 / T3 vào ma trận tuân thủ 65 | ☐ |  |
-| OKT-TOPO-7 | open-ketoan-bridge + open-ketoan | Kiểu 3: hai bản cài một site cùng là blog 1 → `docKey` `btsoft:1:…` đụng nhau nếu nối cùng một tenant; SC-3 không thấy. Mã bản cài gửi kèm + kế toán chặn, hoặc `docKey` mang mã bản cài (80 §5.2) _(I-1, I-4)_ | ☐ ⛔ Q-OKT-6 |  |
 
 ### PHASE-002 lát dọc — S0 — chuẩn bị
 
@@ -393,6 +393,7 @@
 |---|---|---|
 | S001-O2 | PHASE-001 danh mục theo site | ❌ 21/11 — bridge đã vào git, tsm kéo |
 | S001-O3 | PHASE-001 danh mục theo site | ❌ 21/11 — khung overlay bỏ |
+| OKT-TOPO-7 | OKT — ba kiểu cài | ❌ 23/11 — Q-OKT-6: mỗi chủ shop một tenant, API key riêng → `btsoft:1:` của các bản cài một site không đụng nhau |
 | S001-W0c | PHASE-001 danh mục theo site | ☐ (phụ chú D13 ở tgs_pos ➡ P001-DOC) |
 | S001-C7 | PHASE-001 danh mục theo site | ❌ 21/11 |
 | S001-BR4 | PHASE-001 danh mục theo site | ➡ P001-N3 (POS gọi `TGS_Acc_Catalog_Pull::run`) |

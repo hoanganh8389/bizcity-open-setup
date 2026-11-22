@@ -137,12 +137,10 @@ Một kịch bản chạy cả ma trận: mở rộng `tools/lat-doc-docker/ma-t
 - Lỗi tìm thêm khi chạy thật: mã chi nhánh của blog **không bao giờ được đọc** ở một site (điều kiện `function_exists('get_blog_option')` không có nhánh else) — đã sửa.
 - Kiểu 3: X2, X3, X6, X8 ✅, 0 lỗi PHP. Kiểu 2: ma trận tuân thủ chạy lại xanh (M6 ba trạng thái dòng sổ giống hệt, 135 chứng từ = 135 docKey).
 
-### 5.2 Rủi ro mới: `docKey` của các bản cài một site đụng nhau
+### 5.2 `docKey` của các bản cài một site — chủ chốt: không phải rủi ro (Q-OKT-6 ✅ 23/11)
 
-Mọi bản cài một site đều là **blog 1** → `docKey` `btsoft:1:sale:N`. Hai cửa hàng tự cài cùng nối **một** tenant sẽ ghi đè chứng từ của nhau
-(cùng khoá, khác nội dung → kế toán lên version). SC-3 không thấy được: bản đồ blog → tenant nằm trong từng bản cài. I-1 vẫn đúng nếu mỗi cửa hàng
-một tenant — nhưng không có gì **chặn** cấu hình sai. Cách giảm (OKT-TOPO-7): (a) mã bản cài (`site_uuid`) gửi kèm `extra` và kế toán từ chối khi
-một tenant nhận chứng từ `btsoft:*` từ hai mã bản cài; hoặc (b) `docKey` mang mã bản cài cho kiểu 3 (đổi khoá — chỉ cho bản cài mới).
+Mọi bản cài một site đều là **blog 1** → `docKey` `btsoft:1:sale:N`. Chỉ đụng nhau khi hai bản cài nối **cùng một** tenant. Chủ chốt: chủ 23/11: mỗi chủ shop có phần mềm kế toán (tenant) riêng, API key nội bộ open-ketoan cấp riêng cho open-pos của shop đó → `btsoft:1:` không đụng nhau.
+Đây chính là I-1 ở kiểu 3 (một bản cài = một shop = một tenant). Không đổi `docKey`, không thêm mã bản cài; OKT-TOPO-7 huỷ.
 
 ## 6. Lộ trình
 
