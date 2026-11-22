@@ -25,9 +25,9 @@ Mỗi phép trả `pass` / `warn` / `fail` + dữ liệu. Phép "30 ngày" đọ
 | # | Kiểm gì | Cách (API / sổ) | `fail` khi | `warn` khi |
 |---|---|---|---|---|
 | **SC-0** | Ngoại tuyến: test của repo + `--check=I0` | mỗi repo một lệnh `selfcheck` | test đỏ / I-0 đỏ | — |
-| **SC-1** | Cấu hình của blog | khoá riêng, URL; không dùng khoá chung cả mạng | thiếu khoá riêng mà nguồn `ketoan` | đang dùng khoá chung (giai đoạn chuyển) |
+| **SC-1** | Cấu hình của blog — **theo hồ sơ P-0** | bizcity: khoá riêng, URL · selfhost: khoá chung cả mạng **hoặc** khoá riêng, URL | bizcity: thiếu khoá riêng mà nguồn `ketoan` · selfhost: không có khoá nào | bizcity: đang dùng khoá chung (giai đoạn chuyển) · chưa khai hồ sơ (`TGS_ACC_DEPLOYMENT`) |
 | **SC-2** | **Danh tính tenant** | `GET /api/v1/tenant` → `code`; so với mã tenant **đã lưu** của blog (`tgs_acc_tenant_code`) | khác mã đã lưu (khoá trỏ đơn vị khác) | chưa lưu mã (lần đầu: admin xác nhận rồi lưu) |
-| **SC-3** | **Một tenant ↔ một blog** | so mã tenant của mọi blog có khoá | hai blog cùng tenant (G12) | — |
+| **SC-3** | **Đích ghi sổ không trùng** — theo hồ sơ P-0 | bizcity: so mã tenant của mọi blog có khoá · selfhost (khoá chung, Q-OKT-7 b′): so **(tenant, chi nhánh)** | bizcity: hai blog cùng tenant (G12) · selfhost: hai blog cùng tenant **và cùng chi nhánh** | chưa khai hồ sơ mà blog dùng khoá chung trùng tenant (**không** tự tạm dừng) |
 | **SC-4** | Quyền của khoá | `GET catalog/feed/meta`, `GET documents?search=`, `POST intake/preflight {save:false}` | một lời gọi 401 / 403 | — |
 | **SC-5** | Phương thức thanh toán | mọi phương thức trên phiếu thu 30 ngày → mã sau ánh xạ có trong `GET posting/payment-methods` | có phương thức không ánh xạ được | chưa có bảng ánh xạ, đang suy từ nhãn |
 | **SC-6** | Mã thuế | mọi thuế suất trên dòng bán 30 ngày → mã có trong `GET tax-codes` | có mã không tồn tại (vd `R04`) | — |

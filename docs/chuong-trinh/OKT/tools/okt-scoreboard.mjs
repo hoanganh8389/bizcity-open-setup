@@ -3,7 +3,7 @@
 // w = trọng số (tổng 100), p = mức cần cho pilot.
 const D = [
   ['A', 'Định danh & kết nối', [
-    ['A1', 'Khoá + URL theo blog; không khoá chung cả mạng (I-1)', 4, 4, 4, 'setup-lat-doc gắn khoá + URL riêng blog A, blog B không khoá; feed/meta 200 trong WP — lát dọc L0→L7 trên WP thật (open-pos-backend PR #41)', 'chưa chạy trên shop thật', 'S002-C0'],
+    ['A1', 'Khoá + URL theo hồ sơ P-0 (bizcity: theo blog; selfhost: khoá chung cả mạng)', 4, 4, 4, 'setup-lat-doc gắn khoá + URL riêng blog A, blog B không khoá; feed/meta 200 trong WP — lát dọc L0→L7 trên WP thật (open-pos-backend PR #41)', 'chưa chạy trên shop thật', 'S002-C0'],
     ['A2', 'Chứng minh được khoá của blog trỏ **đúng tenant** (gọi `/api/v1/tenant`, so mã lưu)', 3, 4, 4, 'wp tgs-acc selfcheck trong WP: SC-2 tenant shopa đúng mã đã xác nhận — lát dọc L0→L7 trên WP thật (open-pos-backend PR #41)', 'chưa chạy trên shop thật', 'OKT-SC-1'],
     ['A3', 'Một tenant ↔ một blog: phát hiện hai blog chung tenant (G12)', 3, 3, 4, 'SC-3 bản đồ blog → tenant, test 41/41 (bridge PR #12)', 'chưa chạy trong WP; tự tạm dừng ở OKT-SC-2', 'OKT-SC-1'],
     ['A4', 'Chi nhánh khai theo blog, mã sai thì báo, không tạo chi nhánh trống', 2, 4, 4, 'chứng từ mang CN01 (tgs_acc_branch_code), kế toán nhận + định khoản — lát dọc L0→L7 trên WP thật (open-pos-backend PR #41)', 'chưa chạy trên shop thật', 'S002-C0'],

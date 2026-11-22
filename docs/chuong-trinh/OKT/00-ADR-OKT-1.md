@@ -17,6 +17,14 @@
 
 Không gắn banner thay thế nữa: tệp nào lệch với tệp này thì **sửa thẳng** tệp đó, hoặc chuyển vào `archive/` (việc S002-0b).
 
+<!-- [2026-11-23 04:00 AM Johnny Chu - Chu Hoàng Anh] OKT-P-0 — chủ đặt nguyên tắc tối quan trọng: hai mô hình triển khai. Đối chiếu đầy đủ: 81. -->
+## 0. Nguyên tắc P-0 — hai mô hình triển khai (chủ, 23/11, "cực kỳ ghi nhớ")
+
+1. **bizcity** — "Với hệ thống multisite của bizcity.vn, mỗi một blog trên hệ thống multisite của bizcity sẽ yêu cầu một phần mềm kế toán tương ứng. Việc này để demo cho khách mô hình hệ thống chạy như nào." → khoá **riêng từng blog**, mỗi blog một tenant.
+2. **selfhost** — "Bên ngoài hệ thống bizcity, người dùng cài selfhost, sẽ ưu tiên khóa chung cho cả mạng để người dùng có thể setup chuỗi nhiều cửa hàng dùng POS nhưng vẫn về 1 open-ketoan tương ứng mỗi tenant id = blog_id." → **khoá chung cả mạng** là đường chính.
+
+P-0 đứng trên mọi bất biến bên dưới. Bất biến nào viết cho một mô hình (vd I-1 "một blog = một tenant") thì chỉ áp cho mô hình đó; đối chiếu từng chỗ ở [81](81-DOI-CHIEU-NGUYEN-TAC-TRIEN-KHAI.md). Hồ sơ triển khai phải **khai rõ** (`TGS_ACC_DEPLOYMENT`, Q-OKT-8), không suy từ khoá đang có. Mọi câu hỏi về sau trả lời qua năm câu tự hỏi ở 81 §6. Chỗ CANON R-OKT-CONN-2/3 trái P-0 ý 2 được sửa theo P-0 (OKT-TOPO-10).
+
 ## 1. Bối cảnh
 
 Ngày 21/11, hướng kiến trúc đổi ba lần:
