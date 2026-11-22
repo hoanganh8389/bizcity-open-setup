@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Scoreboard kết nối OKT</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+a{color:#2D5BD7}a:hover{color:#1F44A8}
+button{font:inherit}
+</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #14161B; background: #F6F7F9; min-height: 100vh">
+<div style="max-width: 1360px; margin: 0 auto; padding: 40px 32px 64px; display: flex; flex-direction: column; gap: 28px">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5A6170">OKT · Scoreboard kết nối</div>
+<h1 style="margin: 0; font-family: 'Space Grotesk', Inter, sans-serif; font-size: 34px; line-height: 1.15; font-weight: 700">open-pos → open-pos-backend → open-ketoan</h1>
+<div style="font-size: 15px; color: #5A6170">Chấm theo bằng chứng (I-7) · thang 0–5 có trọng số theo rủi ro sai tiền / sai sổ · 14 miền, 46 tiêu chí</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span style="padding: 6px 12px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E3E6EC; font-size: 13px; color: #3A404C">Đo 22/11/2026 11:50 AM</span>
+<span style="padding: 6px 12px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E3E6EC; font-size: 13px; color: #3A404C">Môi trường: okt-thu · tenant shopa</span>
+</div>
+</header>
+
+<section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 13px; color: #5A6170; font-weight: 500">Điểm hiện tại</div>
+<div style="font-family: 'Space Grotesk', Inter, sans-serif; font-size: 44px; font-weight: 700; line-height: 1">41,4 %</div>
+<div style="font-size: 13px; color: #1E7A4A; font-weight: 600">▲ 4,6 điểm so với lần đo 11:00 AM</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 13px; color: #5A6170; font-weight: 500">Mức cần cho pilot</div>
+<div style="font-family: 'Space Grotesk', Inter, sans-serif; font-size: 44px; font-weight: 700; line-height: 1">72,5 %</div>
+<div style="font-size: 13px; color: #5A6170">còn thiếu 31,1 điểm</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 13px; color: #5A6170; font-weight: 500">Trần khi chưa có WordPress thử</div>
+<div style="font-family: 'Space Grotesk', Inter, sans-serif; font-size: 44px; font-weight: 700; line-height: 1">59,5 %</div>
+<div style="font-size: 13px; color: #A35F00; font-weight: 600">mức 4 chỉ có bằng chạy thật</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 13px; color: #5A6170; font-weight: 500">Tiêu chí đạt mức pilot</div>
+<div style="font-family: 'Space Grotesk', Inter, sans-serif; font-size: 44px; font-weight: 700; line-height: 1">0 / 46</div>
+<div style="font-size: 13px; color: #B3261E; font-weight: 600">chưa tiêu chí nào chạy thật trong WP</div>
+</div>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 20px 24px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 13px; color: #5A6170">
+<span style="font-weight: 600; color: #14161B">Đường tới pilot</span>
+<span>0 % · có thiết kế · có mã · có test · chạy thử · chạy thật · 100 %</span>
+</div>
+<div style="position: relative; height: 18px; background: #EDEFF3; border-radius: 9px">
+<div style="{{barNow}}"></div>
+<div style="{{markCeil}}"></div>
+<div style="{{markPilot}}"></div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; font-size: 13px; color: #3A404C">
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 14px; height: 10px; border-radius: 3px; background: #2D5BD7"></span>Hiện tại 41,4 %</span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 3px; height: 14px; background: #A35F00"></span>Trần không WP 59,5 %</span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 3px; height: 14px; background: #14161B"></span>Pilot 72,5 %</span>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 style="margin: 0; font-family: 'Space Grotesk', Inter, sans-serif; font-size: 22px">Điểm theo miền</h2>
+<span style="font-size: 13px; color: #5A6170">Bấm một miền để xem tiêu chí, bằng chứng và việc nâng điểm</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 12px">
+<sc-for list="{{domains}}" as="d" hint-placeholder-count="14">
+<button type="button" onClick="{{d.pick}}" style="{{d.card}}">
+<span style="display: flex; justify-content: space-between; align-items: center; width: 100%">
+<span style="font-family: 'Space Grotesk', Inter, sans-serif; font-weight: 700; font-size: 15px; color: #5A6170">{{d.id}}</span>
+<span style="font-size: 12px; color: #5A6170">trọng số {{d.w}}</span>
+</span>
+<span style="font-size: 14px; font-weight: 600; text-align: left; min-height: 36px; line-height: 1.3">{{d.name}}</span>
+<span style="font-family: 'Space Grotesk', Inter, sans-serif; font-size: 26px; font-weight: 700; line-height: 1">{{d.pctLabel}}</span>
+<span style="display: block; width: 100%; height: 6px; background: #EDEFF3; border-radius: 3px"><span style="{{d.bar}}"></span></span>
+<span style="font-size: 12px; font-weight: 600; text-align: left; {{d.tone}}">{{d.toneLabel}}</span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 style="margin: 0; font-family: 'Space Grotesk', Inter, sans-serif; font-size: 22px">{{sel.id}} · {{sel.name}} — {{sel.pctLabel}}</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: #3A404C">
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 5px; background: #2D5BD7"></span>mức đã đạt</span>
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 5px; box-sizing: border-box; border: 1.5px dashed #2D5BD7"></span>còn thiếu tới pilot</span>
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 5px; background: #E3E6EC"></span>trên mức pilot</span>
+</div>
+</div>
+<div style="overflow-x: auto">
+<table style="width: 100%; min-width: 980px; border-collapse: collapse; font-size: 14px">
+<thead>
+<tr style="text-align: left; color: #5A6170; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em">
+<th style="padding: 10px 12px; border-bottom: 1px solid #E3E6EC; width: 52px">Mã</th>
+<th style="padding: 10px 12px; border-bottom: 1px solid #E3E6EC">Tiêu chí</th>
+<th style="padding: 10px 12px; border-bottom: 1px solid #E3E6EC; width: 150px">Mức / pilot</th>
+<th style="padding: 10px 12px; border-bottom: 1px solid #E3E6EC; width: 26%">Bằng chứng</th>
+<th style="padding: 10px 12px; border-bottom: 1px solid #E3E6EC; width: 22%">Còn thiếu</th>
+<th style="padding: 10px 12px; border-bottom: 1px solid #E3E6EC; width: 92px">Việc</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{sel.rows}}" as="r" hint-placeholder-count="5">
+<tr style="vertical-align: top">
+<td style="padding: 12px; border-bottom: 1px solid #EDEFF3; font-weight: 700; font-family: 'Space Grotesk', Inter, sans-serif">{{r.id}}</td>
+<td style="padding: 12px; border-bottom: 1px solid #EDEFF3; line-height: 1.45">{{r.text}}<div style="font-size: 12px; color: #5A6170; margin-top: 4px">trọng số {{r.w}}</div></td>
+<td style="padding: 12px; border-bottom: 1px solid #EDEFF3">
+<div style="display: flex; gap: 5px; margin-bottom: 6px">
+<sc-for list="{{r.dots}}" as="dot" hint-placeholder-count="5"><span style="{{dot.style}}"></span></sc-for>
+</div>
+<div style="font-size: 12px; color: #3A404C">{{r.levelLabel}}</div>
+</td>
+<td style="padding: 12px; border-bottom: 1px solid #EDEFF3; color: #3A404C; line-height: 1.45; font-size: 13px">{{r.ev}}</td>
+<td style="padding: 12px; border-bottom: 1px solid #EDEFF3; color: #8A3A12; line-height: 1.45; font-size: 13px">{{r.gap}}</td>
+<td style="padding: 12px; border-bottom: 1px solid #EDEFF3"><span style="display: inline-block; padding: 3px 8px; border-radius: 6px; background: #EEF2FC; color: #1F44A8; font-size: 12px; font-weight: 600; white-space: nowrap">{{r.next}}</span></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+
+<section style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
+<div style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-family: 'Space Grotesk', Inter, sans-serif; font-size: 20px">Mười chỗ nâng điểm nhiều nhất tới pilot</h2>
+<sc-for list="{{gaps}}" as="g" hint-placeholder-count="10">
+<div style="display: grid; grid-template-columns: 28px 52px minmax(0, 1fr) 64px 92px; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid #EDEFF3; font-size: 14px">
+<span style="color: #5A6170; font-weight: 600">{{g.n}}</span>
+<span style="font-weight: 700; font-family: 'Space Grotesk', Inter, sans-serif">{{g.id}}</span>
+<span style="line-height: 1.35">{{g.text}}</span>
+<span style="font-weight: 700; color: #1E7A4A; text-align: right">+{{g.gain}}</span>
+<span style="display: inline-block; padding: 3px 8px; border-radius: 6px; background: #EEF2FC; color: #1F44A8; font-size: 12px; font-weight: 600; text-align: center">{{g.next}}</span>
+</div>
+</sc-for>
+</div>
+<div style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-family: 'Space Grotesk', Inter, sans-serif; font-size: 20px">Lịch sử đo</h2>
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 70px; gap: 6px 12px; font-size: 14px">
+<span style="color: #5A6170">22/11 11:00 AM · lần đo đầu, sau PHASE-002</span><span style="font-weight: 700; text-align: right">36,8 %</span>
+<span style="color: #5A6170">22/11 11:50 AM · OKT-SC-1 tự kiểm (A2, A3, N2 lên 3)</span><span style="font-weight: 700; text-align: right">41,4 %</span>
+<span style="color: #5A6170">[lần đo kế tiếp]</span><span style="text-align: right; color: #5A6170">—</span>
+</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 8px">
+<h2 style="margin: 0; font-family: 'Space Grotesk', Inter, sans-serif; font-size: 20px">Thang điểm</h2>
+<sc-for list="{{scale}}" as="s" hint-placeholder-count="6">
+<div style="display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 10px; font-size: 13px; line-height: 1.4">
+<span style="font-weight: 700; font-family: 'Space Grotesk', Inter, sans-serif">{{s.n}}</span><span><b>{{s.name}}</b> · <span style="color: #5A6170">{{s.ev}}</span></span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<footer style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: #5A6170">
+<span>Nguồn: open-setup docs/chuong-trinh/OKT/70-SCOREBOARD-KET-NOI.md · tools/okt-scoreboard.mjs</span>
+<span><a href="Selfcheck.dc.html">Tự kiểm blog → tenant →</a> · <a href="Trace.dc.html">Trace dòng chảy →</a></span>
+</footer>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { picked: 'F' };
+  }
+  data() {
+    return [{"id":"A","name":"Định danh & kết nối","w":12,"pct":60,"c":[["A1","Khoá + URL theo blog; không khoá chung cả mạng (I-1)",4,3,4,"bridge tests/config-test.php (PR #2), for_blog() (PR #8)","chưa chạy trong WordPress thật","S002-C0"],["A2","Chứng minh được khoá của blog trỏ đúng tenant (gọi /api/v1/tenant, so mã lưu)",3,3,4,"TGS_Acc_Selfcheck SC-2, test 41/41; chạy thật okt-thu (bridge PR #12)","chưa chạy trong WP","OKT-SC-1"],["A3","Một tenant ↔ một blog: phát hiện hai blog chung tenant (G12)",3,3,4,"SC-3 bản đồ blog → tenant, test 41/41 (bridge PR #12)","chưa chạy trong WP; tự tạm dừng ở OKT-SC-2","OKT-SC-1"],["A4","Chi nhánh khai theo blog, mã sai thì báo, không tạo chi nhánh trống",2,3,4,"tests/branch-unit-test.php 17 phép (PR #7)","—","S002-C0"]]},{"id":"B","name":"Danh mục hàng hoá","w":14,"pct":29,"c":[["B1","Định danh mặt hàng ổn định: sku + itemId lưu ở blog, đổi mã không mất dòng (I-4)",4,1,3,"81 F1–F15","bộ kéo C8 chưa có; itemId chỉ khi có TGS_Item_Variant","S001-C8"],["B2","ĐVT: gửi ĐVT gốc, SL theo ĐVT gốc, tỉ lệ quy đổi",3,3,4,"PR #7 (unit = dvt_goc), test 17","—","S002-C5"],["B3","Đơn tới trước mã (mã trơn): không mất barcode / ĐVT của shop",2,1,3,"Q001-19 chốt","S001-C8b chưa làm","S001-C8b"],["B4","Kéo danh mục theo blog, chỉ cột erp, đối chứng lệch 0",4,1,3,"81 đặc tả","chưa có mã","S001-C8"],["B5","Nhóm hàng / nhóm hạch toán",1,1,2,"preflight IN-MD-004","chưa có ánh xạ","S001-C18"]]},{"id":"C","name":"Giá","w":8,"pct":45,"c":[["C1","Giá gồm VAT → dòng trước VAT + thuế, tổng khớp tới đồng (I-5)",5,3,4,"line_money() chép công thức POS, tests/source-pos-test.php 38 phép; preflight okt-thu 0 lỗi chặn","chưa chạy với đơn thật","S002-C5"],["C2","Bảng giá theo chi nhánh khai theo blog, lùi bảng giá công ty, DM14 ở bộ kéo",3,1,3,"Q001-20, D002-8","chưa có mã","S001-C8c"]]},{"id":"D","name":"Thuế","w":5,"pct":32,"c":[["D1","Mã thuế gửi đi có trong danh mục tenant (R00/R05/R08/R10/KCT)",3,2,4,"mapper tax_code(); danh mục okt-thu có R08, R10","thuế lẻ 3,5 % → R04 không tồn tại","OKT-SC-1"],["D2","Đổi mã thuế sau 2026-12-31",2,1,3,"S001-K16","chưa làm, hạn 2026-12-31","S001-K16"]]},{"id":"E","name":"Bán hàng","w":18,"pct":49,"c":[["E1","Nguồn phiếu bán đọc thẳng sổ POS, không cần tgs-bc-tk, chỉ đọc (I-0)",4,3,4,"PR #6, test 38","chưa chạy trong WP","S002-C2"],["E2","docKey bất biến + version; gửi lại không trùng",4,3,4,"nhật ký gửi + tests/status-test.php 21 phép","—","S002-C9"],["E3","Sửa / xoá đơn sau khi gửi → phiên bản mới / huỷ",3,2,4,"deleted_keys(), changed_before()","chưa có test riêng","S002-C9"],["E4","Lý do xuất POS → mã lý do tenant",2,2,3,"mapper gửi mã POS","tenant okt-thu có XTA1.4, POS có thể ghi XTA: chưa ánh xạ","S001-MD3"],["E5","Bill Z / chứng từ nội bộ (internalOnly)",1,2,3,"mapper is_z","nguồn sổ POS quyết is_z chưa kiểm","S002-C5"],["E6","Không gọi HTTP trong request bán (I-3)",4,2,4,"sự kiện ghi JSONL, gửi sau","chưa đo; thiếu fastcgi_finish_request có thể treo 60 s","S002-C2"]]},{"id":"F","name":"Thanh toán","w":14,"pct":30,"c":[["F1","Mã phương thức lưu sẵn, không suy từ nhãn (I-4)",4,1,4,"tenant có 7 mã: TM CK QR POS CONGNO DOI_TRU VOUCHER","bridge suy QR-VTB-CT từ nhãn → lỗi phương thức","S001-MD3"],["F2","Phiếu thu ghép đúng hoá đơn (invoiceDocKey = id phiếu loại 10)",3,2,4,"đọc mã 22/11 (doc 21 §1)","chưa chạy","S002-C6"],["F3","Thanh toán tách nhiều phương thức",2,2,3,"split_parent","chưa test","S002-17"],["F4","Ghi nợ, thu sau, đúng ngày quỹ",2,2,3,"phiếu thu riêng theo ngày","chưa test","S002-17"],["F5","Một đơn một chứng từ (sale.payments)",2,1,2,"doc 21 thiết kế","sau lát dọc","S002-17"],["F6","Tiền mặt dư làm tròn",1,1,3,"Q002-3","chờ kết quả L7","S002-C7"]]},{"id":"G","name":"Trả hàng / đổi trả","w":5,"pct":52,"c":[["G1","Phiếu hoàn (loại 11) → sale_return, trỏ đơn gốc",3,3,4,"test 38 gồm phiếu hoàn","—","S002-C9"],["G2","Đổi trả: đối trừ (offsets), không thành tiền thật",2,2,3,"offsets_by_sale()","chưa test","S002-C9"]]},{"id":"H","name":"Tồn kho","w":11,"pct":25,"c":[["H1","Tồn ở WP tính từ sổ local; bán / nhập đúng (POS không đổi, I-0)",3,2,4,"TGS_Global_Product_Source stock SQL; seed nhập 10 qua đường nhập thật","chưa có bằng chứng của chương trình","S002-C2"],["H2","Kho WP ↔ warehouseCode của tenant",3,1,4,"class-tgs-acc-warehouse-sync.php có","tenant okt-thu 0 kho; dòng gửi warehouseCode rỗng; định khoản giá vốn khi chi nhánh không kho chưa kiểm","OKT-SC-1"],["H3","Nhập mua / trả NCC / chuyển kho / kiểm kê → chứng từ",2,2,3,"mapper supplier_doc, adjust, gt-in/out","ngoài lát dọc","PHASE-001"],["H4","Đối chiếu tồn WP ↔ kế toán theo SKU",2,0,3,"kế toán có /inventory/reconcile","chưa có","OKT-SC-2"],["H5","Thiếu tồn không chặn quầy; kế toán ghi cờ",1,1,3,"ADR D001-18, 28 §4","chưa kiểm","S002-C2"]]},{"id":"I","name":"Khách hàng","w":3,"pct":20,"c":[["I1","Đối tượng theo mã lưu, không theo SĐT (I-4)",2,1,3,"mapper dùng SĐT làm partner.code","trái I-4; khách đổi SĐT tách hai đối tượng","S001-MD3"],["I2","Danh bạ khách theo blog (Q001-14)",1,1,3,"Q001-14 chốt","chưa có mã","PHASE-001"]]},{"id":"J","name":"Nhân viên","w":1,"pct":40,"c":[["J1","Nhân viên bán → employee của tenant",1,2,3,"mapper employee()","chưa đối chiếu danh mục tenant","OKT-SC-1"]]},{"id":"K","name":"Độ bền khi kế toán tắt / dừng","w":12,"pct":53,"c":[["K1","Kế toán tắt: vẫn bán, hàng chờ 7 ngày, gửi bù theo thứ tự",4,3,4,"PR #8, #9; test 21 + 20","chưa chạy L10","S002-C10"],["K2","Tạm dừng / bỏ tạm dừng theo shop, gửi bù không trùng",2,3,4,"tests/pause-cli-test.php 20 phép; nút Cổng kế toán (PR #10)","—","S002-C11"],["K3","Kéo trạng thái pending → posted / remote_error",2,3,4,"tests/status-test.php; /documents?search 200 trên okt-thu","—","S002-C7"],["K4","Dừng quá 7 ngày không mất chứng từ",2,1,3,"ghi chú giới hạn","tệp thử lại chỉ giữ 7 ngày","OKT-SC-2"],["K5","Chuyển máy bán React → POS cũ khi kế toán tắt trước ca",2,3,4,"tests/test-engine-switch.php 14 phép (PR #23)","—","S002-C12"]]},{"id":"L","name":"Quan sát (I-6)","w":4,"pct":40,"c":[["L1","Năm số theo shop: hàng chờ, pending > 24 h, lỗi, lần gửi cuối, tạm dừng",2,3,4,"wp tgs-acc status (PR #9), cột Kết nối (PR #10)","—","S002-C0"],["L2","Cảnh báo khi vượt ngưỡng",2,1,3,"I-6","chưa có","OKT-SC-2"]]},{"id":"M","name":"Bảo mật","w":2,"pct":20,"c":[["M1","Đóng REST công khai (C1), gỡ token demo (C2)",2,1,4,"PHASE-001 doc 31","chưa làm","PHASE-001"]]},{"id":"N","name":"Kiểm chứng","w":9,"pct":51,"c":[["N1","I-0: census --check=I0 + ca bán chuẩn",3,3,4,"PR #33, selftest 13, open-pos main xanh","ca bán chuẩn chưa chạy đơn thật","S002-C14"],["N2","Tự kiểm theo cặp blog → tenant qua API (luật I-8)",4,3,4,"wp tgs-acc selfcheck SC-1…SC-11, test 41/41, chạy thật okt-thu 3 ca (bridge PR #12)","cron + Cổng kế toán (OKT-SC-2); chưa chạy trong WP","OKT-SC-1"],["N3","Golden G0–G17 chạy lại được bằng script",2,1,4,"01 viết lại 22/11; setup-lat-doc + seed","chưa có WP thử","S002-C0"]]}];
+  }
+  renderVals() {
+    const picked = this.state.picked;
+    const tone = (p) => p < 35 ? ['color: #B3261E', 'Yếu · ưu tiên', '#B3261E'] : (p < 50 ? ['color: #A35F00', 'Trung bình', '#A35F00'] : ['color: #1E7A4A', 'Khá · có test', '#1E7A4A']);
+    const levelName = ['chưa có', 'thiết kế', 'có mã', 'có test', 'chạy thử', 'chạy thật'];
+    const domains = this.data().map((d) => {
+      const t = tone(d.pct);
+      const on = d.id === picked;
+      return {
+        id: d.id, name: d.name, w: d.w, pctLabel: d.pct + ' %', tone: t[0], toneLabel: t[1],
+        bar: 'display: block; height: 6px; border-radius: 3px; width: ' + d.pct + '%; background: ' + t[2],
+        card: 'display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 14px; border-radius: 12px; cursor: pointer; min-height: 44px; text-align: left; color: #14161B; ' + (on ? 'background: #EEF2FC; border: 2px solid #2D5BD7' : 'background: #FFFFFF; border: 1px solid #E3E6EC'),
+        pick: () => this.setState({ picked: d.id }),
+      };
+    });
+    const d = this.data().find((x) => x.id === picked) || this.data()[0];
+    const rows = d.c.map((c) => ({
+      id: c[0], text: c[1], w: c[2], ev: c[5], gap: c[6], next: c[7],
+      levelLabel: 'mức ' + c[3] + ' (' + levelName[c[3]] + ') · cần ' + c[4],
+      dots: [1, 2, 3, 4, 5].map((i) => ({
+        style: 'width: 12px; height: 12px; border-radius: 6px; box-sizing: border-box; ' + (i <= c[3] ? 'background: #2D5BD7' : (i <= c[4] ? 'background: #FFFFFF; border: 1.5px dashed #2D5BD7' : 'background: #E3E6EC')),
+      })),
+    }));
+    const gaps = [
+      ['F1', 'Mã phương thức lưu sẵn, không suy từ nhãn (I-4)', '2,0', 'S001-MD3'],
+      ['H2', 'Kho WP ↔ warehouseCode của tenant', '1,5', 'OKT-SC-1'],
+      ['B1', 'Định danh mặt hàng ổn định: sku + itemId, đổi mã không mất dòng (I-4)', '1,4', 'S001-C8'],
+      ['B4', 'Kéo danh mục theo blog, chỉ cột erp, đối chứng lệch 0', '1,4', 'S001-C8'],
+      ['E6', 'Không gọi HTTP trong request bán (I-3)', '1,4', 'S002-C2'],
+      ['C2', 'Bảng giá theo chi nhánh khai theo blog, lùi bảng giá công ty, DM14', '1,0', 'S001-C8c'],
+      ['D1', 'Mã thuế gửi đi có trong danh mục tenant', '1,0', 'OKT-SC-1'],
+      ['E3', 'Sửa / xoá đơn sau khi gửi → phiên bản mới / huỷ', '1,0', 'S002-C9'],
+      ['F2', 'Phiếu thu ghép đúng hoá đơn (invoiceDocKey = id phiếu loại 10)', '1,0', 'S002-C6'],
+      ['H1', 'Tồn ở WP tính từ sổ local; bán / nhập đúng (I-0)', '1,0', 'S002-C2'],
+    ].map((g, i) => ({ n: i + 1, id: g[0], text: g[1], gain: g[2] + ' %', next: g[3] }));
+    const scale = [
+      ['0', 'Chưa có', '—'], ['1', 'Thiết kế', 'tài liệu đã merge'], ['2', 'Có mã', 'PR đã merge'],
+      ['3', 'Có test', 'một lệnh, có số phép kiểm'], ['4', 'Chạy thử', 'bản ghi evidence/ trên môi trường thử'],
+      ['5', 'Chạy thật', 'shop thật, tự kiểm I-8 xanh liên tục'],
+    ].map((s) => ({ n: s[0], name: s[1], ev: s[2] }));
+    return {
+      domains, gaps, scale,
+      sel: { id: d.id, name: d.name, pctLabel: d.pct + ' %', rows },
+      barNow: 'position: absolute; left: 0; top: 0; bottom: 0; width: 41.4%; background: #2D5BD7; border-radius: 9px',
+      markCeil: 'position: absolute; left: 59.5%; top: -4px; bottom: -4px; width: 3px; background: #A35F00',
+      markPilot: 'position: absolute; left: 72.5%; top: -4px; bottom: -4px; width: 3px; background: #14161B',
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "v": 3,
+  "createdOnFiles": {"v": 1, "at": "2026-11-22T05:10:00Z"},
+  "title": "OKT Connection Scoreboard",
+  "launch": {"view": "canvas"},
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {"x": 0, "y": 0, "w": 1440, "h": 1900, "title": "1 · Scoreboard kết nối", "expand": "fill", "is_interactive": true},
+    "Selfcheck.dc.html": {"x": 1520, "y": 0, "w": 1440, "h": 1500, "title": "2 · Tự kiểm blog → tenant (I-8)", "expand": "fill", "is_interactive": true},
+    "Trace.dc.html": {"x": 3040, "y": 0, "w": 1440, "h": 1800, "title": "3 · Trace dòng chảy hai chiều", "expand": "fill", "is_interactive": true}
+  },
+  "order": ["Main.dc.html", "Selfcheck.dc.html", "Trace.dc.html"],
+  "notes": {
+    "row": {"x": 0, "y": -300, "text": "OKT — open-pos → open-pos-backend → open-ketoan", "kind": "title1", "maxW": 4480}
+  },
+  "designSystems": []
+}

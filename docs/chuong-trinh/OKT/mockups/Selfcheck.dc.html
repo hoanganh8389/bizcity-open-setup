@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Tự kiểm blog → tenant</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+a{color:#2D5BD7}a:hover{color:#1F44A8}
+button{font:inherit}
+</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #14161B; background: #F6F7F9; min-height: 100vh">
+<div style="max-width: 1360px; margin: 0 auto; padding: 40px 32px 64px; display: flex; flex-direction: column; gap: 24px">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5A6170">Luật tối thượng I-8 · tự kiểm</div>
+<h1 style="margin: 0; font-family: 'Space Grotesk', Inter, sans-serif; font-size: 34px; line-height: 1.15; font-weight: 700">Mỗi cặp blog → tenant tự chứng minh qua API</h1>
+<div style="font-size: 15px; color: #5A6170">Đúng API đường nối dùng · đúng khoá của blog · đúng sổ của blog · không cũ quá 24 giờ</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" style="padding: 10px 16px; min-height: 44px; border-radius: 10px; background: #14161B; color: #FFFFFF; border: none; font-weight: 600; cursor: pointer">Chạy lại tất cả</button>
+<button type="button" style="padding: 10px 16px; min-height: 44px; border-radius: 10px; background: #FFFFFF; color: #14161B; border: 1px solid #D5D9E1; font-weight: 600; cursor: pointer">Xuất JSON cho evidence/</button>
+</div>
+</header>
+
+<section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; color: #5A6170">Cặp đã kiểm</span>
+<span style="font-family: 'Space Grotesk', Inter, sans-serif; font-size: 34px; font-weight: 700">3</span>
+<span style="font-size: 12px; color: #5A6170">1 blog không khoá: bỏ qua</span>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; color: #5A6170">Xanh</span>
+<span style="font-family: 'Space Grotesk', Inter, sans-serif; font-size: 34px; font-weight: 700; color: #1E7A4A">0</span>
+<span style="font-size: 12px; color: #5A6170">✓ mọi phép đạt</span>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; color: #5A6170">Vàng</span>
+<span style="font-family: 'Space Grotesk', Inter, sans-serif; font-size: 34px; font-weight: 700; color: #A35F00">1</span>
+<span style="font-size: 12px; color: #5A6170">! được gửi, cần xử lý</span>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; color: #5A6170">Đỏ</span>
+<span style="font-family: 'Space Grotesk', Inter, sans-serif; font-size: 34px; font-weight: 700; color: #B3261E">2</span>
+<span style="font-size: 12px; color: #5A6170">✕ không bật / tự tạm dừng</span>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; color: #5A6170">Lần chạy</span>
+<span style="font-family: 'Space Grotesk', Inter, sans-serif; font-size: 20px; font-weight: 700">22/11 11:45 AM</span>
+<span style="font-size: 12px; color: #5A6170">lịch hằng ngày 02:30 (OKT-SC-2, chưa có)</span>
+</div>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 20px 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<h2 style="margin: 0; font-family: 'Space Grotesk', Inter, sans-serif; font-size: 22px">Ma trận tự kiểm</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 8px" role="group" aria-label="Lọc theo kết luận">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
+<button type="button" onClick="{{f.pick}}" style="{{f.style}}">{{f.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="overflow-x: auto">
+<table style="width: 100%; min-width: 1120px; border-collapse: collapse; font-size: 14px">
+<thead>
+<tr style="text-align: left; color: #5A6170; font-size: 12px">
+<th style="padding: 10px; border-bottom: 1px solid #E3E6EC">Cặp blog → tenant</th>
+<th style="padding: 10px; border-bottom: 1px solid #E3E6EC">Kết luận</th>
+<sc-for list="{{cols}}" as="c" hint-placeholder-count="11">
+<th style="padding: 10px 4px; border-bottom: 1px solid #E3E6EC; text-align: center" title="{{c.name}}">{{c.id}}<div style="font-weight: 400; font-size: 11px">{{c.short}}</div></th>
+</sc-for>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="4">
+<tr style="{{r.trStyle}}">
+<td style="padding: 12px 10px; border-bottom: 1px solid #EDEFF3">
+<button type="button" onClick="{{r.pick}}" style="background: none; border: none; padding: 0; text-align: left; cursor: pointer; color: #14161B; min-height: 44px; display: flex; flex-direction: column; justify-content: center; gap: 2px">
+<span style="font-weight: 700">{{r.blog}} <span style="color: #5A6170; font-weight: 400">→</span> {{r.tenant}}</span>
+<span style="font-size: 12px; color: #5A6170">{{r.note}}</span>
+</button>
+</td>
+<td style="padding: 12px 10px; border-bottom: 1px solid #EDEFF3"><span style="{{r.verdictStyle}}">{{r.verdictLabel}}</span></td>
+<sc-for list="{{r.cells}}" as="cell" hint-placeholder-count="11">
+<td style="padding: 8px 4px; border-bottom: 1px solid #EDEFF3; text-align: center"><span style="{{cell.style}}" title="{{cell.title}}">{{cell.glyph}}</span></td>
+</sc-for>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; color: #3A404C">
+<span>✓ đạt</span><span>! cảnh báo — vẫn gửi</span><span>✕ đỏ — xem §Đỏ thì làm gì</span><span>— không chạy (phép trước đã dừng)</span>
+</div>
+</section>
+
+<section style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<div style="flex: 999 1 620px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 style="margin: 0; font-family: 'Space Grotesk', Inter, sans-serif; font-size: 20px">{{sel.blog}} → {{sel.tenant}}</h2>
+<span style="{{sel.verdictStyle}}">{{sel.verdictLabel}}</span>
+</div>
+<div style="font-size: 13px; color: #5A6170">{{sel.source}}</div>
+<sc-for list="{{sel.checks}}" as="k" hint-placeholder-count="11">
+<div style="display: grid; grid-template-columns: 30px 56px minmax(0, 1fr); gap: 10px; align-items: start; padding: 10px 0; border-bottom: 1px solid #EDEFF3">
+<span style="{{k.style}}">{{k.glyph}}</span>
+<span style="font-weight: 700; font-family: 'Space Grotesk', Inter, sans-serif; padding-top: 3px">{{k.id}}</span>
+<div style="display: flex; flex-direction: column; gap: 4px; padding-top: 3px">
+<span style="font-size: 14px; line-height: 1.45">{{k.message}}</span>
+<sc-if value="{{k.hasAction}}" hint-placeholder-val="{{ false }}">
+<span style="font-size: 13px; color: #8A3A12; line-height: 1.4">→ {{k.action}}</span>
+</sc-if>
+</div>
+</div>
+</sc-for>
+<div style="background: #14161B; color: #E8EAF0; border-radius: 10px; padding: 14px 16px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; line-height: 1.6; overflow-x: auto; white-space: pre">{{sel.cmd}}</div>
+</div>
+<div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 8px">
+<h2 style="margin: 0 0 4px; font-family: 'Space Grotesk', Inter, sans-serif; font-size: 18px">Mười một phép kiểm</h2>
+<sc-for list="{{cols}}" as="c" hint-placeholder-count="11">
+<div style="display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 8px; font-size: 13px; line-height: 1.4"><b>{{c.id}}</b><span>{{c.name}} <span style="color: #5A6170">· {{c.how}}</span></span></div>
+</sc-for>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-family: 'Space Grotesk', Inter, sans-serif; font-size: 18px">Đỏ thì làm gì</h2>
+<div style="font-size: 13px; line-height: 1.5"><b>SC-2, SC-3</b> sai / trùng tenant → <b>tự tạm dừng gửi</b> của blog; quầy vẫn bán (I-3), chứng từ xếp hàng.</div>
+<div style="font-size: 13px; line-height: 1.5"><b>SC-4</b> khoá bị từ chối → không gửi lượt mới; admin cấp lại khoá.</div>
+<div style="font-size: 13px; line-height: 1.5"><b>SC-5…SC-9</b> mã thiếu / preflight chặn → báo đỏ kèm mã; sửa bảng ánh xạ (S001-MD3) hoặc kế toán thêm mã.</div>
+<div style="font-size: 13px; line-height: 1.5"><b>SC-10</b> hàng chờ ≥ 6 ngày → gửi bù ngay, sắp quá giới hạn 7 ngày.</div>
+<div style="font-size: 13px; line-height: 1.5"><b>Trước khi bật</b> gửi thật / chuyển nguồn <code>ketoan</code>: bất kỳ phép đỏ nào → <b>không bật</b>.</div>
+</div>
+</div>
+</section>
+
+<footer style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: #5A6170">
+<span>Dữ liệu: bridge tests/selfcheck-live.php chạy vào okt-thu 22/11 11:45 AM (evidence/okt-sc-1-selfcheck-2026-11-22.md); hàng shop-b minh hoạ blog tự quản</span>
+<span><a href="Main.dc.html">← Scoreboard</a> · <a href="Trace.dc.html">Trace dòng chảy →</a></span>
+</footer>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { picked: 'B', filter: 'all' };
+  }
+  renderVals() {
+    const C = [
+      ['SC-1', 'cấu hình', 'Cấu hình', 'khoá riêng + URL của blog'],
+      ['SC-2', 'tenant', 'Danh tính tenant', 'GET /tenant so mã đã xác nhận'],
+      ['SC-3', 'duy nhất', 'Một tenant ↔ một blog', 'bản đồ blog → tenant'],
+      ['SC-4', 'quyền', 'Quyền của khoá', 'đọc feed, đọc chứng từ, preflight'],
+      ['SC-5', 'th.toán', 'Phương thức thanh toán', 'mã sẽ gửi ⊂ posting/payment-methods'],
+      ['SC-6', 'thuế', 'Mã thuế', 'mã sẽ gửi ⊂ tax-codes'],
+      ['SC-7', 'CN · kho', 'Chi nhánh + kho', 'branches, warehouses'],
+      ['SC-8', 'lý do', 'Lý do xuất / nhập', 'mã sẽ gửi ⊂ posting/reasons'],
+      ['SC-9', 'mẫu', 'Chứng từ mẫu thật', 'build_refs → mapper → preflight save:false'],
+      ['SC-10', 'hàng chờ', 'Hàng chờ + trạng thái', 'nhóm cũ nhất, pending > 24 h, lỗi'],
+      ['SC-11', 'đồng hồ', 'Đồng hồ', 'serverTime so giờ WP'],
+    ];
+    const P = 'pass', W = 'warn', F = 'fail', N = 'none';
+    const R = [
+      { key: 'A', blog: 'blog 2 · shop-a', tenant: 'shopa', note: 'ca A — đơn tiền mặt', verdict: W,
+        source: 'Chạy thật vào okt-thu 22/11 11:45 AM, ca A: đơn TM, xác nhận tenant lần đầu.',
+        cmd: '$ wp tgs-acc selfcheck --blog=2 --confirm-tenant\n🟡 Shop #2 → tenant shopa',
+        checks: [
+          [P, 'Khoá riêng của blog', ''], [P, 'Tenant `shopa` đúng mã đã xác nhận', ''], [P, 'Không blog nào khác nối tenant này', ''],
+          [P, 'Đọc được feed danh mục và trạng thái chứng từ', ''], [P, 'phương thức thanh toán: 1 mã đang dùng đều có ở tenant', ''],
+          [P, 'mã thuế: 1 mã đang dùng đều có ở tenant', ''], [W, 'chi nhánh có; tenant chưa có kho nào — định khoản giá vốn theo kho chưa kiểm', 'Kế toán tạo kho cho CN01, rồi ánh xạ kho WP (S001-MD3)'],
+          [P, 'Chưa có lý do nào trên phiếu gần nhất để đối chiếu (tenant có 14)', ''], [W, '2 chứng từ mẫu: 0 lỗi chặn, 2 cảnh báo (IN-CFG-001 chưa khai hồ sơ kế toán)', 'Kế toán trưởng khai hồ sơ kế toán cho tenant shopa'],
+          [P, 'Hàng chờ 0 nhóm, chờ định khoản > 24 h: 0, lỗi: 0', ''], [P, 'Lệch đồng hồ 0 giây so với kế toán', ''],
+        ] },
+      { key: 'B', blog: 'blog 2 · shop-a', tenant: 'shopa', note: 'ca B — QR nhãn ngân hàng, thuế 3,5 %, lý do XTA', verdict: F,
+        source: 'Chạy thật vào okt-thu 22/11 11:45 AM, ca B: bridge suy mã từ nhãn; preflight của kế toán cũng chặn cả 2 chứng từ.',
+        cmd: '$ wp tgs-acc selfcheck --blog=2\n🔴 Shop #2 → tenant shopa\n   🔴 SC-5  QR-VTB-CT ×1\n   🔴 SC-6  R04 ×1\n   🔴 SC-8  XTA ×1',
+        checks: [
+          [P, 'Khoá riêng của blog', ''], [P, 'Tenant `shopa` đúng mã đã xác nhận', ''], [P, 'Không blog nào khác nối tenant này', ''],
+          [P, 'Đọc được feed danh mục và trạng thái chứng từ', ''], [F, 'phương thức thanh toán: 1 mã bridge sẽ gửi mà tenant không có — QR-VTB-CT ×1', 'Ánh xạ "QR VTB CT" → QR trong bảng {p}tgs_okt_map (S001-MD3)'],
+          [F, 'mã thuế: 1 mã bridge sẽ gửi mà tenant không có — R04 ×1', 'Thuế 3,5 %: chọn mã thuế thật ở tenant, hoặc chặn trước khi gửi'], [W, 'chi nhánh có; tenant chưa có kho nào', 'Kế toán tạo kho cho CN01'],
+          [F, 'lý do: 1 mã bridge sẽ gửi mà tenant không có — XTA ×1', 'Ánh xạ XTA → XTA1.4 (S001-MD3)'], [F, '2 chứng từ mẫu: 2 lỗi chặn, 2 cảnh báo', 'Sửa ba mã trên rồi chạy lại'],
+          [P, 'Hàng chờ 0 nhóm', ''], [P, 'Lệch đồng hồ 0 giây', ''],
+        ] },
+      { key: 'C', blog: 'blog 2 · shop-a', tenant: '?', note: 'ca C — khoá sai', verdict: F,
+        source: 'Chạy thật vào okt-thu 22/11 11:45 AM, ca C: kế toán trả 401 ngay ở /tenant, tự kiểm dừng.',
+        cmd: '$ wp tgs-acc selfcheck --blog=2\n🔴 Shop #2 → tenant ?\n   🔴 SC-2  Không đọc được danh tính tenant\n   🔴 SC-4  Khoá bị từ chối (401)',
+        checks: [
+          [P, 'Khoá riêng của blog', ''], [F, 'Không đọc được danh tính tenant: Chưa đăng nhập hoặc phiên đã hết hạn', 'Admin dán lại khoá đúng của tenant (Cổng kế toán)'], [N, '', ''],
+          [F, 'Khoá bị từ chối (401)', 'Kế toán cấp lại khoá API'], [N, '', ''], [N, '', ''], [N, '', ''], [N, '', ''], [N, '', ''], [N, '', ''], [N, '', ''],
+        ] },
+      { key: 'D', blog: 'blog 3 · shop-b', tenant: '—', note: 'tự quản, không khoá — không thuộc tự kiểm', verdict: N,
+        source: 'Minh hoạ: blog nguồn local không có khoá → wp tgs-acc selfcheck --all bỏ qua; không có đường nối để chứng minh.',
+        cmd: '$ wp tgs-acc selfcheck --all\n(blog 3 không có khoá kế toán — bỏ qua)',
+        checks: [[N, '', ''], [N, '', ''], [N, '', ''], [N, '', ''], [N, '', ''], [N, '', ''], [N, '', ''], [N, '', ''], [N, '', ''], [N, '', ''], [N, '', '']] },
+    ];
+    const look = {
+      pass: ['✓', 'background: #E6F4EC; color: #1E7A4A'], warn: ['!', 'background: #FCF1DE; color: #8A4F00'],
+      fail: ['✕', 'background: #FBE7E5; color: #B3261E'], none: ['—', 'background: #F0F1F4; color: #6B7280'],
+    };
+    const chip = (lvl) => 'display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; font-weight: 700; font-size: 14px; ' + look[lvl][1];
+    const vName = { pass: '✓ Xanh', warn: '! Vàng', fail: '✕ Đỏ', none: '— Bỏ qua' };
+    const vStyle = (v) => 'display: inline-block; padding: 4px 10px; border-radius: 999px; font-weight: 700; font-size: 13px; white-space: nowrap; ' + look[v][1];
+    const f = this.state.filter;
+    const rows = R.filter((r) => f === 'all' || r.verdict === f).map((r) => ({
+      blog: r.blog, tenant: r.tenant, note: r.note,
+      verdictLabel: vName[r.verdict], verdictStyle: vStyle(r.verdict),
+      trStyle: r.key === this.state.picked ? 'background: #EEF2FC' : '',
+      pick: () => this.setState({ picked: r.key }),
+      cells: r.checks.map((k, i) => ({ glyph: look[k[0]][0], style: chip(k[0]), title: C[i][0] + ' · ' + (k[1] || 'không chạy') })),
+    }));
+    const s = R.find((r) => r.key === this.state.picked) || R[0];
+    const filters = [['all', 'Tất cả'], ['fail', '✕ Đỏ'], ['warn', '! Vàng'], ['pass', '✓ Xanh']].map((x) => ({
+      label: x[1], pick: () => this.setState({ filter: x[0] }),
+      style: 'padding: 8px 14px; min-height: 40px; border-radius: 999px; cursor: pointer; font-weight: 600; font-size: 13px; ' + (f === x[0] ? 'background: #14161B; color: #FFFFFF; border: 1px solid #14161B' : 'background: #FFFFFF; color: #14161B; border: 1px solid #D5D9E1'),
+    }));
+    return {
+      filters, rows,
+      cols: C.map((c) => ({ id: c[0], short: c[1], name: c[2], how: c[3] })),
+      sel: {
+        blog: s.blog, tenant: s.tenant, source: s.source, cmd: s.cmd,
+        verdictLabel: vName[s.verdict], verdictStyle: vStyle(s.verdict),
+        checks: s.checks.map((k, i) => ({ id: C[i][0], glyph: look[k[0]][0], style: chip(k[0]), message: k[1] || 'Không chạy — phép trước đã dừng hoặc blog không thuộc tự kiểm', action: k[2], hasAction: k[2] !== '' })),
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>
