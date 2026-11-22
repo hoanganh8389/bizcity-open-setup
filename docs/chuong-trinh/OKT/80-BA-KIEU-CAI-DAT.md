@@ -115,28 +115,41 @@ Ký hiệu: ✅ đã chạy đạt · 🔴 đã chạy, gãy · ⚠ chạy, có 
 | # | Năng lực | T1 chuỗi | T2 blog bizcity | T3 một site |
 |---|---|---|---|---|
 | X1 | Kích hoạt 3 plugin, tạo bảng | ☐ | ✅ | ✅ |
-| X2 | Khai khoá / URL / chi nhánh | ☐ | ✅ | 🔴 (tạm dừng fatal ngay sau) |
-| X3 | Tự kiểm SC-1…SC-12 | ☐ | ✅ (ma trận 65) | 🔴 fatal |
+| X2 | Khai khoá / URL / chi nhánh | ☐ | ✅ | ✅ P1 (`save_blog` ghi cấu hình site; chi nhánh đọc được) |
+| X3 | Tự kiểm SC-0b…SC-12 | ☐ | ✅ (ma trận 65, chạy lại sau P1) | ✅ P1 (không đỏ; SC-9 vàng: chưa có đơn) |
 | X4 | SC-3 trùng tenant | ☐ (phải **xanh** khi khác chi nhánh) | ✅ đỏ + tự tạm dừng | — |
 | X5 | Bán POS cũ → gửi → định khoản | ☐ | ✅ | ☐ |
-| X6 | Tạm dừng / nối lại, 0 lời gọi | ☐ | ✅ | 🔴 fatal |
+| X6 | Tạm dừng / nối lại, 0 lời gọi | ☐ | ✅ | ✅ P1 |
 | X7 | Kế toán tắt giữa ca, gửi bù, 0 trùng | ☐ | ✅ | ☐ |
-| X8 | Đối chiếu chứng từ + tồn (H4) | ☐ | ✅ | ⚠ chạy, chưa có khoá |
+| X8 | Đối chiếu chứng từ + tồn (H4) | ☐ | ✅ | ✅ P1 (chưa có đơn) |
 | X9 | Cron site chính: gửi lại, kéo trạng thái, tự kiểm hằng ngày | ☐ | ✅ (khi có cron hệ thống) | ☐ (`is_main_site()` luôn đúng) |
 | X10 | Danh mục: `tgs-catalog status / ensure / store` | ☐ | ✅ | 🔴 fatal (status) |
 | X11 | Tạo mã qua form ghi đúng bảng theo cờ | ☐ | ✅ (SW1-4a 9/9) | ☐ |
 | X12 | Kéo danh mục từ kế toán (C8) | ☐ chế độ `network` → global | ☐ theo blog | ☐ |
 | X13 | Ca bán chuẩn trước / sau giống hệt (I-0) | ☐ | ✅ | ☐ |
-| X14 | Màn quản trị Cổng kế toán / Ánh xạ / Máy bán mở được | ☐ | ✅ | ☐ |
+| X14 | Màn quản trị Cổng kế toán / Ánh xạ / Máy bán mở được | ☐ | ✅ | ☐ (bridge hết `get_sites` thẳng ở P1; trang nằm trong tsm — P2) |
 
 Một kịch bản chạy cả ma trận: mở rộng `tools/lat-doc-docker/ma-tran.sh` (open-pos-backend) thêm tham số `--kieu=1|2|3`.
+
+### 5.1 Kết quả P1 (bridge, 23/11 03:10 AM — open-ketoan-bridge PR #21)
+
+- Lớp bao `TGS_Acc_Site`; 47 lời gọi thẳng → 0 (census MS0, đối chứng âm 47). SC-0b kiểu cài. Bảng nhật ký gửi tạo lúc kích hoạt.
+- Lỗi tìm thêm khi chạy thật: mã chi nhánh của blog **không bao giờ được đọc** ở một site (điều kiện `function_exists('get_blog_option')` không có nhánh else) — đã sửa.
+- Kiểu 3: X2, X3, X6, X8 ✅, 0 lỗi PHP. Kiểu 2: ma trận tuân thủ chạy lại xanh (M6 ba trạng thái dòng sổ giống hệt, 135 chứng từ = 135 docKey).
+
+### 5.2 Rủi ro mới: `docKey` của các bản cài một site đụng nhau
+
+Mọi bản cài một site đều là **blog 1** → `docKey` `btsoft:1:sale:N`. Hai cửa hàng tự cài cùng nối **một** tenant sẽ ghi đè chứng từ của nhau
+(cùng khoá, khác nội dung → kế toán lên version). SC-3 không thấy được: bản đồ blog → tenant nằm trong từng bản cài. I-1 vẫn đúng nếu mỗi cửa hàng
+một tenant — nhưng không có gì **chặn** cấu hình sai. Cách giảm (OKT-TOPO-7): (a) mã bản cài (`site_uuid`) gửi kèm `extra` và kế toán từ chối khi
+một tenant nhận chứng từ `btsoft:*` từ hai mã bản cài; hoặc (b) `docKey` mang mã bản cài cho kiểu 3 (đổi khoá — chỉ cho bản cài mới).
 
 ## 6. Lộ trình
 
 | Mốc | Việc | Repo | Xong khi |
 |---|---|---|---|
 | **P0** (tài liệu này) | Đo, ghi, chia việc; môi trường T3 `okt-wp1` dựng lại được | open-setup, open-pos-backend (tools) | 80 merge; README docker có kiểu 3 |
-| **P1** | Lớp bao `TGS_Acc_Site` ở bridge; thay 40 lời gọi; SC-0b; census `--check=MS0` ở bridge; nhật ký gửi tạo bảng khi kích hoạt | open-ketoan-bridge | T3: X2, X3, X6, X8 ✅; T2 không đổi (ma trận 65 chạy lại xanh) |
+| **P1** ✅ mã (PR #21) | Lớp bao `TGS_Acc_Site` ở bridge; thay 47 lời gọi; SC-0b; census MS0 (test); nhật ký gửi tạo bảng khi kích hoạt | open-ketoan-bridge | T3: X2, X3, X6, X8 ✅; T2 ma trận 65 chạy lại xanh — **đạt 23/11** |
 | **P2** | Lớp bao cùng API ở tsm (sửa luôn lỗi `tgs-catalog status`); thay 59 lời gọi | open-pos-backend | T3: X10, X11 ✅ |
 | **P3** | Lớp bao ở open-pos (63 lời gọi, **không** đụng tệp D002-6 — tệp nào trong danh mục cấm thì chỉ đổi theo D002-7 hoặc để nguyên nếu chỉ chạy ở multisite) | open-pos | T3: X5, X7, X13 ✅ |
 | **P4** | Kiểu 1 sau khi chủ chốt Q-OKT-3: SC-3 theo kiểu, bộ kéo C8 chế độ `network` (thay `TGS_Acc_Catalog_Sync`), màn mạng | bridge, tsm | T1: cột đầy |

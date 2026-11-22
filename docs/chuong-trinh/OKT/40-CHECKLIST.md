@@ -25,6 +25,7 @@
 <!-- [2026-11-22 11:30 PM Johnny Chu - Chu Hoàng Anh] SW1-2 ☐ → 🟡 (open-pos-backend #45). -->
 <!-- [2026-11-23 12:05 AM Johnny Chu - Chu Hoàng Anh] SW1-3 ☐ → 🟡 (open-pos-backend #46). -->
 <!-- [2026-11-23 01:30 AM Johnny Chu - Chu Hoàng Anh] OKT-TOPO — ba kiểu cài (80): thêm OKT-TOPO-0…6 (🟡 1, ⛔ 2, ☐ 4); SW1-4 🟡 phần 4a (#47) → 183 việc. -->
+<!-- [2026-11-23 03:10 AM Johnny Chu - Chu Hoàng Anh] OKT-TOPO-2 ⛔ → 🟡 (bridge #21, mặc định tạm Q-OKT-4 = B); thêm OKT-TOPO-7 (⛔ Q-OKT-6) → 184 việc. -->
 <!-- [2026-11-22 05:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-C10 sang 🟡 (bridge #16: quầy không chờ kế toán, hàng chờ gửi bù được); scoreboard đo lại. -->
 <!-- [2026-11-22 04:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — lát dọc L0 → L7 chạy trên WordPress multisite thật (Docker okt-wp): S002-C0, C2, C6, C7 sang 🟡 (open-pos-backend #41); sửa lỗi chỉ WP thật bắt được (open-pos-backend #40, bridge #15, open-pos #26); scoreboard 52,2 %. -->
 <!-- [2026-11-22 02:55 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — OKT-SC-2 sang 🟡 (bridge #14, open-pos-backend #40); S001-MD3 đã merge (bf73d65, c4d8b38); scoreboard 44,6 %. -->
@@ -41,7 +42,7 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 183 | 6 | 50 | 19 | 108 | 16 |
+| 184 | 6 | 51 | 19 | 108 | 16 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
@@ -71,11 +72,12 @@
 | OKT-MT-5 | open-ketoan (tenant) | Nhận tenant: khai hồ sơ kế toán trước khi bật gửi (preflight `IN-CFG-001` trên mọi đơn của tenant thử) _(I-5, I-6)_ | ☐ |  |
 | OKT-TOPO-0 | open-setup | Ba kiểu cài (chuỗi multisite + đệm global · blog trên bizcity · một site): đo, so bảng local / global, phương án, ma trận 3 × 14, lộ trình P0–P5 ([80](80-BA-KIEU-CAI-DAT.md)) _(I-1, I-2, I-8)_ | 🟡 2026-11-23 01:30 AM — đo thật kiểu 3 trên `okt-wp1`: kích hoạt được, tự kiểm / tạm dừng / `tgs-catalog status` fatal | tài liệu 80 |
 | OKT-TOPO-1 | OPS | Đếm dòng `wp_{N}_local_product_name` / `_cat` trên site thật (chỉ đọc) — biết blog nào còn dữ liệu cũ cần chép (80 §1.3) | ☐ |  |
-| OKT-TOPO-2 | open-ketoan-bridge | P1: lớp bao `TGS_Acc_Site` (option theo blog, `in_blog`, `blogs`, `main`, `topology`); thay 40 lời gọi; SC-0b kiểu cài; nhật ký gửi tạo bảng lúc kích hoạt; census `--check=MS0` _(I-8)_ | ☐ ⛔ Q-OKT-4 (mặc định tạm B) |  |
+| OKT-TOPO-2 | open-ketoan-bridge | P1: lớp bao `TGS_Acc_Site` (option theo blog, `in_blog`, `blogs`, `main`, `topology`); thay lời gọi thẳng; SC-0b kiểu cài; nhật ký gửi tạo bảng lúc kích hoạt; census MS0 _(I-8)_ | 🟡 2026-11-23 03:10 AM — 47 lời gọi → 0 (census MS0; đối chứng âm 47); WP một site `okt-wp1`: khai khoá, tạm dừng / nối lại, tự kiểm SC-0b…SC-12, đối chiếu chạy, 0 lỗi PHP; sửa thêm: mã chi nhánh không đọc được ở một site; multisite: ma trận 65 chạy lại xanh | [bridge PR #21](https://github.com/hoanganh8389/open-ketoan-bridge/pull/21) |
 | OKT-TOPO-3 | open-pos-backend | P2: lớp bao cùng API ở tsm; sửa `wp tgs-catalog status` fatal ở một site (`class-tgs-catalog-store.php:268`); thay 59 lời gọi | ☐ |  |
 | OKT-TOPO-4 | open-pos | P3: lớp bao ở open-pos (63 lời gọi; tệp D002-6 chỉ theo D002-7) _(I-0)_ | ☐ |  |
 | OKT-TOPO-5 | open-ketoan-bridge + open-pos-backend | P4: kiểu 1 "chuỗi" — SC-3 theo kiểu (cùng tenant, khác chi nhánh = xanh), bộ kéo C8 chế độ `network` vào bảng global thay `TGS_Acc_Catalog_Sync` | ☐ ⛔ Q-OKT-3 |  |
 | OKT-TOPO-6 | open-pos-backend + open-setup | P5: `ma-tran.sh --kieu=1|2|3`; ma trận 80 §5 (14 năng lực × 3 kiểu) xanh; thêm cột T1 / T2 / T3 vào ma trận tuân thủ 65 | ☐ |  |
+| OKT-TOPO-7 | open-ketoan-bridge + open-ketoan | Kiểu 3: hai bản cài một site cùng là blog 1 → `docKey` `btsoft:1:…` đụng nhau nếu nối cùng một tenant; SC-3 không thấy. Mã bản cài gửi kèm + kế toán chặn, hoặc `docKey` mang mã bản cài (80 §5.2) _(I-1, I-4)_ | ☐ ⛔ Q-OKT-6 |  |
 
 ### PHASE-002 lát dọc — S0 — chuẩn bị
 
