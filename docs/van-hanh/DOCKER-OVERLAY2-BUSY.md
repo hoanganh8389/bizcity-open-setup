@@ -9,6 +9,8 @@ Docker gỡ container thì phải bỏ mount lớp overlay (`/var/lib/docker/ove
 
 Bằng chứng: khi lỗi, `grep <lớp> /proc/*/mountinfo` thấy hơn 500 tiến trình; lọc bỏ namespace của máy (PID 1) chỉ còn `httpd <defunct>` và các tiến trình sống rất ngắn. **Chỉ `restartsrv_httpd` là chưa đủ** (đã thử) — namespace của CageFS sống qua lần khởi động lại Apache.
 
+**Lần chạy thật 2026-11-22 23:xx <!-- [2026-11-23 12:20 AM Johnny Chu - Chu Hoàng Anh] OPS-VPS — v2 sau lần chạy thật -->:** máy **không có CageFS**; sau khi restart httpd + php-fpm thì **không namespace nào khác còn giữ** — mà `docker rm` vẫn bận: `merged` vẫn là mount ở **chính namespace của máy** (Docker không bỏ được mount khi container chết; có thể còn tiến trình mồ côi của container dùng nó). Bản v2 của script xử lý thêm trường hợp này.
+
 Reboot luôn chữa được, nhưng sau reboot container `restart: unless-stopped` lên trước, Apache / PHP lên sau và **sao chép lại** — lần thay container kế tiếp lại kẹt.
 
 ## 2. Gỡ container đang kẹt — `ops/vps/go-container.sh`
@@ -20,15 +22,21 @@ bash ops/vps/go-container.sh go ketoan-api-1            # dừng + gỡ; bận t
 bash ops/vps/go-container.sh du-an ketoan               # mọi container của một project compose (ketoan / erp / zalo-hub)
 ```
 
-`go` làm theo thứ tự, sau mỗi bước thử gỡ lại, gỡ được thì dừng:
+`go` làm theo thứ tự, sau mỗi bước thử gỡ lại, gỡ được thì dừng <!-- [2026-11-23 12:20 AM Johnny Chu - Chu Hoàng Anh] OPS-VPS — v2 sau lần chạy thật -->:
 
 1. `docker stop -t 20` → `docker rm -f`
-2. `cagefsctl --remount-all` (chỉ khi máy có CageFS) — làm mới namespace của mọi người dùng
-3. `/scripts/restartsrv_httpd`
-4. `/scripts/restartsrv_apache_php_fpm`
-5. Vẫn bận → in namespace / tiến trình còn giữ, **dừng** (mã 2). Gửi đoạn in ra cho người vận hành; cách cuối là reboot.
+2. `merged` còn mount ở máy **và không tiến trình nào dùng** → `umount` (web không nháy)
+3. `cagefsctl --remount-all` (chỉ khi máy có CageFS)
+4. `/scripts/restartsrv_httpd`, rồi `/scripts/restartsrv_apache_php_fpm` — **chỉ khi** có namespace khác đang giữ lớp đó
+5. `umount -l` (bỏ mount kiểu lười)
+6. Còn tiến trình mồ côi của container (root / cwd nằm trong `merged`): **in ra, không đụng** — chạy lại với `--kill-orphans` thì gửi TERM, đợi 10 giây, KILL, rồi bỏ mount
+7. Vẫn bận → in tình trạng (mount ở máy, tiến trình dùng, `fuser -m`, namespace khác), **dừng** (mã 2). Cách cuối là reboot.
 
-Script **không** restart Docker, **không** sửa `/var/lib/docker`, **không** kill tiến trình, **không** xoá volume. Nhật ký: `/var/log/bizcity-docker-go.log`. Bước 2–4 làm website nháy 1–2 giây.
+```bash
+bash ops/vps/go-container.sh go --kill-orphans ketoan-api-1     # chỉ khi bước 6 in ra tiến trình của chính container đó (vd node của api)
+```
+
+Script **không** restart Docker, **không** xoá gì trong `/var/lib/docker`, **không** xoá volume, **không** kill tiến trình nào ngoài tiến trình mồ côi của container đã chết (và chỉ khi có `--kill-orphans`). Nhật ký: `/var/log/bizcity-docker-go.log`. Bước 2–4 làm website nháy 1–2 giây.
 
 ## 3. Thay container (cập nhật một project) — trình tự
 
