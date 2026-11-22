@@ -8,12 +8,12 @@ Site Manager không chạy migration, không chạm PostgreSQL (R-ROLE-3): mọi
 from __future__ import annotations
 
 import json
-import time
 
 import frappe
 from frappe.utils import get_datetime, now_datetime
 
 from bizcity_site_manager.provisioning import ProvisioningError
+from bizcity_site_manager.relay import owner_from_result, poll_job
 
 JOB = "Bizcity Provision Job"
 SITE = "Bizcity Ketoan Site"
@@ -21,6 +21,7 @@ SETTINGS = "Bizcity Site Manager Settings"
 POLL_TIMEOUT = 600  # giây
 WRITE_KINDS = ("provision", "suspend", "resume", "backup", "delete")
 LICENSE_STATES = ("ok", "expiring", "expired", "missing", "unknown")
+OWNER_KEEP_HOURS = 24  # [2026-11-22 08:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 B2 — mật khẩu ban đầu chưa ai nhận thì xoá sau 24 giờ (khách đặt lại qua email)
 
 
 def start(site_name: str, kind: str) -> str:
@@ -62,7 +63,16 @@ def run(job_name: str) -> None:
 		job.db_set({"remote_job_id": out["jobId"], "status": "running"})
 		frappe.db.commit()
 
-		result = _poll(client, out["jobId"], max(1, settings.poll_seconds or 2))
+		# [2026-11-22 08:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 B2 — ghi bước sau MỖI lần hỏi (trang dùng thử hiện console ngay, không chờ xong)
+		def progress(remote: dict) -> None:
+			job.db_set("steps", json.dumps(remote.get("steps") or [], ensure_ascii=False, indent=1), update_modified=False)
+			frappe.db.commit()
+
+		result = poll_job(client, out["jobId"], max(1, settings.poll_seconds or 2), POLL_TIMEOUT, on_progress=progress)
+		# [2026-11-22 08:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 B2 — lần đọc cuối là lần duy nhất Open Kế Toán trả mật khẩu ban đầu → giữ mã hoá ngay (relay.py)
+		owner = owner_from_result(result) if job.kind == "provision" else None
+		if owner:
+			keep_owner(job, owner)
 		job.db_set({"steps": json.dumps(result.get("steps") or [], ensure_ascii=False, indent=1), "status": result["status"]})
 		if result["status"] != "done":
 			err = result.get("error") or {}
@@ -87,18 +97,46 @@ def _create_body(site) -> dict:
 	}
 	if cust.external_ref:
 		body["externalRef"] = cust.external_ref
+	# [2026-11-22 08:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 B2 — nạp dữ liệu mẫu khi khách xin (bizcity-web luôn gửi sample = 1, D02-8)
+	if site.get("sample"):
+		body["sample"] = True
 	return body
 
 
-def _poll(client, remote_job_id: str, every: int) -> dict:
-	deadline = time.monotonic() + POLL_TIMEOUT
-	while True:
-		job = client.get_job(remote_job_id)
-		if job.get("status") in ("done", "failed"):
-			return job
-		if time.monotonic() > deadline:
-			raise ProvisioningError("JOB_TIMEOUT", 0, f"việc {remote_job_id} quá {POLL_TIMEOUT} giây")
-		time.sleep(every)
+# [2026-11-22 08:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 B2 — giữ / trao / xoá mật khẩu ban đầu. Mật khẩu nằm ở bảng __Auth của Frappe (mã hoá), không ở cột, không ở nhật ký.
+def keep_owner(job, owner: tuple[str, str]) -> None:
+	from frappe.utils.password import set_encrypted_password
+
+	set_encrypted_password(JOB, job.name, owner[1], "owner_password")
+	job.db_set({"owner_email": owner[0], "owner_password": "*" * 8, "owner_kept_at": now_datetime()}, update_modified=False)
+
+
+def take_owner(job_name: str) -> tuple[str, str] | None:
+	"""Trao mật khẩu ban đầu đúng MỘT lần rồi xoá. Gọi từ api.job_status sau khi đã kiểm external_ref."""
+	from frappe.utils.password import get_decrypted_password, remove_encrypted_password
+
+	row = frappe.db.get_value(JOB, job_name, ["owner_email", "owner_delivered_at"], as_dict=True)
+	if not row or row.owner_delivered_at:
+		return None
+	pwd = get_decrypted_password(JOB, job_name, "owner_password", raise_exception=False)
+	if not pwd:
+		return None
+	remove_encrypted_password(JOB, job_name, "owner_password")
+	frappe.db.set_value(JOB, job_name, {"owner_password": None, "owner_delivered_at": now_datetime()}, update_modified=False)
+	frappe.db.commit()
+	return row.owner_email or "", pwd
+
+
+def purge_owner_passwords() -> None:
+	"""Việc mỗi giờ: xoá mật khẩu ban đầu không ai nhận sau OWNER_KEEP_HOURS giờ."""
+	from frappe.utils import add_to_date
+	from frappe.utils.password import remove_encrypted_password
+
+	cutoff = add_to_date(now_datetime(), hours=-OWNER_KEEP_HOURS)
+	for name in frappe.get_all(JOB, filters={"owner_kept_at": ["<", cutoff], "owner_delivered_at": ["is", "not set"], "owner_password": ["is", "set"]}, pluck="name"):
+		remove_encrypted_password(JOB, name, "owner_password")
+		frappe.db.set_value(JOB, name, {"owner_password": None}, update_modified=False)
+	frappe.db.commit()
 
 
 def refresh(site, remote: dict) -> None:

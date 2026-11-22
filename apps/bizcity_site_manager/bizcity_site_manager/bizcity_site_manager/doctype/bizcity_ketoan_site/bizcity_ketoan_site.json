@@ -11,6 +11,7 @@
   "root_domain",
   "domain",
   "customer",
+  "sample",
   "status",
   "license_status",
   "sec_remote",
@@ -52,6 +53,14 @@
    "label": "Khách hàng",
    "reqd": 1,
    "options": "Bizcity Site Customer"
+  },
+  {
+   "fieldname": "sample",
+   "fieldtype": "Check",
+   "label": "Nạp dữ liệu mẫu",
+   "default": "0",
+   "read_only": 1,
+   "description": "Gửi sample = true sang Provisioning API khi tạo (bizcity-web D02-8)."
   },
   {
    "fieldname": "status",
@@ -121,7 +130,7 @@
   }
  ],
  "links": [],
- "modified": "2026-11-21 22:48:00.000000",
+ "modified": "2026-11-22 20:05:00.000000",
  "modified_by": "Administrator",
  "module": "Bizcity Site Manager",
  "name": "Bizcity Ketoan Site",

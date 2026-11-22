@@ -10,5 +10,6 @@ app_license = "GPL-2.0-or-later"
 required_apps = ["frappe"]
 
 scheduler_events = {
-	"hourly": ["bizcity_site_manager.site_manager.sync_all"],
+	# [2026-11-22 08:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 B2 — xoá mật khẩu ban đầu không ai nhận sau 24 giờ
+	"hourly": ["bizcity_site_manager.site_manager.sync_all", "bizcity_site_manager.site_manager.purge_owner_passwords"],
 }

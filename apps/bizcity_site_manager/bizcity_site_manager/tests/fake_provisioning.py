@@ -79,6 +79,9 @@ def _route(state: FakeState, method: str, p: list[str], body: dict[str, Any]) ->
             "domains": [{"domain": domain, "primary": True}], "schemaVersion": None, "appVersion": "0.39.0",
             "externalRef": body.get("externalRef"), "license": {"status": "missing"}, "lastBackupAt": None,
         }
+        # [2026-11-22 08:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 B2 — giữ email chủ + sample để việc provision trả bước và owner một lần như hợp đồng (B5a)
+        state.sites[site_id]["_owner_email"] = str((body.get("owner") or {}).get("email", ""))
+        state.sites[site_id]["sample"] = bool(body.get("sample"))
         return 202, {"jobId": _new_job(state, site_id, "provision"), "siteId": site_id}
     if len(p) == 2 and p[0] == "jobs" and method == "GET":
         job = state.jobs.get(p[1])
@@ -99,7 +102,16 @@ def _route(state: FakeState, method: str, p: list[str], body: dict[str, Any]) ->
                     site["lastBackupAt"] = "2026-11-21T22:00:00+07:00"
                 elif job["kind"] == "delete":
                     site["status"] = "deleted"
-        return 200, {k: v for k, v in job.items() if k != "polls"}
+        out = {k: v for k, v in job.items() if k not in ("polls", "_owner_sent")}
+        # [2026-11-22 08:05 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 B2 — bước theo hợp đồng; mật khẩu ban đầu chỉ ở lần đọc đầu tiên sau khi xong
+        if job["kind"] == "provision":
+            keys = ("validate", "create_database", "seed_owner", "activate")
+            n = 4 if job["status"] == "done" else min(job["polls"], 3)
+            out["steps"] = [{"key": k, "status": "done" if i < n else ("running" if i == n else "pending")} for i, k in enumerate(keys)]
+            if job["status"] == "done" and not job.get("_owner_sent"):
+                job["_owner_sent"] = True
+                out["owner"] = {"email": state.sites[job["siteId"]]["_owner_email"], "initialPassword": "Pw-" + uuid.uuid4().hex[:10]}
+        return 200, out
     if len(p) >= 2 and p[0] == "sites":
         site = state.sites.get(p[1])
         if not site:
