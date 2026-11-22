@@ -26,7 +26,7 @@ Host github-open-setup
   IdentityFile /root/.ssh/open-setup-deploy
   IdentitiesOnly yes
 EOF
-git clone git@github-open-setup:hoanganh8389/bizcity-open-setup.git /opt/open-setup
+git clone https://github.com/hoanganh8389/bizcity-open-setup.git /opt/open-setup   # repo công khai từ 2026-11-22 — không cần khoá
 cd /opt/open-setup && git log --oneline -1
 ```
 
@@ -48,10 +48,10 @@ docker run --rm --entrypoint bash $TAG -c "cat /home/frappe/frappe-bench/sites/a
 
 ```bash
 DC="docker compose -p erp -f /opt/frappe-gitops/erp.yaml"
-cp /opt/frappe-gitops/erp.yaml /opt/frappe-gitops/erp.yaml.bak-$(date +%Y%m%d%H%M)
+cp -f /opt/frappe-gitops/erp.yaml /opt/frappe-gitops/erp.yaml.bak-$(date +%Y%m%d%H%M)   # cp: root có alias cp -i
 sed -i "s#frappe/erpnext:v15.125.0#$TAG#g" /opt/frappe-gitops/erp.yaml
 grep -n "image:" /opt/frappe-gitops/erp.yaml          # backend, frontend, websocket, scheduler, queue-* phải là $TAG
-$DC up -d                                             # chỉ project erp; overlay2 busy → dừng, báo lại
+$DC up -d --pull never                               # chỉ project erp; image chỉ có trên máy (compose của frappe_docker đặt pull_policy: always → thiếu --pull never là đi kéo Docker Hub, "pull access denied"); overlay2 busy → dừng, báo lại <!-- [2026-11-22 11:30 PM Johnny Chu - Chu Hoàng Anh] W0-2 — gặp thật trên VPS -->
 $DC ps
 
 # volume sites đã có từ trước: thêm app vào apps.txt MỘT lần (có xuống dòng)
