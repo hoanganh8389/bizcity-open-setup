@@ -21,6 +21,8 @@ from dataclasses import dataclass
 from typing import Any, Callable
 
 CONTRACT = "bizcity_site_provisioning@1"
+# [2026-11-23 02:05 AM Johnny Chu - Chu Hoàng Anh] OPS-VPS — Cloudflare (Browser Integrity Check) chặn User-Agent mặc định "Python-urllib/3.x" bằng 403 error code 1010 trước khi tới Open Kế Toán (gặp thật: admin.openketoan.com qua Cloudflare). Gửi tên riêng.
+USER_AGENT = "bizcity-site-manager/0.1 (+https://github.com/hoanganh8389/bizcity-open-setup)"
 API_PREFIX = "/_sites/v1"
 
 SLUG_RE = re.compile(r"^[a-z][a-z0-9-]{2,29}$")
@@ -131,7 +133,7 @@ class ProvisioningClient:
     def _call(self, method: str, path: str, body: Any = None, idempotency_key: str | None = None) -> dict[str, Any]:
         if method != "GET" and not idempotency_key:
             raise ProvisioningError("IDEMPOTENCY_KEY_REQUIRED", 0, f"{method} {path} thiếu Idempotency-Key")
-        headers = {"Authorization": f"Bearer {self.key}", "Accept": "application/json", "X-Contract": CONTRACT}
+        headers = {"Authorization": f"Bearer {self.key}", "Accept": "application/json", "X-Contract": CONTRACT, "User-Agent": USER_AGENT}
         data = None
         if body is not None:
             data = json.dumps(body, ensure_ascii=False).encode("utf-8")
