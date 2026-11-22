@@ -30,6 +30,7 @@
 <!-- [2026-11-23 04:00 AM Johnny Chu - Chu Hoàng Anh] OKT-P-0 — nguyên tắc hai mô hình (81): thêm OKT-TOPO-8…11 (☐ 2, ⛔ 2); B001-C7 đổi phạm vi (không gỡ bộ kéo global) → 187 việc. -->
 <!-- [2026-11-23 05:00 AM Johnny Chu - Chu Hoàng Anh] Q-OKT-7 chủ chốt (a): mỗi blog một tenant, một khoá chung (khoá cài đặt). 82: ma trận cài đặt + sơ đồ + ping; thêm OKT-SET-1…4 (🟡 1, ⛔ 1, ☐ 2); OKT-TOPO-9 ⛔ → ☐, OKT-TOPO-11 ⛔ → ☐ (đổi nội dung); B001-C7 giữ việc gỡ → 191 việc (✅ 6 · 🟡 52 · ⛔ 19 · ☐ 114). -->
 <!-- [2026-11-23 05:40 AM Johnny Chu - Chu Hoàng Anh] P-0 ý 3 (mỗi book là một pháp nhân, không pháp nhân theo tenant id) ghi ở 4 repo (open-ketoan #577, bridge #22, open-pos-backend #48, tệp này); Q-OKT-4 / 5 / 8 ✅ theo đề xuất; thêm OKT-P0-3 (☐) → 192 việc. -->
+<!-- [2026-11-23 07:00 AM Johnny Chu - Chu Hoàng Anh] OKT-TOPO-8 ☐ → 🟡 (bridge #23), OKT-TOPO-9 ☐ → 🟡 (bridge #24). -->
 <!-- [2026-11-22 05:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-C10 sang 🟡 (bridge #16: quầy không chờ kế toán, hàng chờ gửi bù được); scoreboard đo lại. -->
 <!-- [2026-11-22 04:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — lát dọc L0 → L7 chạy trên WordPress multisite thật (Docker okt-wp): S002-C0, C2, C6, C7 sang 🟡 (open-pos-backend #41); sửa lỗi chỉ WP thật bắt được (open-pos-backend #40, bridge #15, open-pos #26); scoreboard 52,2 %. -->
 <!-- [2026-11-22 02:55 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — OKT-SC-2 sang 🟡 (bridge #14, open-pos-backend #40); S001-MD3 đã merge (bf73d65, c4d8b38); scoreboard 44,6 %. -->
@@ -46,7 +47,7 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 192 | 6 | 52 | 19 | 115 | 17 |
+| 192 | 6 | 54 | 19 | 113 | 17 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
@@ -81,8 +82,8 @@
 | OKT-TOPO-4 | open-pos | P3: lớp bao ở open-pos (63 lời gọi; tệp D002-6 chỉ theo D002-7) _(I-0)_ | ☐ |  |
 | OKT-TOPO-5 | open-ketoan-bridge + open-pos-backend | P4: kiểu 1 "chuỗi" — SC-3 theo kiểu (cùng tenant, khác chi nhánh = xanh), bộ kéo C8 chế độ `network` vào bảng global thay `TGS_Acc_Catalog_Sync` | ☐ ⛔ Q-OKT-3 |  |
 | OKT-TOPO-6 | open-pos-backend + open-setup | P5: `ma-tran.sh --kieu=1|2|3`; ma trận 80 §5 (14 năng lực × 3 kiểu) xanh; thêm cột T1 / T2 / T3 vào ma trận tuân thủ 65 | ☐ |  |
-| OKT-TOPO-8 | open-ketoan-bridge | **Lỗi trái P-0 (82 B-8)**: mạng dùng khoá chung hôm nay dồn mọi site vào một tenant → SC-3 + `enforce()` tự tạm dừng **cả mạng** sau lượt tự kiểm đầu. Sửa: blog khoá chung (`legacy`) không bị tự tạm dừng vì SC-3, chỉ vàng + hướng dẫn chuyển khoá _(P-0, I-8)_ | ☐ **ưu tiên cao nhất** | [82 §4](82-CAI-DAT-KET-NOI-BA-MO-HINH.md) |
-| OKT-TOPO-9 | open-ketoan-bridge | 82 B-1 + B-5: `TGS_Acc_Profile::current()` = bizcity \| chain \| single (hằng `TGS_ACC_DEPLOYMENT` → option mạng → một site); SC-0b in mô hình; SC-1 theo nhánh; không đoán từ khoá | ☐ |  |
+| OKT-TOPO-8 | open-ketoan-bridge | **Lỗi trái P-0 (82 B-8)**: mạng dùng khoá chung hôm nay dồn mọi site vào một tenant → SC-3 + `enforce()` tự tạm dừng **cả mạng** sau lượt tự kiểm đầu. Sửa: blog khoá chung (`legacy`) không bị tự tạm dừng vì SC-3, chỉ vàng + hướng dẫn chuyển khoá _(P-0, I-8)_ | 🟡 2026-11-23 06:20 AM — tái hiện trên WP thật: main tự tạm dừng cả shop-a, shop-b sau một lượt tự kiểm hằng ngày (khoá chung); sau sửa: SC-3 vàng, không dừng; khoá riêng trùng tenant vẫn đỏ + dừng; selfcheck-test 62/62 (3 ca đỏ với mã cũ) | [bridge PR #23](https://github.com/hoanganh8389/open-ketoan-bridge/pull/23) |
+| OKT-TOPO-9 | open-ketoan-bridge | 82 B-1 + B-5: `TGS_Acc_Profile::current()` = bizcity \| chain \| single (hằng `TGS_ACC_DEPLOYMENT` → option mạng → một site); SC-0b in mô hình; SC-1 theo nhánh; không đoán từ khoá | 🟡 2026-11-23 07:00 AM — `TGS_Acc_Profile` (hằng → lựa chọn → một site), bỏ đoán theo khoá; SC-0b / SC-1 theo mô hình; `wp tgs-acc profile`; WP thật multisite + một site đúng nhánh; profile-test 11/11 | [bridge PR #24](https://github.com/hoanganh8389/open-ketoan-bridge/pull/24) |
 | OKT-TOPO-10 | open-ketoan | Sửa CANON R-OKT-CONN-2/3 ("khoá theo blog, không dùng một khoá cho cả mạng") theo P-0: đúng cho bizcity; selfhost khoá chung cả mạng là đường chính | ☐ (lane OK) |  |
 | OKT-TOPO-11 | open-setup | ADR I-1 / I-8: thêm nhánh "nhiều cửa hàng: open-ketoan đổi (bản cài, blog) → tenant" (I-1 giữ: mỗi blog một tenant) | ☐ |  |
 | OKT-SET-1 | open-ketoan | 82 K-1…K-5: **khoá cài đặt** (`installations`), bảng đăng ký `installation_blogs` (blog → tenant, duyệt), xác thực `X-OKT-Blog` → tenant + RLS, API đăng ký / trạng thái / ping _(Q-OKT-7 a)_ | ☐ (lane OK) | [82 §3](82-CAI-DAT-KET-NOI-BA-MO-HINH.md) |
