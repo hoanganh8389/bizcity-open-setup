@@ -18,6 +18,7 @@
 <!-- [2026-11-21 08:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-9, 10, 12 sang 🟡 (bridge PR #8); S002-5, 6 đã merge (bridge PR #7, 96a1f1c). -->
 
 <!-- [2026-11-22 06:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — chủ xác nhận máy chủ thật chạy PHP-FPM; thêm OKT-CD-1 (cầu dao, bridge #17) → 171 việc; OKT-I3 đã merge (c104e31). -->
+<!-- [2026-11-22 07:50 PM Johnny Chu - Chu Hoàng Anh] OKT-H2 — thêm dòng OKT-H2 (kho theo kết nối của blog, SC-7 kho mặc định, bridge #18) → 172 việc. -->
 <!-- [2026-11-22 05:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-C10 sang 🟡 (bridge #16: quầy không chờ kế toán, hàng chờ gửi bù được); scoreboard đo lại. -->
 <!-- [2026-11-22 04:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — lát dọc L0 → L7 chạy trên WordPress multisite thật (Docker okt-wp): S002-C0, C2, C6, C7 sang 🟡 (open-pos-backend #41); sửa lỗi chỉ WP thật bắt được (open-pos-backend #40, bridge #15, open-pos #26); scoreboard 52,2 %. -->
 <!-- [2026-11-22 02:55 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — OKT-SC-2 sang 🟡 (bridge #14, open-pos-backend #40); S001-MD3 đã merge (bf73d65, c4d8b38); scoreboard 44,6 %. -->
@@ -34,7 +35,7 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 171 | 6 | 41 | 17 | 107 | 16 |
+| 172 | 6 | 42 | 17 | 107 | 16 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
@@ -57,6 +58,7 @@
 | OKT-TR-1 | open-ketoan-bridge | Trace chiều bán của một phiếu ở Cổng kế toán: sổ POS → sự kiện → hàng chờ → chứng từ (mã trước / sau ánh xạ, mã băm) → nhật ký gửi → kế toán; chỉ đọc (mockup màn 3) _(bất biến I-0, I-6, I-8)_ | 🟡 2026-11-22 03:25 PM — tab Trace + link từ Nhật ký chứng từ; tests/trace-test.php 27/27; hình dữ liệu documents của okt-thu khớp; chưa xem trong WordPress | [bridge PR #15](https://github.com/hoanganh8389/open-ketoan-bridge/pull/15) |
 | OKT-TR-2 | open-pos-backend | Trace chiều danh mục: feed → bộ kéo C8 → bảng của blog → POS (mockup màn 3) _(I-2, I-4)_ | ☐ sau S001-C8 |  |
 | OKT-CD-1 | open-ketoan-bridge | Cầu dao theo blog: kế toán không tới được thì không gửi trong request (máy chủ thật PHP-FPM — chủ xác nhận 22/11: tiến trình FPM bị giữ tới khi hết giờ); gửi tức thời chờ 5 s; đệm kho theo kết nối của blog _(bất biến I-3, I-1)_ | 🟡 2026-11-22 06:50 PM — nginx + PHP-FPM (4 tiến trình), kế toán treo, 8 đơn cùng lúc: trang chủ 60,1 s → 5,3 s (đợt 1) → 0,18 s (cầu dao mở); phục hồi 24 nhóm / 1,3 s, 0 trùng; tests/breaker-test.php 11/11 | [bridge PR #17](https://github.com/hoanganh8389/open-ketoan-bridge/pull/17) |
+| OKT-H2 | open-ketoan-bridge | Kho WP ↔ kho của tenant: đơn POS không ghi kho → kế toán ghi vào kho mặc định của chi nhánh (đo thật); phân kho chép theo kết nối của TỪNG blog (cron cũ dùng khoá site chính); SC-7 kiểm chi nhánh có kho mặc định. Khi làm `tgs_catalog_source`: blog `local` không bị sync ghi đè phân kho _(bất biến I-1, I-2, I-8)_ | 🟡 2026-11-22 07:50 PM — okt-thu tạo KCN01 mặc định, bán 1 đơn HTTP thật: movement + bút toán mang KCN01; `wp tgs-acc selfcheck --shop=2` SC-7 🟢; tests/warehouse-sync-test.php 16/16, selfcheck-test 47/47. Còn: phiếu nhập seed lát dọc không lên kế toán (sửa trước H4) | [bridge PR #18](https://github.com/hoanganh8389/open-ketoan-bridge/pull/18) |
 
 ### PHASE-002 lát dọc — S0 — chuẩn bị
 
