@@ -15,7 +15,12 @@
   "attempts",
   "steps",
   "error_code",
-  "error_message"
+  "error_message",
+  "owner_section",
+  "owner_email",
+  "owner_password",
+  "owner_kept_at",
+  "owner_delivered_at"
  ],
  "fields": [
   {
@@ -83,10 +88,42 @@
    "fieldtype": "Small Text",
    "label": "Lỗi (cho người dùng)",
    "read_only": 1
+  },
+  {
+   "fieldname": "owner_section",
+   "fieldtype": "Section Break",
+   "label": "Mật khẩu ban đầu (chuyển tiếp một lần)",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "owner_email",
+   "fieldtype": "Data",
+   "label": "Email chủ site",
+   "read_only": 1
+  },
+  {
+   "fieldname": "owner_password",
+   "fieldtype": "Password",
+   "label": "Mật khẩu ban đầu",
+   "read_only": 1,
+   "hidden": 1,
+   "description": "Mã hoá ở __Auth; trao một lần qua api.job_status rồi xoá; quá 24 giờ chưa ai nhận cũng xoá."
+  },
+  {
+   "fieldname": "owner_kept_at",
+   "fieldtype": "Datetime",
+   "label": "Nhận từ Open Kế Toán lúc",
+   "read_only": 1
+  },
+  {
+   "fieldname": "owner_delivered_at",
+   "fieldtype": "Datetime",
+   "label": "Đã trao lúc",
+   "read_only": 1
   }
  ],
  "links": [],
- "modified": "2026-11-21 22:48:00.000000",
+ "modified": "2026-11-22 20:05:00.000000",
  "modified_by": "Administrator",
  "module": "Bizcity Site Manager",
  "name": "Bizcity Provision Job",
