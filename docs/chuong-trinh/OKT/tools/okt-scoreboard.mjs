@@ -45,7 +45,7 @@ const D = [
   ]],
   ['H', 'Tồn kho', [
     ['H1', 'Tồn ở WP tính từ sổ local; bán / nhập đúng (POS không đổi, I-0)', 3, 4, 4, 'tồn WP 10 → 9 sau một đơn, nhập qua đường nhập thật — lát dọc L0→L7 trên WP thật (open-pos-backend PR #41)', 'chưa đối chiếu với tồn kế toán', 'S002-C2'],
-    ['H2', 'Kho WP ↔ `warehouseCode` của tenant', 3, 2, 4, 'class-tgs-acc-warehouse-sync.php; đệm kho theo kết nối của blog (URL + khoá, I-1), rỗng vẫn là đệm, tải hỏng mở cầu dao (bridge PR #17)', 'tenant okt-thu 0 kho; chưa có bảng ánh xạ kho WP ↔ tenant; định khoản giá vốn khi chi nhánh không kho chưa kiểm', 'OKT-SC-1'],
+    ['H2', 'Kho WP ↔ `warehouseCode` của tenant', 3, 4, 4, 'warehouse-sync.php: phân kho chép theo kết nối của từng blog (I-1), SC-7 kiểm kho mặc định (bridge PR #18); đã chạy thật: đơn POS không ghi kho → kế toán ghi vào kho mặc định KCN01 (movement + bút toán)', 'chưa chạy ở site thật; Tính giá vốn tháng có kho chưa chạy (phiếu nhập lát dọc chưa lên kế toán); I-2: blog local chưa được miễn sync', 'OKT-SC-1'],
     ['H3', 'Nhập mua / trả NCC / chuyển kho / kiểm kê → chứng từ', 2, 2, 3, 'mapper `supplier_doc`, `adjust`, `gt-in/out`', 'ngoài lát dọc', 'PHASE-001'],
     ['H4', 'Đối chiếu tồn WP ↔ kế toán theo SKU', 2, 0, 3, 'kế toán có `/inventory/reconcile`', 'chưa có', 'OKT-SC-2'],
     ['H5', 'Thiếu tồn không chặn quầy; kế toán ghi cờ', 1, 1, 3, 'ADR D001-18, 28 §4', 'chưa kiểm', 'S002-C2'],
