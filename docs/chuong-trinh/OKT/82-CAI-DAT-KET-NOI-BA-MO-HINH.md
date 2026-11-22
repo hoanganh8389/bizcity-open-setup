@@ -16,6 +16,8 @@ Cả ba mô hình **cùng một mô hình dữ liệu: một blog = một tenant
 | Blog → tenant | khoá của blog → tenant (như hôm nay) | open-ketoan tra **bảng đăng ký** (bản cài, blog) → tenant | khoá → tenant |
 | Sổ | mỗi cửa hàng một sổ | mỗi cửa hàng một sổ, **cùng một máy kế toán** | một sổ |
 
+**Pháp nhân (P-0 ý 3):** mỗi sổ (book) là một pháp nhân; không có pháp nhân theo tenant id. Màn Cài đặt, sơ đồ, màn Kết nối open-pos hiện **tên / mã số thuế của sổ** khi nói về pháp nhân; mã tenant chỉ hiện như mã kỹ thuật.
+
 Vì dữ liệu giống nhau, mọi thứ đã làm theo "một blog một tenant" giữ nguyên: I-1, SC-3 (hai blog cùng tenant = đỏ), danh mục theo blog (`local`), bộ kéo C8 theo blog, đối chiếu H4, docKey `btsoft:{blog}:…`.
 
 ## 1. Ba câu hỏi của chủ

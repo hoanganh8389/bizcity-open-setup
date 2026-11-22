@@ -29,6 +29,7 @@
 <!-- [2026-11-23 03:30 AM Johnny Chu - Chu Hoàng Anh] Q-OKT-6 chủ chốt: mỗi chủ shop có tenant + API key riêng → OKT-TOPO-7 huỷ → 183 việc. -->
 <!-- [2026-11-23 04:00 AM Johnny Chu - Chu Hoàng Anh] OKT-P-0 — nguyên tắc hai mô hình (81): thêm OKT-TOPO-8…11 (☐ 2, ⛔ 2); B001-C7 đổi phạm vi (không gỡ bộ kéo global) → 187 việc. -->
 <!-- [2026-11-23 05:00 AM Johnny Chu - Chu Hoàng Anh] Q-OKT-7 chủ chốt (a): mỗi blog một tenant, một khoá chung (khoá cài đặt). 82: ma trận cài đặt + sơ đồ + ping; thêm OKT-SET-1…4 (🟡 1, ⛔ 1, ☐ 2); OKT-TOPO-9 ⛔ → ☐, OKT-TOPO-11 ⛔ → ☐ (đổi nội dung); B001-C7 giữ việc gỡ → 191 việc (✅ 6 · 🟡 52 · ⛔ 19 · ☐ 114). -->
+<!-- [2026-11-23 05:40 AM Johnny Chu - Chu Hoàng Anh] P-0 ý 3 (mỗi book là một pháp nhân, không pháp nhân theo tenant id) ghi ở 4 repo (open-ketoan #577, bridge #22, open-pos-backend #48, tệp này); Q-OKT-4 / 5 / 8 ✅ theo đề xuất; thêm OKT-P0-3 (☐) → 192 việc. -->
 <!-- [2026-11-22 05:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-C10 sang 🟡 (bridge #16: quầy không chờ kế toán, hàng chờ gửi bù được); scoreboard đo lại. -->
 <!-- [2026-11-22 04:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — lát dọc L0 → L7 chạy trên WordPress multisite thật (Docker okt-wp): S002-C0, C2, C6, C7 sang 🟡 (open-pos-backend #41); sửa lỗi chỉ WP thật bắt được (open-pos-backend #40, bridge #15, open-pos #26); scoreboard 52,2 %. -->
 <!-- [2026-11-22 02:55 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — OKT-SC-2 sang 🟡 (bridge #14, open-pos-backend #40); S001-MD3 đã merge (bf73d65, c4d8b38); scoreboard 44,6 %. -->
@@ -45,7 +46,7 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 191 | 6 | 52 | 19 | 114 | 17 |
+| 192 | 6 | 52 | 19 | 115 | 17 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
@@ -88,6 +89,7 @@
 | OKT-SET-2 | open-ketoan-bridge | 82 B-3, B-4, B-6: client theo nhánh (khoá cài đặt + `X-OKT-Blog`), đăng ký cửa hàng, `BLOG_NOT_LINKED` → xếp hàng, ping 5 phút theo nhánh | ☐ ⛔ OKT-SET-1 |  |
 | OKT-SET-3 | open-ketoan-bridge + open-ketoan | 82 B-2, B-7, K-6: màn **Cài đặt** (ma trận ba lựa chọn, khoá theo môi trường), màn **Sơ đồ kết nối** (ping từng site, từng máy), màn open-ketoan **Kết nối open-pos** (blog, trạng thái, ping, duyệt) — theo mockup `mockups/okt-cai-dat-ket-noi.html` | 🟡 2026-11-23 05:00 AM — mockup 4 tab | [mockup](mockups/okt-cai-dat-ket-noi.html) |
 | OKT-SET-4 | open-pos-backend + open-setup | 82 §5: ma trận kiểm thử ba mô hình (9 ca × 3) chạy thật, `ma-tran.sh --mo-hinh=bizcity\|chain\|single` | ☐ |  |
+| OKT-P0-3 | open-ketoan | P-0 ý 3 "mỗi book là một pháp nhân, không có pháp nhân theo tenant id": hồ sơ kế toán (`accounting_profiles`, loại pháp nhân) hôm nay khoá theo `tenant_id` → chuyển sang khoá theo **sổ (book)**; tên / MST pháp nhân lấy từ sổ, không từ tenant _(P-0)_ | ☐ (lane OK) | open-ketoan #577 |
 
 ### PHASE-002 lát dọc — S0 — chuẩn bị
 
