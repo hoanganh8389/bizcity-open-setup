@@ -128,3 +128,22 @@ class RelayShapeTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# [2026-11-23 02:05 AM Johnny Chu - Chu Hoàng Anh] OPS-VPS — Cloudflare chặn "Python-urllib/…" (403, error code 1010): mọi yêu cầu phải mang User-Agent riêng
+class UserAgentTest(unittest.TestCase):
+    def test_moi_yeu_cau_mang_user_agent_rieng(self) -> None:
+        from bizcity_site_manager.provisioning import USER_AGENT
+
+        seen: list[str | None] = []
+
+        def transport(req, timeout):  # noqa: ANN001 — ký hiệu của Transport
+            seen.append(req.get_header("User-agent"))
+            return 200, b'{"contract": "bizcity_site_provisioning@1"}'
+
+        c = ProvisioningClient("https://admin.openketoan.test", KEY, transport=transport)
+        c.health()
+        c.create_site({"slug": "anphat-ua", "domain": "anphat-ua.openketoan.test", "owner": {"email": "a@b.vn"}}, uuid.uuid4().hex)
+        self.assertEqual(seen, [USER_AGENT, USER_AGENT])
+        self.assertTrue(USER_AGENT.startswith("bizcity-site-manager/"))
+        self.assertNotIn("Python-urllib", USER_AGENT)
