@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Trace dòng chảy OKT</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+a{color:#2D5BD7}a:hover{color:#1F44A8}
+button{font:inherit}
+</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #14161B; background: #F6F7F9; min-height: 100vh">
+<div style="max-width: 1360px; margin: 0 auto; padding: 40px 32px 64px; display: flex; flex-direction: column; gap: 24px">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5A6170">Trace · dòng chảy qua lại</div>
+<h1 style="margin: 0; font-family: 'Space Grotesk', Inter, sans-serif; font-size: 34px; line-height: 1.15; font-weight: 700">{{dirTitle}}</h1>
+<div style="font-size: 15px; color: #5A6170">{{dirSub}}</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px" role="group" aria-label="Chọn chiều dòng chảy">
+<sc-for list="{{dirs}}" as="d" hint-placeholder-count="2">
+<button type="button" onClick="{{d.pick}}" style="{{d.style}}">{{d.label}}</button>
+</sc-for>
+</div>
+</header>
+
+<section style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 22px 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 13px; color: #5A6170">
+<span style="font-weight: 600; color: #14161B">Các chặng — bấm một chặng để xem vào / ra / hỏng thì ai thấy</span>
+<span>{{legend}}</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px">
+<sc-for list="{{stages}}" as="s" hint-placeholder-count="9">
+<button type="button" onClick="{{s.pick}}" style="{{s.card}}">
+<span style="display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 6px">
+<span style="font-family: 'Space Grotesk', Inter, sans-serif; font-weight: 700; font-size: 13px; color: #5A6170">{{s.n}} {{s.arrow}}</span>
+<span style="{{s.badge}}">{{s.levelLabel}}</span>
+</span>
+<span style="font-size: 15px; font-weight: 700; line-height: 1.3; text-align: left">{{s.name}}</span>
+<span style="font-size: 12px; color: #5A6170; text-align: left">{{s.repo}}</span>
+<span style="font-size: 12px; color: #3A404C; text-align: left; line-height: 1.4">{{s.one}}</span>
+</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: #3A404C">
+<span>→ chảy đi</span><span>← chảy về (trạng thái / dữ liệu quay lại)</span><span>↺ vòng lặp</span>
+</div>
+</section>
+
+<section style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 style="margin: 0; font-family: 'Space Grotesk', Inter, sans-serif; font-size: 22px">{{sel.n}} · {{sel.name}}</h2>
+<span style="{{sel.badge}}">{{sel.levelLabel}}</span>
+</div>
+<div style="font-size: 13px; color: #5A6170">{{sel.repo}} · bất biến {{sel.inv}}</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px">
+<div style="background: #F6F7F9; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; font-weight: 700; color: #5A6170; text-transform: uppercase; letter-spacing: 0.04em">Vào</span>
+<span style="font-size: 14px; line-height: 1.5">{{sel.input}}</span>
+</div>
+<div style="background: #F6F7F9; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; font-weight: 700; color: #5A6170; text-transform: uppercase; letter-spacing: 0.04em">Ra</span>
+<span style="font-size: 14px; line-height: 1.5">{{sel.output}}</span>
+</div>
+<div style="background: #FBE7E5; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; font-weight: 700; color: #8E1F18; text-transform: uppercase; letter-spacing: 0.04em">Hỏng thì</span>
+<span style="font-size: 14px; line-height: 1.5; color: #4A0F0B">{{sel.fail}}</span>
+</div>
+<div style="background: #EEF2FC; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; font-weight: 700; color: #1F44A8; text-transform: uppercase; letter-spacing: 0.04em">Trace ghi lại</span>
+<span style="font-size: 14px; line-height: 1.5; color: #14234D">{{sel.trace}}</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 13px; font-weight: 700">Bằng chứng / việc</span>
+<span style="font-size: 14px; line-height: 1.5; color: #3A404C">{{sel.ev}}</span>
+</div>
+</div>
+
+<div style="flex: 1 1 380px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-family: 'Space Grotesk', Inter, sans-serif; font-size: 20px">Dịch một dòng: sổ POS ↔ chứng từ</h2>
+<div style="font-size: 13px; color: #5A6170">Mã 900000001 (seed lát dọc), bán 1 Cái giá kệ 11.000 gồm VAT 10 %. Hình chứng từ đúng như mapper dựng; preflight trên okt-thu: 0 lỗi chặn.</div>
+<sc-for list="{{xlate}}" as="x" hint-placeholder-count="8">
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 20px minmax(0, 1fr); gap: 8px; align-items: start; padding: 8px 0; border-bottom: 1px solid #EDEFF3; font-size: 13px; line-height: 1.4">
+<span><b>{{x.pos}}</b><div style="color: #5A6170">{{x.posv}}</div></span>
+<span style="color: #5A6170; text-align: center">→</span>
+<span><code style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px">{{x.doc}}</code><div style="color: #5A6170">{{x.docv}}</div></span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #E3E6EC; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 style="margin: 0; font-family: 'Space Grotesk', Inter, sans-serif; font-size: 22px">Trace một chứng từ: <code style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 18px">btsoft:2:sale:[id phiếu 10]</code></h2>
+<span style="font-size: 13px; color: #A35F00; font-weight: 600">Minh hoạ dựng từ mã — lát dọc chưa chạy trong WordPress</span>
+</div>
+<div style="display: flex; flex-direction: column">
+<sc-for list="{{timeline}}" as="t" hint-placeholder-count="8">
+<div style="display: grid; grid-template-columns: 150px 28px minmax(0, 1fr) 160px; gap: 12px; align-items: start; padding: 10px 0; border-bottom: 1px solid #EDEFF3">
+<span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: #3A404C; padding-top: 4px">{{t.when}}</span>
+<span style="{{t.dot}}">{{t.glyph}}</span>
+<div style="display: flex; flex-direction: column; gap: 3px">
+<span style="font-size: 14px; font-weight: 600">{{t.what}}</span>
+<span style="font-size: 13px; color: #5A6170; line-height: 1.4">{{t.detail}}</span>
+</div>
+<span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: #1F44A8; padding-top: 4px; text-align: right">{{t.where}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<footer style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: #5A6170">
+<span>Nguồn: open-setup 70 §1, 75; PHASE-002 doc 10, 21; bridge mapper / pusher / events; preflight okt-thu 22/11</span>
+<span><a href="Main.dc.html">← Scoreboard</a> · <a href="Selfcheck.dc.html">← Tự kiểm</a></span>
+</footer>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1800}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { dir: 'sale', picked: 4 };
+  }
+  renderVals() {
+    const LV = {
+      run: ['Chạy thử ✓', 'background: #E6F4EC; color: #1E7A4A'],
+      test: ['Có test', 'background: #EEF2FC; color: #1F44A8'],
+      code: ['Có mã', 'background: #F0F1F4; color: #3A404C'],
+      keep: ['Giữ nguyên (I-0)', 'background: #F0F1F4; color: #3A404C'],
+      none: ['Chưa có', 'background: #FBE7E5; color: #B3261E'],
+    };
+    const SALE = [
+      ['→', 'Bán tại quầy', 'open-pos (POS cũ)', 'keep', 'I-0, I-3', 'Ghi phiếu 10 + xuất 2 + thu 7 trong một giao dịch; không gọi kế toán.',
+        'Thu ngân bán: hàng, SL, giá kệ gồm VAT, cách trả.', 'local_ledger (10) + phiếu xuất (2, dòng hàng) + phiếu thu (7), tự duyệt.',
+        'Không bao giờ do kế toán: quầy không gọi HTTP khi bán. Hỏng ở đây là lỗi POS, ngoài chương trình.', 'Sổ local của blog là gốc; ca bán chuẩn chụp lại để so (S002-16).',
+        'Danh mục D002-6 cấm sửa; census --check=I0 xanh trên open-pos main.'],
+      ['→', 'Sự kiện sau commit', 'open-ketoan-bridge · events', 'test', 'I-3', 'Ghi sự kiện JSONL, gửi ngay nếu bật realtime, lỗi thì xếp hàng.',
+        'Hook sau khi đơn đã ghi sổ.', 'Dòng sự kiện + nhóm gửi; tạm dừng thì vào hàng chờ (n = 0).',
+        'Kế toán tắt / tạm dừng: hàng chờ dài ra, quầy vẫn bán. Quá 7 ngày: mất khỏi tệp gửi lại (K4).', 'wp-content/…/events-YYYY-MM-DD.jsonl, retry-*.jsonl; queue_of(blog).',
+        'tests/status-test.php 21, tests/pause-cli-test.php 20 (bridge PR #8, #9).'],
+      ['→', 'Đọc sổ (chỉ đọc)', 'open-ketoan-bridge · source', 'test', 'I-0, I-1', 'Nguồn sổ POS (bật theo blog) hoặc tgs-bc-tk.',
+        'id phiếu đổi; blog.', 'Dòng bán / hoàn / thu theo khuôn VAT; tiền theo công thức POS.',
+        'Nguồn chưa bật → không dựng gì ("Chưa bật plugin nguồn").', 'sale_source(blog) trong wp tgs-acc status.',
+        'tests/source-pos-test.php 38 (bridge PR #6).'],
+      ['→', 'Dịch sang chứng từ', 'open-ketoan-bridge · mapper', 'test', 'I-4, I-5', 'sale, customer_payment, sale_return; docKey + version.',
+        'Dòng sổ.', 'Chứng từ: lines trước VAT + thuế, ĐVT gốc, mã thuế, mã phương thức, lý do, chi nhánh.',
+        'Mã tenant không có: QR-VTB-CT (suy từ nhãn), R04 (thuế 3,5 %), XTA → kế toán chặn.', 'Chứng từ đã dựng có trong JSON của preflight / selfcheck.',
+        'tests/branch-unit-test.php 17; thiếu bảng ánh xạ → S001-MD3.'],
+      ['→', 'Tự kiểm trước khi gửi', 'open-ketoan-bridge · selfcheck', 'run', 'I-8', 'SC-1…SC-11: đúng tenant, mã sẽ gửi ⊂ danh mục tenant, preflight mẫu.',
+        'Khoá của blog + N phiếu gần nhất.', 'pass / warn / fail từng phép; kết luận; JSON.',
+        'Sai / trùng tenant → tự tạm dừng gửi (OKT-SC-2). Mã thiếu → báo đỏ kèm mã.', 'tgs_acc_selfcheck_last (blog), tgs_acc_tenant_map (mạng).',
+        'tests/selfcheck-test.php 41/41; chạy thật okt-thu 3 ca (bridge PR #12).'],
+      ['→', 'Gửi', 'open-ketoan-bridge · pusher', 'test', 'I-1', 'POST documents/batch bằng client theo blog.',
+        'Chứng từ + Idempotency theo docKey/version.', 'Kết quả từng chứng từ: pending / unchanged / lỗi.',
+        'Khoá chung cả mạng gửi nhầm tenant (đã sửa S002-12). Mạng lỗi → thử lại 1/2/4…60 phút.', '{base}tgs_acc_push_log: doc_key, version, status, message, pushed_at.',
+        'for_blog() (bridge PR #8).'],
+      ['→', 'Kế toán nhận', 'open-ketoan · intake', 'run', 'I-7', 'Kiểm L1–L5; lưu sự việc; chế độ approve → pending.',
+        'Chứng từ.', 'pending, hoặc phát hiện chặn.',
+        'Sai lược đồ / tổng lệch / mã thiếu → phát hiện block.', 'Phát hiện + mã (IN-SHAPE-001, IN-SUM-001, IN-MD-004…).',
+        'Preflight okt-thu: 0 lỗi chặn (IN-CFG-001, IN-MD-004).'],
+      ['→', 'Định khoản', 'open-ketoan · posting', 'none', 'I-5', 'Duyệt → bút toán bán, thu tiền, giá vốn.',
+        'Chứng từ pending.', 'posted, hoặc remote_error.',
+        'Chi nhánh không có kho: giá vốn theo kho chưa kiểm. Tiền mặt dư làm tròn: chờ L7.', 'Trạng thái + lời kế toán trên chứng từ.',
+        'Chưa chạy (cần WP thử, ca L7).'],
+      ['←', 'Kéo trạng thái về', 'open-ketoan-bridge · status pull', 'test', 'I-6', 'Cron 5 phút hỏi documents?search=docKey.',
+        'docKey đang pending.', 'pending → posted / remote_error trong nhật ký gửi.',
+        'Pending quá 24 h → cảnh báo (SC-10). Tạm dừng → không hỏi.', 'push_log.status; wp tgs-acc status (năm số).',
+        'tests/status-test.php 21; /documents 200 trên okt-thu.'],
+    ];
+    const CAT = [
+      ['→', 'Kế toán sửa mã / giá', 'open-ketoan · danh mục', 'keep', 'I-2', 'Nguồn sự thật cho blog nguồn ketoan.',
+        'Người dùng kế toán.', 'Sản phẩm, ĐVT, bảng giá, thuế có updated_at.',
+        '—', 'Lịch sử sửa ở kế toán.', 'Có sẵn ở open-ketoan.'],
+      ['→', 'Feed', 'open-ketoan · catalog/feed', 'run', 'I-1', 'feed/meta, products, prices theo con trỏ.',
+        'since + khoá blog.', 'Trang dữ liệu + con trỏ next.',
+        'Con trỏ µs lệch (S001-K1) → kẹt lượt kéo.', 'Con trỏ lưu ở {p}tgs_acc_sync_state.',
+        'okt-thu: feed/meta, feed/products 200 với khoá shopa.'],
+      ['→', 'Bộ kéo theo blog', 'open-pos-backend · C8', 'none', 'I-2, I-4', 'Chỉ cột erp; tombstone; DM14; bảng giá theo chi nhánh.',
+        'Trang feed.', 'Ghi bảng danh mục của blog, đối chứng lệch 0.',
+        'Ghi rỗng đè barcode (81 F7); đổi SKU mất dòng nếu không giữ itemId.', 'Nhật ký lượt kéo + đối chứng (đếm, hash).',
+        'S001-C8, C8b, C8c chưa làm.'],
+      ['→', 'Bảng danh mục của blog', 'open-pos-backend · tgs_catalog_*', 'none', 'I-1, D002-7', 'Bảng theo prefix, cùng cột bảng global (Q001-18).',
+        'Dòng từ bộ kéo / CRUD khi local.', 'Hàng, nhóm, giá, ĐVT của riêng blog.',
+        'Hiện vẫn là bảng global: hai blog thấy hàng của nhau.', 'Cờ tgs_catalog_store global / local để lùi.',
+        'SW1-1 chưa làm.'],
+      ['→', 'POS đọc để bán', 'open-pos', 'keep', 'I-0', 'Đọc như cũ; chỉ đổi tên bảng qua tgs_catalog_table().',
+        'Bảng danh mục + tồn từ sổ.', 'Màn bán.',
+        'Đổi gì ngoài tên bảng → census --check=I0 đỏ.', 'Ca bán chuẩn trước / sau giống hệt.',
+        'D002-7; census xanh.'],
+      ['↺', 'Shop tạo mã mới', 'open-pos-backend · S001-C9', 'none', 'I-2', 'Blog ketoan: gửi lên PUT catalog/products?new=1, về qua feed rồi mới bán (Q001-16).',
+        'Form thêm mã.', 'Mã ở trạng thái sent → accepted / rejected.',
+        '409 ITEM-BLOCK-006 với mã trơn → điền ô trống (Q001-19, S001-C8b).', 'push_status theo SKU.',
+        'S001-C9 chưa làm.'],
+    ];
+    const dir = this.state.dir;
+    const list = dir === 'sale' ? SALE : CAT;
+    const picked = Math.min(this.state.picked, list.length - 1);
+    const badge = (lv) => 'display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; white-space: nowrap; ' + LV[lv][1];
+    const stages = list.map((s, i) => ({
+      n: String(i + 1).padStart(2, '0'), arrow: s[0], name: s[1], repo: s[2], one: s[5],
+      levelLabel: LV[s[3]][0], badge: badge(s[3]),
+      card: 'display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px; border-radius: 12px; cursor: pointer; min-height: 44px; color: #14161B; ' + (i === picked ? 'background: #EEF2FC; border: 2px solid #2D5BD7' : 'background: #FFFFFF; border: 1px solid #E3E6EC'),
+      pick: () => this.setState({ picked: i }),
+    }));
+    const s = list[picked];
+    const dirs = [['sale', 'Chiều bán: sổ → kế toán'], ['catalog', 'Chiều danh mục: kế toán → blog']].map((d) => ({
+      label: d[1], pick: () => this.setState({ dir: d[0], picked: d[0] === 'sale' ? 4 : 2 }),
+      style: 'padding: 10px 16px; min-height: 44px; border-radius: 10px; cursor: pointer; font-weight: 600; ' + (dir === d[0] ? 'background: #14161B; color: #FFFFFF; border: 1px solid #14161B' : 'background: #FFFFFF; color: #14161B; border: 1px solid #D5D9E1'),
+    }));
+    const xlate = [
+      ['Mã hàng', '900000001', 'lines[].sku', '"900000001"'],
+      ['ĐVT bán / SL', 'Cái × 1', 'lines[].unit · qty · unitRatio', '"Cái" · 1 · 1 (luôn ĐVT gốc)'],
+      ['Giá kệ (gồm VAT)', '11.000', 'lines[].unitPrice · amountBeforeTax', '10.000 · 10.000 (trước VAT)'],
+      ['Thuế suất', '10 %', 'lines[].taxCode · taxAmount', '"R10" · 1.000'],
+      ['Tổng đơn', '11.000', 'totals', 'beforeTax 10.000 · tax 1.000 · total 11.000'],
+      ['Chi nhánh của blog', 'tgs_acc_branch_code = CN01', 'branchCode', '"CN01" (có ở tenant)'],
+      ['Cách trả', 'Tiền mặt', 'customer_payment.methodCode', '"TM" (có) — QR nhãn ngân hàng → "QR-VTB-CT" (không có)'],
+      ['Phiếu bán (id loại 10)', '[id]', 'docKey · invoiceDocKey của phiếu thu', 'btsoft:2:sale:[id]'],
+    ].map((x) => ({ pos: x[0], posv: x[1], doc: x[2], docv: x[3] }));
+    const dot = (c) => 'display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 12px; font-size: 12px; font-weight: 700; ' + c;
+    const ok = 'background: #E6F4EC; color: #1E7A4A', wait = 'background: #FCF1DE; color: #8A4F00', back = 'background: #EEF2FC; color: #1F44A8';
+    const timeline = [
+      ['t0', '✓', ok, 'Đơn ghi sổ local', 'POS cũ ghi phiếu 10 + 2 + 7, tự duyệt; quầy xong việc.', 'local_ledger'],
+      ['t0 + mili giây', '✓', ok, 'Sự kiện ghi tệp', 'Sau commit; không chặn request bán (I-3).', 'events-*.jsonl'],
+      ['t0 + vài giây', '✓', ok, 'Dựng 2 chứng từ', 'sale + customer_payment (hai chứng từ trong lát dọc; gộp ở S002-17).', 'mapper'],
+      ['t0 + vài giây', '!', wait, 'Gửi documents/batch', 'Realtime bật: gửi ngay; lỗi mạng: vào hàng chờ, thử lại 1/2/4…60 phút, tối đa 7 ngày.', 'push_log'],
+      ['khi kế toán nhận', '✓', ok, 'pending × 2', 'Chế độ approve: chờ kế toán duyệt.', 'push_log.status'],
+      ['khi kế toán duyệt', '✓', ok, 'posted', 'Bút toán bán + thu tiền; phiếu thu khớp hoá đơn qua invoiceDocKey.', 'kế toán'],
+      ['≤ 5 phút sau', '←', back, 'Kéo trạng thái về', 'Cron hỏi documents?search=docKey → pending đổi sang posted / remote_error.', 'status pull'],
+      ['mỗi ngày 02:30', '←', back, 'Tự kiểm cặp blog → tenant', 'SC-1…SC-11; đỏ thì báo / tự tạm dừng (OKT-SC-2, chưa có).', 'selfcheck_last'],
+    ].map((t) => ({ when: t[0], glyph: t[1], dot: dot(t[2]), what: t[3], detail: t[4], where: t[5] }));
+    return {
+      dirs, stages, xlate, timeline,
+      dirTitle: dir === 'sale' ? 'Chiều bán: sổ POS → bridge → kế toán, trạng thái quay về' : 'Chiều danh mục: kế toán → feed → bộ kéo → blog → POS',
+      dirSub: dir === 'sale' ? 'Đơn ghi local trước, gửi sau commit (I-3); kế toán tắt thì xếp hàng; trạng thái kéo về mỗi 5 phút' : 'Chỉ cho blog nguồn ketoan (I-2); blog local tự quản danh mục; POS đọc như cũ (I-0)',
+      legend: 'Chạy thử ✓ · Có test · Có mã · Giữ nguyên (I-0) · Chưa có',
+      sel: { n: String(picked + 1).padStart(2, '0'), name: s[1], repo: s[2], inv: s[4], levelLabel: LV[s[3]][0], badge: badge(s[3]), input: s[6], output: s[7], fail: s[8], trace: s[9], ev: s[10] },
+    };
+  }
+}
+</script>
+</body>
+</html>

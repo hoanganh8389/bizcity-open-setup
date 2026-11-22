@@ -17,6 +17,7 @@
 
 <!-- [2026-11-21 08:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-9, 10, 12 sang 🟡 (bridge PR #8); S002-5, 6 đã merge (bridge PR #7, 96a1f1c). -->
 
+<!-- [2026-11-22 11:00 AM Johnny Chu - Chu Hoàng Anh] OKT-P0 — chủ: scoreboard kết nối (70) + luật tối thượng tự kiểm theo cặp blog → tenant qua API (I-8, đặc tả 75). -->
 <!-- [2026-11-22 09:30 AM Johnny Chu - Chu Hoàng Anh] OKT-P0 — chủ duyệt gợi ý cho mọi câu mở ("ok"): Q-OKT-2, Q002-1, Q002-2, Q001-16…20, 24, 25. Sinh việc S002-17, S002-18, S001-C8b, S001-C8c. -->
 <!-- [2026-11-22 09:00 AM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-0b sang 🟡 (ADR §3b, §5 + open-pos-backend PR #34, open-pos PR #24, bridge PR #11); S002-16 đã merge (57785ec). -->
 <!-- [2026-11-21 10:55 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-16 sang 🟡 (open-pos-backend PR #33); ghi merge open-pos #22, #23, open-pos-backend #32, bridge #10. -->
@@ -24,19 +25,30 @@
 <!-- [2026-11-21 09:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-2 (open-pos PR #22), S002-3 (open-pos-backend PR #32) sang 🟡; S002-8, 11, 13 đã merge (bridge PR #9, 1832956). -->
 <!-- [2026-11-21 09:05 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-8, 11, 13 sang 🟡 (bridge PR #9); S002-9, 10, 12 đã merge (bridge PR #8, 155c66e). -->
 
-## 0. Số đếm (cập nhật 22/11 09:30 AM)
+## 0. Số đếm (cập nhật 22/11 11:00 AM)
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 163 | 5 | 31 | 16 | 111 | 16 |
+| 168 | 6 | 32 | 17 | 113 | 16 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
-- **Năm việc ✅** đều là việc chủ trả lời / duyệt: S001-O1, O1b, O5, S002-0d, SW0-3.
+- **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
+- **22/11 11:00 AM:** thêm 5 việc tự kiểm OKT-SC-0…4 (luật I-8) → 168 việc còn hiệu lực. Điểm kết nối ở [70](70-SCOREBOARD-KET-NOI.md): **41,4 %** (11:50 AM, sau OKT-SC-1), pilot cần 72,5 %.
 - **22/11 09:30 AM:** thêm 4 việc sinh từ câu chủ chốt (S002-17, S002-18, S001-C8b, S001-C8c) → 163 việc còn hiệu lực.
 - **Chưa có việc mã nào ✅.** Việc mã gần nhất là B001-C1 (bridge PR #2, đã merge, chưa chạy trong WordPress thật) ở mức 🟡.
 - **Thứ tự làm** (chi tiết ở [10-ROADMAP](10-ROADMAP.md)): PHASE-002 lát dọc **trước**, rồi các mốc M1–M4 của PHASE-001.
 
 ## 1. Việc còn hiệu lực
+
+### OKT — Tự kiểm theo cặp blog → tenant (I-8, [75](75-LUAT-TU-KIEM.md))
+
+| ID | Repo | Việc | Trạng thái | Bằng chứng |
+|---|---|---|---|---|
+| OKT-SC-0 | open-setup | Luật I-8 vào ADR; đặc tả 75; scoreboard 70 + `tools/okt-scoreboard.mjs` | 🟡 2026-11-22 11:00 AM — PR này | 70, 75 |
+| OKT-SC-1 | open-ketoan-bridge | `wp tgs-acc selfcheck --blog=N\|--all`: SC-1…SC-11 qua API bằng khoá của blog; lưu `tgs_acc_tenant_code` khi admin xác nhận; kết quả `tgs_acc_selfcheck_last`; JSON cho `evidence/` _(bất biến I-8, I-1, I-4)_ | 🟡 2026-11-22 11:45 AM — mã + `tests/selfcheck-test.php` 41/41; `tests/selfcheck-live.php` chạy thật vào okt-thu: đơn TM xanh, đơn QR-VTB-CT + R04 + XTA đỏ đúng ba mã, khoá sai 401; chưa chạy trong WordPress | [bridge PR #12](https://github.com/hoanganh8389/open-ketoan-bridge/pull/12) |
+| OKT-SC-2 | open-ketoan-bridge | Cron 02:30 mọi blog có khoá; Cổng kế toán hiện kết luận; SC-2 / SC-3 đỏ → tự tạm dừng gửi; cảnh báo hàng chờ ≥ 6 ngày; giữ hàng chờ quá 7 ngày _(I-8, I-3, I-6)_ | ☐ |  |
+| OKT-SC-3 | cả ba repo mã | Mỗi repo một lệnh `selfcheck` ngoại tuyến (mọi test + `--check=I0`); ghi vào mẫu mô tả PR _(I-8, I-0)_ | ☐ |  |
+| OKT-SC-4 | open-ketoan | Đưa I-8 vào CANON (R-OKT-CONN-13) | ⛔ chủ |  |
 
 ### PHASE-002 lát dọc — S0 — chuẩn bị
 
@@ -51,7 +63,7 @@
 
 | ID | Repo | Việc | Trạng thái | Bằng chứng |
 |---|---|---|---|---|
-| S002-1 | open-ketoan | open-ketoan Docker + tenant `shopa`, khoá riêng _(bất biến I-1)_ | 🟡 2026-11-22 10:25 AM — stack `okt-thu` (127.0.0.1:8098, DB 5444) chạy trên máy dev, open-ketoan `71fa48e2`; khoá `shopa` đọc feed / documents; preflight phiếu bán 0 lỗi chặn (1 cảnh báo hồ sơ kế toán chưa khai). WordPress thử: chủ để sau | [open-pos-backend PR #38](https://github.com/hoanganh8389/open-pos-backend/pull/38) |
+| S002-1 | open-ketoan | open-ketoan Docker + tenant `shopa`, khoá riêng _(bất biến I-1)_ | ✅ 2026-11-22 11:00 AM (bằng chứng merge 78fa10f) — stack `okt-thu` (127.0.0.1:8098, DB 5444) chạy trên máy dev, open-ketoan `71fa48e2`; khoá `shopa` đọc feed / documents; preflight phiếu bán 0 lỗi chặn (1 cảnh báo hồ sơ kế toán chưa khai). WordPress thử: chủ để sau | [evidence/s002-1-okt-thu-2026-11-22.md](https://github.com/hoanganh8389/open-pos-backend/blob/main/docs/phases/PHASE-002-LAT-DOC-MOT-DON-BAN/evidence/s002-1-okt-thu-2026-11-22.md) |
 | S002-2 | open-pos | `tests/setup-lat-doc.php`: 2 blog, ba plugin, bỏ bật React, khoá theo blog, cron thật _(bất biến I-1)_ | 🟡 2026-11-21 09:15 PM — script dựng blog A (nối kế toán, nguồn sổ POS, CN01) + blog B (tự quản), tạo bảng theo blog, kiểm feed/meta; cron thật chạy tay theo hướng dẫn đầu file; chưa chạy trên LocalWP thật | [open-pos PR #22](https://github.com/hoanganh8389/open-pos/pull/22) (đã merge 8f882a6) |
 | S002-3 | open-pos-backend | `tools/lat-doc-seed.php`: nhóm, mã, bảng giá, gán blog, ĐVT, giá, nhập kho; chạy lại được _(bất biến —)_ | 🟡 2026-11-21 09:40 PM — seed blog A: nhóm LATDOC, SKU 900000001 (Cái, 10 %), bảng giá LATDOC gán blog A, 11.000 gồm VAT, nhập 10 qua create_import_ledger + duyệt; php -l sạch; chưa chạy trên LocalWP thật | [open-pos-backend PR #32](https://github.com/hoanganh8389/open-pos-backend/pull/32) (đã merge 93e477f) |
 | S002-4 | open-ketoan-bridge | `TGS_Acc_Source_Pos` (= B001-C10) + `ready()` + test _(bất biến I-3)_ | 🟡 2026-11-21 08:11 PM — mã + test (tests/source-pos-test.php, 38 phép kiểm đạt); nguồn sổ POS mặc định tắt, bật theo blog; chưa chạy trong WordPress thật | [bridge PR #6](https://github.com/hoanganh8389/open-ketoan-bridge/pull/6) (đã merge 4701eef) |

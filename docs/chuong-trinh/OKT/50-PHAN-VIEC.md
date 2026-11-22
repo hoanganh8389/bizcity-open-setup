@@ -30,6 +30,8 @@
 
 ## 4. Mẫu mô tả PR ở repo làm việc
 
+<!-- [2026-11-22 11:00 AM Johnny Chu - Chu Hoàng Anh] OKT-P0 — I-8: mỗi PR mã ghi kết quả tự kiểm ngoại tuyến (SC-0); PR chạm đường nối ghi thêm tự kiểm SC-1…SC-11 trên môi trường thử. -->
+
 ```
 ## Việc
 <mã việc ở open-setup OKT/40>, <một câu>
@@ -43,4 +45,8 @@ I-… (ADR-OKT-1) — kiểm bằng …
 
 ## Kiểm
 <lệnh test / ca chạy + kết quả>
+
+## Tự kiểm (I-8)
+SC-0: <lệnh selfcheck của repo> → <kết quả>
+SC-1…SC-11 (nếu chạm đường nối): wp tgs-acc selfcheck --blog=<id> --format=json → <link evidence>
 ```
