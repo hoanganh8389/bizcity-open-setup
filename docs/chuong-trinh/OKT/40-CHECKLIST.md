@@ -17,6 +17,7 @@
 
 <!-- [2026-11-21 08:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-9, 10, 12 sang 🟡 (bridge PR #8); S002-5, 6 đã merge (bridge PR #7, 96a1f1c). -->
 
+<!-- [2026-11-22 06:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — chủ xác nhận máy chủ thật chạy PHP-FPM; thêm OKT-CD-1 (cầu dao, bridge #17) → 171 việc; OKT-I3 đã merge (c104e31). -->
 <!-- [2026-11-22 05:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-C10 sang 🟡 (bridge #16: quầy không chờ kế toán, hàng chờ gửi bù được); scoreboard đo lại. -->
 <!-- [2026-11-22 04:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — lát dọc L0 → L7 chạy trên WordPress multisite thật (Docker okt-wp): S002-C0, C2, C6, C7 sang 🟡 (open-pos-backend #41); sửa lỗi chỉ WP thật bắt được (open-pos-backend #40, bridge #15, open-pos #26); scoreboard 52,2 %. -->
 <!-- [2026-11-22 02:55 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — OKT-SC-2 sang 🟡 (bridge #14, open-pos-backend #40); S001-MD3 đã merge (bf73d65, c4d8b38); scoreboard 44,6 %. -->
@@ -29,15 +30,15 @@
 <!-- [2026-11-21 09:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-2 (open-pos PR #22), S002-3 (open-pos-backend PR #32) sang 🟡; S002-8, 11, 13 đã merge (bridge PR #9, 1832956). -->
 <!-- [2026-11-21 09:05 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-8, 11, 13 sang 🟡 (bridge PR #9); S002-9, 10, 12 đã merge (bridge PR #8, 155c66e). -->
 
-## 0. Số đếm (cập nhật 22/11 05:50 PM)
+## 0. Số đếm (cập nhật 22/11 06:50 PM)
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 170 | 6 | 40 | 17 | 107 | 16 |
+| 171 | 6 | 41 | 17 | 107 | 16 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
-- **22/11 11:00 AM:** thêm 5 việc tự kiểm OKT-SC-0…4 (luật I-8) → 168 việc còn hiệu lực. **03:25 PM:** thêm OKT-TR-1, TR-2 (trace theo mockup màn 3) → 170. Điểm kết nối ở [70](70-SCOREBOARD-KET-NOI.md): **54,2 %** (05:50 PM, sau OKT-I3), pilot cần 72,5 %.
+- **22/11 11:00 AM:** thêm 5 việc tự kiểm OKT-SC-0…4 (luật I-8) → 168 việc còn hiệu lực. **03:25 PM:** thêm OKT-TR-1, TR-2 (trace theo mockup màn 3) → 170. Điểm kết nối ở [70](70-SCOREBOARD-KET-NOI.md): **54,7 %** (06:50 PM, sau OKT-CAU-DAO), pilot cần 72,5 %.
 - **22/11 09:30 AM:** thêm 4 việc sinh từ câu chủ chốt (S002-17, S002-18, S001-C8b, S001-C8c) → 163 việc còn hiệu lực.
 - **Chưa có việc mã nào ✅.** Việc mã gần nhất là B001-C1 (bridge PR #2, đã merge, chưa chạy trong WordPress thật) ở mức 🟡.
 - **Thứ tự làm** (chi tiết ở [10-ROADMAP](10-ROADMAP.md)): PHASE-002 lát dọc **trước**, rồi các mốc M1–M4 của PHASE-001.
@@ -55,6 +56,7 @@
 | OKT-SC-4 | open-ketoan | Đưa I-8 vào CANON (R-OKT-CONN-13) | ⛔ chủ |  |
 | OKT-TR-1 | open-ketoan-bridge | Trace chiều bán của một phiếu ở Cổng kế toán: sổ POS → sự kiện → hàng chờ → chứng từ (mã trước / sau ánh xạ, mã băm) → nhật ký gửi → kế toán; chỉ đọc (mockup màn 3) _(bất biến I-0, I-6, I-8)_ | 🟡 2026-11-22 03:25 PM — tab Trace + link từ Nhật ký chứng từ; tests/trace-test.php 27/27; hình dữ liệu documents của okt-thu khớp; chưa xem trong WordPress | [bridge PR #15](https://github.com/hoanganh8389/open-ketoan-bridge/pull/15) |
 | OKT-TR-2 | open-pos-backend | Trace chiều danh mục: feed → bộ kéo C8 → bảng của blog → POS (mockup màn 3) _(I-2, I-4)_ | ☐ sau S001-C8 |  |
+| OKT-CD-1 | open-ketoan-bridge | Cầu dao theo blog: kế toán không tới được thì không gửi trong request (máy chủ thật PHP-FPM — chủ xác nhận 22/11: tiến trình FPM bị giữ tới khi hết giờ); gửi tức thời chờ 5 s; đệm kho theo kết nối của blog _(bất biến I-3, I-1)_ | 🟡 2026-11-22 06:50 PM — nginx + PHP-FPM (4 tiến trình), kế toán treo, 8 đơn cùng lúc: trang chủ 60,1 s → 5,3 s (đợt 1) → 0,18 s (cầu dao mở); phục hồi 24 nhóm / 1,3 s, 0 trùng; tests/breaker-test.php 11/11 | [bridge PR #17](https://github.com/hoanganh8389/open-ketoan-bridge/pull/17) |
 
 ### PHASE-002 lát dọc — S0 — chuẩn bị
 
