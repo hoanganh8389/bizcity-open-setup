@@ -23,6 +23,8 @@ Không gắn banner thay thế nữa: tệp nào lệch với tệp này thì **
 1. **bizcity** — "Với hệ thống multisite của bizcity.vn, mỗi một blog trên hệ thống multisite của bizcity sẽ yêu cầu một phần mềm kế toán tương ứng. Việc này để demo cho khách mô hình hệ thống chạy như nào." → khoá **riêng từng blog**, mỗi blog một tenant.
 2. **selfhost** — "Bên ngoài hệ thống bizcity, người dùng cài selfhost, sẽ ưu tiên khóa chung cho cả mạng để người dùng có thể setup chuỗi nhiều cửa hàng dùng POS nhưng vẫn về 1 open-ketoan tương ứng mỗi tenant id = blog_id." → **khoá chung cả mạng** là đường chính.
 
+**Q-OKT-7 chốt (a), 23/11 05:00 AM:** selfhost nhiều cửa hàng = **một bản open-ketoan, một khoá chung, mỗi blog một tenant riêng** (tenant id ứng với blog_id), mỗi cửa hàng sổ riêng trên cùng một máy kế toán. Cả ba mô hình (bizcity · nhiều cửa hàng · một cửa hàng) cùng mô hình dữ liệu **một blog = một tenant**; khác nhau ở khoá và ở nơi đổi blog ra tenant — cấu hình bằng ma trận lựa chọn trong bridge, mã đi đúng nhánh lựa chọn ([82](82-CAI-DAT-KET-NOI-BA-MO-HINH.md)).
+
 P-0 đứng trên mọi bất biến bên dưới. Bất biến nào viết cho một mô hình (vd I-1 "một blog = một tenant") thì chỉ áp cho mô hình đó; đối chiếu từng chỗ ở [81](81-DOI-CHIEU-NGUYEN-TAC-TRIEN-KHAI.md). Hồ sơ triển khai phải **khai rõ** (`TGS_ACC_DEPLOYMENT`, Q-OKT-8), không suy từ khoá đang có. Mọi câu hỏi về sau trả lời qua năm câu tự hỏi ở 81 §6. Chỗ CANON R-OKT-CONN-2/3 trái P-0 ý 2 được sửa theo P-0 (OKT-TOPO-10).
 
 ## 1. Bối cảnh

@@ -2,7 +2,7 @@
 
 <!-- [2026-11-22 11:00 AM Johnny Chu - Chu Hoàng Anh] OKT-P0 — chủ yêu cầu scoreboard đánh giá kết nối open-pos (blog) qua open-pos-backend tới open-ketoan (tenant), từ góc kiến trúc / system builder / domain translator; chấm bằng bằng chứng (I-7), đo lại mỗi mốc. Luật tự kiểm ở 75. -->
 
-> **Điểm hiện tại (23/11/2026 04:00 AM): 57,6 %** · **mức cần cho pilot: 72,5 %** · thang 0–5 có trọng số, chấm theo bằng chứng (I-7).
+> **Điểm hiện tại (23/11/2026 05:00 AM): 57,6 %** · **mức cần cho pilot: 72,5 %** · thang 0–5 có trọng số, chấm theo bằng chứng (I-7).
 > Bảng này **không** giữ trạng thái việc (trạng thái ở [40](40-CHECKLIST.md)); nó đo **khả năng của đường nối** và trỏ việc sẽ nâng điểm. Đo lại sau mỗi mốc, ghi một dòng ở §6.
 
 ## 0. Thang điểm
@@ -83,7 +83,7 @@ Chiều **bán** (sổ → kế toán) đi qua bridge, **sau** khi đơn đã gh
 
 | # | Tiêu chí | Trọng số | Mức | Pilot | Đạt | Bằng chứng | Thiếu | Việc |
 |---|---|---|---|---|---|---|---|---|
-| A1 | Khoá + URL theo hồ sơ P-0 (bizcity: theo blog; selfhost: khoá chung cả mạng) | 4 | **4** | 4 | ✅ | setup-lat-doc gắn khoá + URL riêng blog A, blog B không khoá; feed/meta 200 trong WP — lát dọc L0→L7 trên WP thật (open-pos-backend PR #41) | chưa chạy trên shop thật | S002-C0 |
+| A1 | Khoá theo mô hình P-0: bizcity khoá theo blog · nhiều cửa hàng một khoá cài đặt · mỗi blog một tenant | 4 | **4** | 4 | ✅ | setup-lat-doc gắn khoá + URL riêng blog A, blog B không khoá; feed/meta 200 trong WP — lát dọc L0→L7 trên WP thật (open-pos-backend PR #41) | chưa chạy trên shop thật | S002-C0 |
 | A2 | Chứng minh được khoá của blog trỏ **đúng tenant** (gọi `/api/v1/tenant`, so mã lưu) | 3 | **4** | 4 | ✅ | wp tgs-acc selfcheck trong WP: SC-2 tenant shopa đúng mã đã xác nhận — lát dọc L0→L7 trên WP thật (open-pos-backend PR #41) | chưa chạy trên shop thật | OKT-SC-1 |
 | A3 | Một tenant ↔ một blog: phát hiện hai blog chung tenant (G12) | 3 | **3** | 4 | — | SC-3 bản đồ blog → tenant, test 41/41 (bridge PR #12) | chưa chạy trong WP; tự tạm dừng ở OKT-SC-2 | OKT-SC-1 |
 | A4 | Chi nhánh khai theo blog, mã sai thì báo, không tạo chi nhánh trống | 2 | **4** | 4 | ✅ | chứng từ mang CN01 (tgs_acc_branch_code), kế toán nhận + định khoản — lát dọc L0→L7 trên WP thật (open-pos-backend PR #41) | chưa chạy trên shop thật | S002-C0 |
@@ -202,5 +202,6 @@ Mỗi ca là một ca kiểm: lát dọc (L*), golden (G*) hoặc tự kiểm (S
 | 22/11/2026 07:50 PM | 55,8 % | 72,5 % | OKT-H2 (bridge #18): H2 lên 4 — đơn POS vào kho mặc định của chi nhánh (đo thật), phân kho theo kết nối của từng blog, SC-7 kiểm kho mặc định |
 | 22/11/2026 10:15 PM | 57,6 % | 72,5 % | OKT-H4 (bridge #20): H4 0 → 4 (đối chiếu chứng từ + tồn, SC-12); N1 3 → 4 (ca bán chuẩn đơn thật, ma trận 65); SC-10 báo cron site chính quá hạn |
 | 23/11/2026 04:00 AM | 57,6 % | 72,5 % | OKT-P-0: tiêu chí A1 viết lại theo hai hồ sơ (bizcity: khoá theo blog; selfhost: khoá chung cả mạng) — điểm không đổi |
+| 23/11/2026 05:00 AM | 57,6 % | 72,5 % | Q-OKT-7 = (a): tiêu chí A1 viết lại theo ba mô hình (bizcity khoá theo blog · nhiều cửa hàng một khoá cài đặt · mỗi blog một tenant) — điểm không đổi |
 
 Cách đo lại: sửa dữ liệu chấm trong `tools/okt-scoreboard.mjs` (cột mức + bằng chứng), chạy `node tools/okt-scoreboard.mjs`, dán bảng, thêm một dòng ở đây.

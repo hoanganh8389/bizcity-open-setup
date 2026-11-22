@@ -1,0 +1,307 @@
+<title>Cài đặt kết nối kế toán</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Bố cục: thanh tab trên cùng (giống màn quản trị WP), mỗi tab một cột nội dung rộng tối đa 1120px; sơ đồ SVG cuộn ngang trong khung riêng. */
+:root {
+  --bg: #f5f6f4; --panel: #ffffff; --ink: #1d2523; --muted: #5d6965; --line: #d9dfdc;
+  --accent: #1f6f78; --accent-soft: #e2f0f1;
+  --ok: #2e7d4f; --ok-soft: #e3f3e8; --warn: #a86a00; --warn-soft: #fbf0d9; --bad: #b3362d; --bad-soft: #f8e3e1;
+  --font-ui: "Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
+  --font-code: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121816; --panel: #1a2220; --ink: #e5ecea; --muted: #9aa8a3; --line: #2c3835;
+  --accent: #5fb3bb; --accent-soft: #1d3436; --ok: #6cc28f; --ok-soft: #183026; --warn: #e3ad4d; --warn-soft: #33290f; --bad: #ec7d73; --bad-soft: #3a1f1c; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #121816; --panel: #1a2220; --ink: #e5ecea; --muted: #9aa8a3; --line: #2c3835;
+  --accent: #5fb3bb; --accent-soft: #1d3436; --ok: #6cc28f; --ok-soft: #183026; --warn: #e3ad4d; --warn-soft: #33290f; --bad: #ec7d73; --bad-soft: #3a1f1c; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); font-size: 14px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 48px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+header.top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; padding-block: 20px 8px; }
+header.top h1 { font-size: 20px; margin: 0; font-weight: 700; text-wrap: balance; }
+header.top .crumb { color: var(--muted); font-size: 13px; }
+.sample { font-size: 12px; color: var(--warn); background: var(--warn-soft); border-radius: 4px; padding: 2px 8px; }
+nav.tabs { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid var(--line); margin-block: 8px 20px; }
+nav.tabs a { padding: 10px 14px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; font-weight: 500; }
+nav.tabs a[aria-current="page"] { color: var(--ink); border-color: var(--accent); }
+nav.tabs a:focus-visible, button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+section.view { display: grid; gap: 20px; }
+h2 { font-size: 16px; margin: 0; } h3 { font-size: 14px; margin: 0; }
+.step { display: grid; gap: 12px; }
+.step-head { display: flex; gap: 10px; align-items: baseline; }
+.step-no { font-family: var(--font-code); font-size: 12px; color: var(--accent); background: var(--accent-soft); border-radius: 4px; padding: 1px 7px; }
+.env { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-size: 12px; border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; color: var(--muted); background: var(--panel); }
+.chip b { color: var(--ink); font-weight: 600; }
+.opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+label.opt { display: grid; gap: 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px; cursor: pointer; }
+label.opt:has(input:checked) { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+label.opt.off { opacity: .55; cursor: not-allowed; }
+label.opt .t { display: flex; gap: 8px; align-items: center; font-weight: 600; }
+label.opt p { margin: 0; color: var(--muted); }
+label.opt .why { font-size: 12px; color: var(--warn); }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; display: grid; gap: 12px; min-width: 0; }
+.row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.field { display: grid; gap: 4px; }
+.field span { font-size: 12px; color: var(--muted); }
+.field input { font: inherit; padding: 7px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); min-width: 0; }
+.field input[readonly] { color: var(--muted); }
+code, .mono { font-family: var(--font-code); font-size: 12.5px; }
+.scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; color: var(--muted); font-weight: 600; letter-spacing: .02em; white-space: nowrap; }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; border-radius: 999px; padding: 1px 9px; white-space: nowrap; }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.ok { color: var(--ok); background: var(--ok-soft); } .warn { color: var(--warn); background: var(--warn-soft); } .bad { color: var(--bad); background: var(--bad-soft); }
+.note { border-left: 3px solid var(--accent); padding: 8px 12px; background: var(--accent-soft); border-radius: 0 6px 6px 0; }
+.note.w { border-color: var(--warn); background: var(--warn-soft); }
+button { font: inherit; font-weight: 600; border-radius: 6px; padding: 7px 14px; border: 1px solid var(--accent); background: var(--accent); color: var(--panel); cursor: pointer; }
+button.ghost { background: transparent; color: var(--accent); }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.muted { color: var(--muted); }
+ul.checks { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.diagram { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+.diagram svg { display: block; min-width: 760px; width: 100%; height: auto; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Cài đặt kết nối kế toán</h1>
+    <span class="crumb">Quản lý Shop → Cổng kế toán → Cài đặt (open-ketoan-bridge)</span>
+    <span class="sample">Mockup — số liệu là ví dụ</span>
+  </header>
+  <nav class="tabs" aria-label="Màn hình">
+    <a href="#cai-dat-ket-noi" data-v="cai-dat-ket-noi">1. Cài đặt</a>
+    <a href="#so-do" data-v="so-do">2. Sơ đồ kết nối</a>
+    <a href="#phia-ke-toan" data-v="phia-ke-toan">3. Phía open-ketoan</a>
+    <a href="#nhanh-ma" data-v="nhanh-ma">4. Ma trận nhánh mã</a>
+  </nav>
+
+  <!-- 1. CÀI ĐẶT -->
+  <section class="view" id="v-cai-dat-ket-noi">
+    <div class="step">
+      <div class="step-head"><span class="step-no">Bước 1</span><h2>Bạn dùng mô hình nào?</h2></div>
+      <div class="actions"><span class="muted">Xem như bản cài:</span>
+        <button type="button" class="ghost" data-env="chain">multisite tự cài</button>
+        <button type="button" class="ghost" data-env="single">WordPress một site</button>
+        <button type="button" class="ghost" data-env="bizcity">máy chủ bizcity.vn</button></div>
+      <div class="env" id="env"></div>
+      <div class="opts" role="radiogroup" aria-label="Mô hình triển khai">
+        <label class="opt" id="o-bizcity"><span class="t"><input type="radio" name="mode" id="mode-bizcity" value="bizcity"> Cửa hàng trên bizcity.vn</span>
+          <p>Mỗi cửa hàng (site) có <b>một phần mềm kế toán riêng</b>, khoá riêng từng site. Mô hình demo của bizcity.</p><span class="why" id="w-bizcity"></span></label>
+        <label class="opt" id="o-chain"><span class="t"><input type="radio" name="mode" id="mode-chain" value="chain"> Tôi có nhiều cửa hàng</span>
+          <p>Tự cài, multisite. <b>Một máy open-ketoan, một khoá cài đặt</b>; mỗi cửa hàng vẫn là <b>một sổ (tenant) riêng</b>, tenant ứng với blog.</p><span class="why" id="w-chain"></span></label>
+        <label class="opt" id="o-single"><span class="t"><input type="radio" name="mode" id="mode-single" value="single"> Tôi có một cửa hàng</span>
+          <p>Tự cài, WordPress một site. Một khoá, một sổ.</p><span class="why" id="w-single"></span></label>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><span class="step-no">Bước 2</span><h2 id="s2-title">Khai kết nối</h2></div>
+      <div id="s2"></div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><span class="step-no">Bước 3</span><h2>Kiểm rồi lưu</h2></div>
+      <div class="panel">
+        <p class="muted" style="margin:0">Lưu xong, bridge chạy tự kiểm cho từng cửa hàng. Luật kiểm theo mô hình đã chọn:</p>
+        <ul class="checks" id="s3"></ul>
+        <div class="actions"><button type="button" id="btn-check">Kiểm kết nối</button><button type="button" class="ghost">Lưu cài đặt</button><span class="muted" id="check-out"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. SƠ ĐỒ -->
+  <section class="view" id="v-so-do" hidden>
+    <div class="actions"><h2 style="margin-right:auto">Sơ đồ kết nối của bản cài này</h2><span class="muted" id="ping-at">Ping lúc 08:42:10</span><button type="button" id="btn-ping">Ping tất cả</button></div>
+    <div class="diagram" id="diagram" role="img" aria-label="Sơ đồ: các site WordPress nối qua bridge tới open-ketoan và tenant"></div>
+    <div class="legend"><span><span class="pill ok">dưới 300 ms</span></span><span><span class="pill warn">chậm / cầu dao mở / tạm dừng</span></span><span><span class="pill bad">không tới được / sai tenant</span></span></div>
+    <div class="panel"><h3>Từng cửa hàng</h3><div class="scroll"><table id="t-sites"></table></div></div>
+    <div class="panel"><h3>Từng máy open-ketoan</h3><div class="scroll"><table id="t-servers"></table></div></div>
+  </section>
+
+  <!-- 3. PHÍA OPEN-KETOAN -->
+  <section class="view" id="v-phia-ke-toan" hidden>
+    <div class="note">Màn này nằm ở <b>open-ketoan</b>: Hệ thống → Kết nối open-pos. Kế toán thấy cửa hàng nào đang nối, trạng thái, lần ping cuối. Bridge gửi ping 5 phút một lần.</div>
+    <div class="panel"><h3>Bản cài đang nối (khoá cài đặt)</h3><div class="scroll"><table id="t-inst"></table></div></div>
+    <div class="panel"><h3>Cửa hàng ↔ tenant</h3><div class="scroll"><table id="t-blogs"></table></div>
+      <p class="muted" style="margin:0">Cửa hàng mới đăng ký từ bridge hiện <b>Chờ duyệt</b>. Kế toán chọn tenant có sẵn hoặc tạo tenant mới rồi duyệt — bridge không tự tạo tenant.</p></div>
+  </section>
+
+  <!-- 4. MA TRẬN NHÁNH MÃ -->
+  <section class="view" id="v-nhanh-ma" hidden>
+    <div class="note">Mọi thành phần của bridge đọc <b>một</b> lựa chọn (<code>TGS_Acc_Profile::current()</code>) rồi đi đúng nhánh. Không đoán mô hình từ khoá đang có.</div>
+    <div class="panel"><div class="scroll"><table id="t-matrix"></table></div></div>
+  </section>
+</div>
+
+<script>
+const SITES = [
+  { id: 1, name: 'Site chính', host: 'okt.local', tenant: null, branch: null },
+  { id: 2, name: 'Shop A — Quận 1', host: 'shop-a.okt.local', tenant: 'shopa', branch: 'CN01' },
+  { id: 3, name: 'Shop B — Thủ Đức', host: 'shop-b.okt.local', tenant: 'shopb', branch: 'CN01' },
+  { id: 4, name: 'Shop C — Gò Vấp', host: 'shop-c.okt.local', tenant: null, branch: null },
+];
+const ENV = { multisite: true, sites: 4, deployment: null }; // ví dụ: multisite tự cài, chưa khai TGS_ACC_DEPLOYMENT
+let mode = 'chain';
+const ping = {}; SITES.forEach((s, i) => ping[s.id] = [212, 188, 0, 0][i]);
+const statusOf = { 1: 'none', 2: 'ok', 3: 'ok', 4: 'pending' };
+
+function pill(cls, txt) { return `<span class="pill ${cls}">${txt}</span>`; }
+function esc(s) { return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
+function renderEnv() {
+  document.getElementById('env').innerHTML =
+    `<span class="chip">WordPress: <b>${ENV.multisite ? 'multisite' : 'một site'}</b></span>` +
+    `<span class="chip">Số site: <b>${ENV.sites}</b></span>` +
+    `<span class="chip">TGS_ACC_DEPLOYMENT: <b>${ENV.deployment ?? '(chưa khai)'}</b></span>`;
+  const lock = { bizcity: '', chain: '', single: '' };
+  if (!ENV.multisite) { lock.bizcity = 'Cần multisite.'; lock.chain = 'Cần multisite (nhiều cửa hàng = nhiều site).'; }
+  else { lock.single = 'Bản cài này là multisite — chọn "nhiều cửa hàng".'; }
+  if (ENV.deployment === 'bizcity') { lock.chain = lock.single = 'Máy chủ bizcity.vn: hằng TGS_ACC_DEPLOYMENT = bizcity.'; }
+  for (const k of ['bizcity', 'chain', 'single']) {
+    const o = document.getElementById('o-' + k), r = document.getElementById('mode-' + k);
+    r.disabled = !!lock[k]; o.classList.toggle('off', !!lock[k]); document.getElementById('w-' + k).textContent = lock[k];
+    r.checked = mode === k;
+  }
+}
+
+function siteRows(cols) { return SITES.filter((s) => s.id !== 1 || mode === 'single').map(cols).join(''); }
+
+function renderStep2() {
+  const s2 = document.getElementById('s2'), t = document.getElementById('s2-title');
+  if (mode === 'bizcity') {
+    t.textContent = 'Khai khoá của TỪNG cửa hàng';
+    s2.innerHTML = `<div class="panel"><div class="note w">bizcity: mỗi site một khoá riêng do kế toán của site đó cấp. Không có khoá chung.</div>
+      <div class="scroll"><table><thead><tr><th>Blog</th><th>Cửa hàng</th><th>Địa chỉ open-ketoan</th><th>Khoá API</th><th>Tenant (đọc từ /tenant)</th><th>Trạng thái</th></tr></thead><tbody>
+      ${siteRows((s) => `<tr><td class="mono">#${s.id}</td><td>${esc(s.name)}</td><td class="mono">https://kt-${s.tenant ?? 'chua-co'}.bizcity.vn</td><td class="mono">${s.tenant ? 'kt_••••' + s.id + '9f' : '—'}</td><td class="mono">${s.tenant ?? '—'}</td><td>${s.tenant ? pill('ok', 'Đã nối') : pill('warn', 'Chưa khai')}</td></tr>`)}
+      </tbody></table></div></div>`;
+  } else if (mode === 'chain') {
+    t.textContent = 'Một máy open-ketoan, một khoá cài đặt';
+    s2.innerHTML = `<div class="panel"><div class="row">
+        <label class="field"><span>Địa chỉ open-ketoan</span><input id="f-url" value="https://ketoan.chuoi-cua-hang.vn"></label>
+        <label class="field"><span>Khoá cài đặt (do open-ketoan cấp cho bản cài này)</span><input id="f-key" value="okti_••••••••3a7c"></label>
+        <label class="field"><span>Mã bản cài (tự sinh, gửi kèm mọi lời gọi)</span><input id="f-inst" value="inst_01M8…QK4" readonly></label></div>
+      <div class="note">Mỗi cửa hàng vẫn là <b>một tenant riêng</b> (sổ riêng). Bridge gửi kèm <code>X-OKT-Blog</code>; open-ketoan đổi ra tenant theo bảng đăng ký. Không nhập khoá riêng từng cửa hàng ở mô hình này.</div>
+      <div class="scroll"><table><thead><tr><th>Blog</th><th>Cửa hàng</th><th>Tenant ở open-ketoan</th><th>Đăng ký</th><th>Ping</th><th></th></tr></thead><tbody>
+      ${siteRows((s) => { const st = statusOf[s.id]; return `<tr><td class="mono">#${s.id}</td><td>${esc(s.name)}</td><td class="mono">${s.tenant ?? '—'}</td>
+        <td>${st === 'ok' ? pill('ok', 'Đã nối') : st === 'pending' ? pill('warn', 'Chờ kế toán duyệt') : pill('bad', 'Chưa đăng ký')}</td>
+        <td class="mono">${st === 'ok' ? ping[s.id] + ' ms' : '—'}</td><td>${st === 'ok' ? '' : `<button type="button" class="ghost" data-reg="${s.id}">${st === 'pending' ? 'Nhắc duyệt' : 'Đăng ký'}</button>`}</td></tr>`; })}
+      </tbody></table></div></div>`;
+  } else {
+    t.textContent = 'Một cửa hàng, một khoá';
+    s2.innerHTML = `<div class="panel"><div class="row">
+      <label class="field"><span>Địa chỉ open-ketoan</span><input value="http://localhost:8088"></label>
+      <label class="field"><span>Khoá API</span><input value="kt_••••••••51e2"></label>
+      <label class="field"><span>Tenant (đọc từ /tenant)</span><input value="cuahang-minh" readonly></label></div>
+      <div class="note">Một site = một tenant. Blog luôn là #1, không cần đăng ký.</div></div>`;
+  }
+  s2.querySelectorAll('[data-reg]').forEach((b) => b.addEventListener('click', () => { statusOf[b.dataset.reg] = 'pending'; renderStep2(); }));
+}
+
+function renderStep3() {
+  const L = {
+    bizcity: ['SC-0b: mô hình bizcity (hằng TGS_ACC_DEPLOYMENT = bizcity).', 'SC-1: mỗi site phải có khoá riêng; khoá chung = vàng khi đang chuyển, đỏ sau mốc chuyển.', 'SC-2: tenant đọc từ khoá khớp tenant đã xác nhận của site.', 'SC-3: hai site cùng tenant = đỏ + tự tạm dừng gửi.'],
+    chain: ['SC-0b: mô hình nhiều cửa hàng (một khoá cài đặt).', 'SC-1: khoá cài đặt hợp lệ; mỗi site đã đăng ký ở open-ketoan.', 'SC-2: tenant open-ketoan trả cho blog khớp tenant đã xác nhận.', 'SC-3: hai site cùng tenant = đỏ + tự tạm dừng (mỗi cửa hàng một sổ).', 'Ping: mỗi site 5 phút một lần, open-ketoan thấy ở màn Kết nối open-pos.'],
+    single: ['SC-0b: mô hình một cửa hàng (WordPress một site).', 'SC-1: có khoá + URL.', 'SC-2: tenant khớp tenant đã xác nhận.', 'SC-3: không áp (một site).'],
+  }[mode];
+  document.getElementById('s3').innerHTML = L.map((x) => `<li>${x}</li>`).join('');
+}
+
+function renderDiagram() {
+  const shown = SITES.filter((s) => s.id !== 1 || mode === 'single').slice(0, mode === 'single' ? 1 : 4);
+  const h = Math.max(260, 70 + shown.length * 64);
+  const servers = mode === 'bizcity' ? shown.filter((s) => s.tenant).map((s) => ({ key: s.tenant, label: 'kt-' + s.tenant + '.bizcity.vn' })) : [{ key: 'one', label: mode === 'chain' ? 'ketoan.chuoi-cua-hang.vn' : 'localhost:8088' }];
+  const col = (ms, st) => st === 'bad' ? 'var(--bad)' : (st === 'warn' || ms > 300) ? 'var(--warn)' : 'var(--ok)';
+  let out = `<svg viewBox="0 0 900 ${h}" xmlns="http://www.w3.org/2000/svg" font-family="Be Vietnam Pro, system-ui, sans-serif" font-size="12">
+    <rect x="16" y="16" width="250" height="${h - 32}" rx="10" fill="var(--bg)" stroke="var(--line)"/>
+    <text x="30" y="38" fill="var(--muted)" font-weight="600">WordPress ${mode === 'single' ? '(một site)' : 'multisite'}</text>
+    <rect x="330" y="${h / 2 - 34}" width="170" height="68" rx="10" fill="var(--accent-soft)" stroke="var(--accent)"/>
+    <text x="415" y="${h / 2 - 6}" text-anchor="middle" fill="var(--ink)" font-weight="700">open-ketoan-bridge</text>
+    <text x="415" y="${h / 2 + 14}" text-anchor="middle" fill="var(--muted)">${mode === 'bizcity' ? 'khoá theo site' : mode === 'chain' ? 'khoá cài đặt + X-OKT-Blog' : 'một khoá'}</text>`;
+  shown.forEach((s, i) => {
+    const y = 64 + i * 64, st = mode !== 'chain' ? (s.tenant || mode === 'single' ? 'ok' : 'warn') : statusOf[s.id] === 'ok' ? 'ok' : statusOf[s.id] === 'pending' ? 'warn' : 'bad';
+    const ms = ping[s.id] || 0, c = col(ms, st);
+    out += `<rect x="30" y="${y}" width="222" height="46" rx="8" fill="var(--panel)" stroke="var(--line)"/>
+      <circle cx="46" cy="${y + 23}" r="5" fill="${c}"/>
+      <text x="58" y="${y + 19}" fill="var(--ink)" font-weight="600">#${mode === 'single' ? 1 : s.id} ${esc(s.name)}</text>
+      <text x="58" y="${y + 36}" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="11">${esc(mode === 'single' ? 'cuahang-minh.vn' : s.host)}</text>
+      <line x1="252" y1="${y + 23}" x2="330" y2="${h / 2}" stroke="${c}" stroke-width="1.6"/>
+      <text x="262" y="${y + 18}" fill="${c}" font-family="JetBrains Mono, monospace" font-size="11">${st === 'ok' ? ms + ' ms' : st === 'warn' ? 'chờ' : 'chưa'}</text>`;
+  });
+  const sh = (h - 32) / Math.max(1, servers.length);
+  servers.forEach((sv, i) => {
+    const y = 16 + i * sh + sh / 2 - 40;
+    out += `<rect x="600" y="${y}" width="284" height="80" rx="10" fill="var(--panel)" stroke="var(--line)"/>
+      <text x="614" y="${y + 22}" fill="var(--ink)" font-weight="700">open-ketoan</text>
+      <text x="614" y="${y + 40}" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="11">${esc(sv.label)}</text>
+      <text x="614" y="${y + 62}" fill="var(--muted)">tenant: ${mode === 'bizcity' ? esc(sv.key) : mode === 'chain' ? 'shopa · shopb · (chờ: shop C)' : 'cuahang-minh'}</text>
+      <line x1="500" y1="${h / 2}" x2="600" y2="${y + 40}" stroke="var(--ok)" stroke-width="1.6"/>`;
+  });
+  document.getElementById('diagram').innerHTML = out + '</svg>';
+  document.getElementById('t-sites').innerHTML = `<thead><tr><th>Blog</th><th>Cửa hàng</th><th>open-ketoan</th><th>Tenant</th><th>Ping</th><th>Tự kiểm</th><th>Hàng chờ</th></tr></thead><tbody>${
+    shown.map((s) => { const ok = mode === 'chain' ? statusOf[s.id] === 'ok' : (s.tenant || mode === 'single');
+      return `<tr><td class="mono">#${mode === 'single' ? 1 : s.id}</td><td>${esc(s.name)}</td><td class="mono">${mode === 'bizcity' ? 'kt-' + (s.tenant ?? '?') + '.bizcity.vn' : mode === 'chain' ? 'ketoan.chuoi-cua-hang.vn' : 'localhost:8088'}</td><td class="mono">${mode === 'single' ? 'cuahang-minh' : s.tenant ?? '—'}</td><td class="mono">${ok ? (ping[s.id] || 140) + ' ms' : '—'}</td><td>${ok ? pill('ok', 'xanh') : pill('warn', mode === 'chain' ? 'chờ đăng ký' : 'chưa khai')}</td><td class="mono">0</td></tr>`; }).join('')}</tbody>`;
+  document.getElementById('t-servers').innerHTML = `<thead><tr><th>open-ketoan</th><th>Phiên bản</th><th>Ping</th><th>Đồng hồ lệch</th><th>Số tenant nối</th></tr></thead><tbody>${
+    servers.map((sv) => `<tr><td class="mono">${esc(sv.label)}</td><td class="mono">1.42.0</td><td class="mono">96 ms</td><td class="mono">0 s</td><td class="mono">${mode === 'chain' ? '2 / 3' : 1}</td></tr>`).join('')}</tbody>`;
+}
+
+function renderKetoan() {
+  document.getElementById('t-inst').innerHTML = `<thead><tr><th>Mã bản cài</th><th>Site</th><th>Kiểu khoá</th><th>Cửa hàng</th><th>Ping cuối</th><th>Bridge</th></tr></thead><tbody>
+    <tr><td class="mono">inst_01M8…QK4</td><td class="mono">chuoi-cua-hang.vn</td><td>khoá cài đặt</td><td class="mono">3</td><td class="mono">08:42:10 · 96 ms</td><td class="mono">0.9.3</td></tr>
+    <tr><td class="mono">—</td><td class="mono">shop-x.bizcity.vn</td><td>khoá riêng của tenant</td><td class="mono">1</td><td class="mono">08:40:55 · 121 ms</td><td class="mono">0.9.3</td></tr></tbody>`;
+  document.getElementById('t-blogs').innerHTML = `<thead><tr><th>Bản cài</th><th>Blog</th><th>Cửa hàng</th><th>Tenant</th><th>Trạng thái</th><th>Ping cuối</th><th>Chờ định khoản</th><th></th></tr></thead><tbody>
+    <tr><td class="mono">inst_01M8…QK4</td><td class="mono">#2</td><td>Shop A — Quận 1</td><td class="mono">shopa</td><td>${pill('ok', 'Đang nối')}</td><td class="mono">08:42:10</td><td class="mono">0</td><td></td></tr>
+    <tr><td class="mono">inst_01M8…QK4</td><td class="mono">#3</td><td>Shop B — Thủ Đức</td><td class="mono">shopb</td><td>${pill('ok', 'Đang nối')}</td><td class="mono">08:42:10</td><td class="mono">3</td><td></td></tr>
+    <tr><td class="mono">inst_01M8…QK4</td><td class="mono">#4</td><td>Shop C — Gò Vấp</td><td class="mono">—</td><td>${pill('warn', 'Chờ duyệt')}</td><td class="mono">—</td><td class="mono">—</td><td><button type="button" class="ghost">Chọn / tạo tenant rồi duyệt</button></td></tr>
+    <tr><td class="mono">khoá riêng</td><td class="mono">#7</td><td>shop-x.bizcity.vn</td><td class="mono">shopx</td><td>${pill('warn', 'Ping trễ 26 phút')}</td><td class="mono">08:16:02</td><td class="mono">0</td><td></td></tr></tbody>`;
+}
+
+function renderMatrix() {
+  const rows = [
+    ['Ai chọn mô hình', 'hằng <code>TGS_ACC_DEPLOYMENT=bizcity</code> (máy chủ bizcity)', 'màn Cài đặt (lưu option mạng)', 'màn Cài đặt (tự nhận: một site)'],
+    ['Khoá', 'riêng từng blog (<code>key_for($blog)</code>)', 'một khoá cài đặt cho cả mạng', 'một khoá của site'],
+    ['Đổi blog → tenant', 'khoá của blog → tenant (như hôm nay)', 'open-ketoan: bảng đăng ký (bản cài, blog) → tenant; bridge gửi <code>X-OKT-Blog</code>', 'khoá → tenant'],
+    ['Đăng ký cửa hàng', 'kế toán cấp khoá cho từng tenant', 'bridge gửi đăng ký → kế toán chọn / tạo tenant → duyệt', 'không cần'],
+    ['Một blog = một tenant (I-1)', 'có', 'có (P-0 ý 2, Q-OKT-7 = a)', 'có'],
+    ['SC-1', 'khoá riêng; khoá chung vàng → đỏ', 'khoá cài đặt + blog đã đăng ký', 'có khoá + URL'],
+    ['SC-3 trùng tenant', 'đỏ + tự tạm dừng', 'đỏ + tự tạm dừng', 'không áp'],
+    ['Danh mục', '<code>local</code> — <code>{prefix}tgs_catalog_*</code>', '<code>local</code> — mỗi tenant một danh mục', '<code>local</code>'],
+    ['Bộ kéo C8', 'theo blog, khoá của blog', 'theo blog, khoá cài đặt + <code>X-OKT-Blog</code>', 'blog 1'],
+    ['Ping', 'mỗi blog bằng khoá của nó', 'một lượt cho cả bản cài, liệt kê từng blog', 'blog 1'],
+    ['Sơ đồ', 'N site → N tenant (một hoặc nhiều máy)', 'N site → một máy → N tenant', '1 → 1'],
+  ];
+  document.getElementById('t-matrix').innerHTML = `<thead><tr><th>Thành phần</th><th>bizcity</th><th>Nhiều cửa hàng (selfhost)</th><th>Một cửa hàng (selfhost)</th></tr></thead><tbody>${
+    rows.map((r) => `<tr><th scope="row" style="white-space:normal">${r[0]}</th>${r.slice(1).map((c) => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>`;
+}
+
+function renderAll() { renderEnv(); renderStep2(); renderStep3(); renderDiagram(); renderKetoan(); renderMatrix(); }
+document.querySelectorAll('input[name="mode"]').forEach((r) => r.addEventListener('change', () => { mode = r.value; renderAll(); }));
+// Mô phỏng ba môi trường (chỉ có trong mockup): bridge thật đọc is_multisite() và hằng TGS_ACC_DEPLOYMENT.
+document.querySelectorAll('[data-env]').forEach((b) => b.addEventListener('click', () => {
+  const e = b.dataset.env;
+  if (e === 'single') { ENV.multisite = false; ENV.sites = 1; ENV.deployment = null; mode = 'single'; }
+  else if (e === 'bizcity') { ENV.multisite = true; ENV.sites = 92; ENV.deployment = 'bizcity'; mode = 'bizcity'; }
+  else { ENV.multisite = true; ENV.sites = 4; ENV.deployment = null; mode = 'chain'; }
+  renderAll();
+}));
+document.getElementById('btn-check').addEventListener('click', () => { document.getElementById('check-out').textContent = 'Đã kiểm 08:42 — xem tab Sơ đồ kết nối'; });
+document.getElementById('btn-ping').addEventListener('click', () => {
+  SITES.forEach((s) => ping[s.id] = 80 + Math.round(Math.random() * 260));
+  const d = new Date(); document.getElementById('ping-at').textContent = 'Ping lúc ' + d.toLocaleTimeString('vi-VN');
+  renderDiagram();
+});
+function route() {
+  const v = (location.hash || '#cai-dat-ket-noi').slice(1);
+  document.querySelectorAll('section.view').forEach((s) => s.hidden = s.id !== 'v-' + v);
+  document.querySelectorAll('nav.tabs a').forEach((a) => { if (a.dataset.v === v) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+  if (!document.getElementById('v-' + v)) { document.getElementById('v-cai-dat-ket-noi').hidden = false; }
+}
+window.addEventListener('hashchange', route);
+renderAll(); route();
+</script>
