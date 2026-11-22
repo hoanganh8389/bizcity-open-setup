@@ -21,6 +21,7 @@
 <!-- [2026-11-22 07:50 PM Johnny Chu - Chu Hoàng Anh] OKT-H2 — thêm dòng OKT-H2 (kho theo kết nối của blog, SC-7 kho mặc định, bridge #18) → 172 việc. -->
 <!-- [2026-11-22 09:20 PM Johnny Chu - Chu Hoàng Anh] OKT-MA-TRAN — thêm OKT-MT-1 (🟡), OKT-MT-3, OKT-MT-5 (☐) → 175 việc. -->
 <!-- [2026-11-22 10:15 PM Johnny Chu - Chu Hoàng Anh] OKT-H4 — thêm OKT-H4 (🟡), OKT-MT-3 ☐ → 🟡 (bridge #20) → 176 việc. -->
+<!-- [2026-11-22 11:00 PM Johnny Chu - Chu Hoàng Anh] SW1-1 ☐ → 🟡 (open-pos-backend #44); thứ tự SW1 → SW3 → SW4 → SW2 (Q001-17): bộ kéo C8 sau SW1. -->
 <!-- [2026-11-22 05:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-C10 sang 🟡 (bridge #16: quầy không chờ kế toán, hàng chờ gửi bù được); scoreboard đo lại. -->
 <!-- [2026-11-22 04:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — lát dọc L0 → L7 chạy trên WordPress multisite thật (Docker okt-wp): S002-C0, C2, C6, C7 sang 🟡 (open-pos-backend #41); sửa lỗi chỉ WP thật bắt được (open-pos-backend #40, bridge #15, open-pos #26); scoreboard 52,2 %. -->
 <!-- [2026-11-22 02:55 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — OKT-SC-2 sang 🟡 (bridge #14, open-pos-backend #40); S001-MD3 đã merge (bf73d65, c4d8b38); scoreboard 44,6 %. -->
@@ -37,7 +38,7 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 176 | 6 | 45 | 17 | 108 | 16 |
+| 176 | 6 | 46 | 17 | 107 | 16 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
@@ -244,7 +245,7 @@
 
 | ID | Repo | Việc | Trạng thái | Bằng chứng |
 |---|---|---|---|---|
-| SW1-1 | open-pos-backend | `tgs_catalog_table()`, cờ `tgs_catalog_store`, DDL 5 bảng `tgs_catalog_*`, tạo khi `wp_initialize_site`, cờ phiên bản ghi sau | ☐ ⛔ Q001-18 (mặc định tạm 1) |  |
+| SW1-1 | open-pos-backend | `tgs_catalog_table()`, cờ `tgs_catalog_store`, DDL **6** bảng `tgs_catalog_*` (thêm `price_list_blog`: POS JOIN bảng này, D002-7 chỉ cho đổi tên bảng), tạo khi `wp_initialize_site` + `admin_init`, cờ phiên bản ghi sau | 🟡 2026-11-22 11:00 PM — Q001-18 ✅ bảng mới cùng cột: `CREATE TABLE … LIKE` bảng global; cờ mặc định `global` (không đổi hành vi); test trên CSDL thật 21/21; ca bán chuẩn giống hệt trước thay đổi; census G0 283 / T2 123 = main | [open-pos-backend PR #44](https://github.com/hoanganh8389/open-pos-backend/pull/44) |
 | SW1-2 | open-pos-backend | 15 hằng + 62 chỗ `wp_` → `base_prefix` | ☐ |  |
 | SW1-3 | open-pos-backend | Gỡ chuyển hướng `TGS_Shop_Query` + test | ☐ |  |
 | SW1-4 | open-pos-backend | 6 đường tạo mã + update / tax / category → `tgs_catalog_table()`; kiểm SKU gồm dòng xoá; ĐVT bắt buộc; thuế qua hàm; hook `tgs_catalog_changed` | ☐ |  |
