@@ -17,16 +17,17 @@
 
 <!-- [2026-11-21 08:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-9, 10, 12 sang 🟡 (bridge PR #8); S002-5, 6 đã merge (bridge PR #7, 96a1f1c). -->
 
+<!-- [2026-11-22 09:00 AM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-0b sang 🟡 (ADR §3b, §5 + open-pos-backend PR #34, open-pos PR #24, bridge PR #11); S002-16 đã merge (57785ec). -->
 <!-- [2026-11-21 10:55 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-16 sang 🟡 (open-pos-backend PR #33); ghi merge open-pos #22, #23, open-pos-backend #32, bridge #10. -->
 <!-- [2026-11-21 10:15 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-14 sang 🟡 (open-pos PR #23); S002-13 thêm nút ở Cổng kế toán (bridge PR #10). -->
 <!-- [2026-11-21 09:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-2 (open-pos PR #22), S002-3 (open-pos-backend PR #32) sang 🟡; S002-8, 11, 13 đã merge (bridge PR #9, 1832956). -->
 <!-- [2026-11-21 09:05 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-8, 11, 13 sang 🟡 (bridge PR #9); S002-9, 10, 12 đã merge (bridge PR #8, 155c66e). -->
 
-## 0. Số đếm (cập nhật 21/11 10:55 PM)
+## 0. Số đếm (cập nhật 22/11 09:00 AM)
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 159 | 3 | 29 | 18 | 109 | 16 |
+| 159 | 3 | 30 | 18 | 108 | 16 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Ba việc ✅** đều là việc chủ trả lời / duyệt: S001-O1, O1b, O5.
@@ -40,7 +41,7 @@
 | ID | Repo | Việc | Trạng thái | Bằng chứng |
 |---|---|---|---|---|
 | S002-0a | open-pos-backend | ADR-OKT-1 (00) + research (10) + thiết kế (20) | 🟡 2026-11-21 | PR phase này |
-| S002-0b | open-pos-backend | Gộp tài liệu: PHASE-001 doc 26, 27, 28 vào ADR; chuyển vào `PHASE-001-…/archive/`; viết lại 01, 06, 41 theo ADR; cập nhật mục lục | ☐ |  |
+| S002-0b | open-pos-backend | Gộp tài liệu: PHASE-001 doc 26, 27, 28 vào ADR; chuyển vào `PHASE-001-…/archive/`; viết lại 01, 06, 41 theo ADR; cập nhật mục lục | 🟡 2026-11-22 09:00 AM — ADR thêm §3b (D001-16…20), §5 (trạng thái blog, chuyển nguồn, chuyển 92 blog, rủi ro E1–E5); 26/27/28 → archive/; 01 golden G0–G17; 06, 41 theo ADR; banner open-pos, bridge trỏ ADR; 124 link, 0 gãy | [open-pos-backend PR #34](https://github.com/hoanganh8389/open-pos-backend/pull/34), [open-pos PR #24](https://github.com/hoanganh8389/open-pos/pull/24), [bridge PR #11](https://github.com/hoanganh8389/open-ketoan-bridge/pull/11), PR này (ADR) |
 | S002-0c | chủ dự án | Báo đội dev đổi hướng (mẫu PHASE-001 doc 14 §5), xin tạm dừng việc mới chạm đường ghi đơn / danh mục trong lúc làm lát dọc | ⛔ chủ |  |
 | S002-0d | chủ dự án | Chủ trả lời Q002-1…3 (doc 10 §4) | ⛔ chủ |  |
 
@@ -62,7 +63,7 @@
 | S002-12 | open-ketoan-bridge | Cron gửi lại dùng `for_blog($blog)` _(bất biến I-1)_ | 🟡 2026-11-21 08:45 PM — TGS_Acc_Api_Client::for_blog; Events gửi tức thời + cron gửi lại theo blog; chưa chạy trong WordPress thật | [bridge PR #8](https://github.com/hoanganh8389/open-ketoan-bridge/pull/8) (đã merge 155c66e) |
 | S002-13 | open-ketoan-bridge | Tạm dừng kết nối theo blog `tgs_acc_paused` + nút; vẫn ghi sự kiện, không gửi, không thử lại _(bất biến I-0, I-3)_ | 🟡 2026-11-21 09:00 PM — tgs_acc_paused theo blog + wp tgs-acc pause / resume; hàng chờ giữ 7 ngày; 10:15 PM nút Tạm dừng / Bỏ tạm dừng + cột Kết nối ở Cổng kế toán, danh sách shop gộp blog nguồn sổ POS; chưa chạy trong WordPress thật | [bridge PR #9](https://github.com/hoanganh8389/open-ketoan-bridge/pull/9) (đã merge 1832956), [bridge PR #10](https://github.com/hoanganh8389/open-ketoan-bridge/pull/10) (đã merge 67587a7) |
 | S002-14 | open-pos-backend / open-pos | Admin của blog đổi `tgs_pos_engine` react ↔ legacy, có nhật ký; không sửa checkout _(bất biến I-0)_ | 🟡 2026-11-21 10:00 PM — màn POS → Máy bán của shop + nhật ký tgs_pos_engine_log (bắt cả Quản trị mạng, WP-CLI); test 14 phép kiểm; chưa bấm thử trên WordPress thật | [open-pos PR #23](https://github.com/hoanganh8389/open-pos/pull/23) (đã merge bc63819) |
-| S002-16 | open-pos-backend | Census `--check=I0` theo danh mục D002-6 + ca bán chuẩn so dòng sổ _(bất biến I-0)_ | 🟡 2026-11-21 10:55 PM — census --check=I0 (selftest 13 ca; open-pos main sau PR #22, #23 xanh) + tools/lat-doc-sale-snapshot.php + --compare; ca bán chuẩn chưa chạy trên đơn thật (cần S002-1) | [open-pos-backend PR #33](https://github.com/hoanganh8389/open-pos-backend/pull/33), [bằng chứng](https://github.com/hoanganh8389/open-pos-backend/blob/feat/s002-16-census-i0/docs/phases/PHASE-002-LAT-DOC-MOT-DON-BAN/evidence/census-i0-2026-11-21.md) |
+| S002-16 | open-pos-backend | Census `--check=I0` theo danh mục D002-6 + ca bán chuẩn so dòng sổ _(bất biến I-0)_ | 🟡 2026-11-21 10:55 PM — census --check=I0 (selftest 13 ca; open-pos main sau PR #22, #23 xanh) + tools/lat-doc-sale-snapshot.php + --compare; ca bán chuẩn chưa chạy trên đơn thật (cần S002-1) | [open-pos-backend PR #33](https://github.com/hoanganh8389/open-pos-backend/pull/33) (đã merge 57785ec), [bằng chứng](https://github.com/hoanganh8389/open-pos-backend/blob/main/docs/phases/PHASE-002-LAT-DOC-MOT-DON-BAN/evidence/census-i0-2026-11-21.md) |
 
 ### PHASE-002 lát dọc — S2 — chạy ca và ghi bằng chứng
 
