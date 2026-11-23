@@ -45,6 +45,7 @@
 <!-- [2026-11-23 11:59 PM Johnny Chu - Chu Hoàng Anh] SW1-6 🟡 → ✅ (6c — open-pos-backend #57, công cụ chép giữ id). -->
 <!-- [2026-11-23 11:59 PM Johnny Chu - Chu Hoàng Anh] SW1-7 ☐ → ✅ (open-pos-backend #58). -->
 <!-- [2026-11-23 11:59 PM Johnny Chu - Chu Hoàng Anh] SW1-8 ☐ → 🟡 (open-pos #28 ngoài đường bán, #29 D002-7); chủ chốt "chừa đường thanh toán"; chặn bật local: thanh toán + đệm tgs_cache. -->
+<!-- [2026-11-23 11:59 PM Johnny Chu - Chu Hoàng Anh] P-0 ý 4 (vai trò ba lớp, chủ 23/11): thêm OKT-P0-4 "tắt tsm thì POS vẫn bán" — 🟡 (open-pos #31) → 193 việc. -->
 <!-- [2026-11-22 05:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-C10 sang 🟡 (bridge #16: quầy không chờ kế toán, hàng chờ gửi bù được); scoreboard đo lại. -->
 <!-- [2026-11-22 04:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — lát dọc L0 → L7 chạy trên WordPress multisite thật (Docker okt-wp): S002-C0, C2, C6, C7 sang 🟡 (open-pos-backend #41); sửa lỗi chỉ WP thật bắt được (open-pos-backend #40, bridge #15, open-pos #26); scoreboard 52,2 %. -->
 <!-- [2026-11-22 02:55 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — OKT-SC-2 sang 🟡 (bridge #14, open-pos-backend #40); S001-MD3 đã merge (bf73d65, c4d8b38); scoreboard 44,6 %. -->
@@ -61,7 +62,7 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 192 | 6 | 54 | 19 | 113 | 17 |
+| 193 | 6 | 55 | 19 | 113 | 17 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
@@ -105,6 +106,7 @@
 | OKT-SET-3 | open-ketoan-bridge + open-ketoan | 82 B-2, B-7, K-6: màn **Cài đặt** (ma trận ba lựa chọn, khoá theo môi trường), màn **Sơ đồ kết nối** (ping từng site, từng máy), màn open-ketoan **Kết nối open-pos** (blog, trạng thái, ping, duyệt) — theo mockup `mockups/okt-cai-dat-ket-noi.html` | 🟡 2026-11-23 01:50 PM — **bridge xong B-2, B-7**: thẻ Mô hình triển khai (ba lựa chọn khoá theo môi trường, bước 2 theo nhánh, bảng cửa hàng ↔ tenant + mã nối), tab Sơ đồ kết nối (site → bridge → máy → tenant, ping từng site / máy); dựng thử với topology thật cả ba mô hình. **Còn K-6** (open-ketoan, chờ NT-HT-003 trả `useAppMenu.ts`) | [mockup](mockups/okt-cai-dat-ket-noi.html) · [bridge PR #25](https://github.com/hoanganh8389/open-ketoan-bridge/pull/25) |
 | OKT-SET-4 | open-pos-backend + open-setup | 82 §5: ma trận kiểm thử ba mô hình (9 ca × 3) chạy thật, `ma-tran.sh --mo-hinh=bizcity\|chain\|single` | ✅ 2026-11-23 03:30 PM — `ma-tran-ba-mo-hinh.sh --mo-hinh=…` chạy thật: bizcity 7/7, nhiều cửa hàng 9/9, một cửa hàng 5/5 (ca còn lại không áp dụng), 0 sai; sửa `lat-doc-seed.php` cho WordPress một site | [open-pos-backend PR #49](https://github.com/hoanganh8389/open-pos-backend/pull/49) · [bằng chứng](https://github.com/hoanganh8389/open-pos-backend/blob/main/docs/phases/PHASE-002-LAT-DOC-MOT-DON-BAN/evidence/okt-set-4-ma-tran-ba-mo-hinh-2026-11-23.md) |
 | OKT-P0-3 | open-ketoan | P-0 ý 3 "mỗi book là một pháp nhân, không có pháp nhân theo tenant id" — chủ chốt 23/11: **sổ = đơn vị kế toán** (hôm nay một dòng `tenants`); pháp nhân (tên, MST, loại pháp nhân, `accounting_profiles`) là của sổ, `tenant_id` / mã tenant chỉ là khoá kỹ thuật — không đặt tên, không suy pháp nhân; không đổi lược đồ; rà bốn repo _(P-0)_ | ✅ 2026-11-23 08:00 PM — ADR-0039 chấp nhận (chủ merge #592): sổ = đơn vị kế toán, `tenant_id` chỉ là khoá kỹ thuật; R-OKT-CONN sửa câu; rà bốn repo: 0 chỗ suy pháp nhân từ tenant | [open-ketoan PR #592](https://github.com/hoanganh8389/open-ketoan/pull/592) · [ADR-0039](https://github.com/hoanganh8389/open-ketoan/blob/main/docs/adr/ADR-0039-moi-so-la-mot-phap-nhan.md) |
+| OKT-P0-4 | tgs_pos | P-0 ý 4 (chủ 23/11) **"tắt tsm thì POS vẫn bán, đọc bảng mạng như cũ, không lỗi"**: mọi lời gọi từ open-pos sang lớp / hàm / hằng của tsm có đường lùi; kiểm bằng tắt tsm thật rồi bán _(P-0)_ | 🟡 2026-11-23 11:59 PM — main: tắt tsm → danh sách hàng + chốt đơn **FATAL** (`TGS_Item_Variant`); rà 14 lớp / 66 lời gọi: chỉ lớp này thiếu đường lùi. Sửa: autoloader dự phòng nạp lười ở `plugins_loaded` (không chạm D002-6; khai sẵn làm bật lại tsm lỗi "Cannot declare class" — đã gặp, đã sửa). Test tsm bật 9/9 (dự phòng = lớp thật), tsm tắt 6/6, một site + multisite; dòng sổ tsm bật ↔ tắt **giống hệt** cả hai bản cài | [open-pos PR #31](https://github.com/hoanganh8389/open-pos/pull/31) · [bằng chứng](https://github.com/hoanganh8389/open-pos/blob/feat/tat-tsm-pos-van-ban/docs/phases/PHASE-001-POS-BANG-THEO-BLOG/evidence/p0-y4-tat-tsm-pos-van-ban-2026-11-23.md) |
 
 ### PHASE-002 lát dọc — S0 — chuẩn bị
 
