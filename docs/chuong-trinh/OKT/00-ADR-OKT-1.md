@@ -27,6 +27,14 @@ Không gắn banner thay thế nữa: tệp nào lệch với tệp này thì **
 
 3. **Pháp nhân** (chủ, 23/11 05:40 AM) — "Chỉ có luật mỗi book là 1 pháp nhân, không có pháp nhân theo tenant id." → pháp nhân (tên, mã số thuế, loại pháp nhân, hồ sơ kế toán) là thuộc tính của **sổ (book)**; `tenant_id` chỉ là khoá kỹ thuật (cô lập dữ liệu, khoá API, RLS), không dùng để xác định, đặt tên hay suy ra pháp nhân. Ghi ở cả bốn repo: open-ketoan (CANON R-OKT-CONN mục P-0 + AGENTS.md), open-ketoan-bridge và open-pos-backend (`LUAT-TOI-THUONG.md` + `CLAUDE.md`), tệp này.
 
+<!-- [2026-11-23 11:59 PM Johnny Chu - Chu Hoàng Anh] OKT-P-0 ý 4 — chủ chốt vai trò ba lớp: open-pos tự đứng, tsm là dữ liệu đệm, bridge đưa dữ liệu open-ketoan vào tsm. -->
+4. **Vai trò ba lớp** (chủ, 23/11 — "mục tiêu quan trọng, tối thượng, rule quan trọng nhất cho tsm") — "Khi tsm tắt: POS vẫn chạy, đọc bảng mạng như cũ, không lỗi. Còn khi bật tsm thì việc quản lý thông tin hệ thống, hàng hóa, danh mục, nhóm hàng, thuế ... sẽ giúp cho POS có thêm dữ liệu buffer để linh hoạt hơn chủ động hơn. Nếu có thêm open-ketoan active qua bridge, thì thay vì người nhập, sẽ là lấy từ open-ketoan về."
+   - open-pos **tự đứng**: tắt tsm (open-pos-backend) thì quầy vẫn bán, đọc bảng mạng như cũ, không lỗi.
+   - tsm là lớp **dữ liệu đệm** của POS: thông tin hệ thống, hàng hoá, danh mục, nhóm hàng, thuế, giá, ĐVT — giúp POS linh hoạt, chủ động (vẫn bán khi kế toán dừng). Không có kế toán thì người nhập tay vào tsm.
+   - bridge là **kênh**: open-ketoan chạy và nối qua bridge thì dữ liệu đó **lấy từ open-ketoan về**, ghi vào chính các bảng của tsm, thay cho người nhập. Bridge không bán, không ghi thẳng vào POS.
+   - Phụ thuộc **một chiều**: open-pos ← tsm ← bridge ← open-ketoan. Lớp trên tắt, lớp dưới vẫn chạy. Mọi lời gọi từ lớp dưới lên lớp trên phải có **đường lùi** (vd `tgs_catalog_table` dự phòng ở open-pos); review luôn hỏi "tắt tsm thì POS còn bán không?", "tắt bridge thì tsm còn nhập tay được không?"
+   - Đây là lý do mở tài liệu và mã danh mục theo blog (SW1). Ghi ở open-pos, open-pos-backend, open-ketoan-bridge (`LUAT-TOI-THUONG.md`) và tệp này.
+
 P-0 đứng trên mọi bất biến bên dưới. Bất biến nào viết cho một mô hình (vd I-1 "một blog = một tenant") thì chỉ áp cho mô hình đó; đối chiếu từng chỗ ở [81](81-DOI-CHIEU-NGUYEN-TAC-TRIEN-KHAI.md). Hồ sơ triển khai phải **khai rõ** (`TGS_ACC_DEPLOYMENT`, Q-OKT-8), không suy từ khoá đang có. Mọi câu hỏi về sau trả lời qua năm câu tự hỏi ở 81 §6. Chỗ CANON R-OKT-CONN-2/3 trái P-0 ý 2 được sửa theo P-0 (OKT-TOPO-10).
 
 ## 1. Bối cảnh
