@@ -1,0 +1,17 @@
+{
+  "schema": "bizcity_app@1",
+  "id": "bizcity-open-setup",
+  "name": "Bizcity Open Setup (Site Manager)",
+  "repo": "hoanganh8389/bizcity-open-setup",
+  "public": true,
+  "runtime": "python",
+  "license": "GPL-2.0-or-later",
+  "paid": false,
+  "axes": {
+    "owns": ["tenant"],
+    "uses": ["user"]
+  },
+  "contracts": ["bizcity_spine@1", "bizcity_site_provisioning@1"],
+  "docs": { "canon": "docs/canon/README.md" },
+  "notes": "Repo điều phối thứ hai (canon §2.1): registry site → DB. Chủ trục tenant: slug site = tenants.code ở open-ketoan; một site một khoá biz-… nhiều DB (R-CANON-13). Không giữ dữ liệu nghiệp vụ, không nối PostgreSQL của app (R-ROLE-3). Cũng là trục điều phối chương trình OKT (open-pos ⇄ open-ketoan)."
+}
