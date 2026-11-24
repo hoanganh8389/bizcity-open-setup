@@ -50,6 +50,7 @@
 <!-- [2026-11-23 11:59 PM Johnny Chu - Chu Hoàng Anh] SW1-10 ☐ → 🟡 (open-pos-backend #61): G1, G2, cô lập ✅; G3 / G4 chặn ở đường thanh toán — chờ chủ chốt. -->
 <!-- [2026-11-24 12:30 AM Johnny Chu - Chu Hoàng Anh] Chủ chốt 23/11 (câu SW1-10): sửa đường thanh toán theo D002-7 (open-pos #32) + blog mới mặc định cờ local (open-pos-backend #61) → G1–G4 65/0; SW1-8 gỡ chặn (1), còn chặn (2) đệm tgs_cache. -->
 <!-- [2026-11-24 01:10 AM Johnny Chu - Chu Hoàng Anh] SW1-8 chặn (2) đệm tgs_cache theo blog khi local → open-pos #33; hết chặn bật local cho shop thật. -->
+<!-- [2026-11-24 02:00 AM Johnny Chu - Chu Hoàng Anh] SW3-1, SW3-2 ☐ → 🟡 (open-pos-backend #62; bridge #29 khoá theo nguồn từng blog — chủ chốt 24/11 blog đã nối → mặc định ketoan). -->
 <!-- [2026-11-22 05:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-C10 sang 🟡 (bridge #16: quầy không chờ kế toán, hàng chờ gửi bù được); scoreboard đo lại. -->
 <!-- [2026-11-22 04:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — lát dọc L0 → L7 chạy trên WordPress multisite thật (Docker okt-wp): S002-C0, C2, C6, C7 sang 🟡 (open-pos-backend #41); sửa lỗi chỉ WP thật bắt được (open-pos-backend #40, bridge #15, open-pos #26); scoreboard 52,2 %. -->
 <!-- [2026-11-22 02:55 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — OKT-SC-2 sang 🟡 (bridge #14, open-pos-backend #40); S001-MD3 đã merge (bf73d65, c4d8b38); scoreboard 44,6 %. -->
@@ -66,7 +67,7 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 193 | 6 | 58 | 19 | 110 | 17 |
+| 193 | 6 | 60 | 19 | 108 | 17 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
@@ -305,8 +306,8 @@
 
 | ID | Repo | Việc | Trạng thái | Bằng chứng |
 |---|---|---|---|---|
-| SW3-1 | open-pos-backend | `tgs_okt_connected()` dự phòng, `tgs_catalog_mode()` | ☐ |  |
-| SW3-2 | open-pos-backend | Cổng ghi ở 35 + 2 hàm; `--check=B2` | ☐ |  |
+| SW3-1 | open-pos-backend | `tgs_okt_connected()` dự phòng, `tgs_catalog_mode()` | 🟡 2026-11-24 02:00 AM — `tgs_catalog_source` (local | ketoan, mặc định local — Q001-24), `tgs_okt_connected` (filter cho bridge, không bridge → false), `tgs_catalog_mode`, CLI `wp tgs-catalog source`; chưa có màn Cài đặt | [open-pos-backend PR #62](https://github.com/hoanganh8389/open-pos-backend/pull/62) · [bằng chứng](https://github.com/hoanganh8389/open-pos-backend/blob/feat/sw3-1-2-nguon-va-cong-ghi/docs/phases/PHASE-001-DANH-MUC-THEO-SITE-DONG-BO-KETOAN/evidence/sw3-1-2-nguon-va-cong-ghi-2026-11-24.md) |
+| SW3-2 | open-pos-backend | Cổng ghi ở 35 + 2 hàm; `--check=B2` | 🟡 2026-11-24 02:00 AM — `tgs_catalog_write_gate` erp / price / tax: local cho hết, ketoan chặn mọi trạng thái kết nối (Q001-21); gắn 36 erp + 2 tax (**census B2 ✓**) + giá của shop + nhập từ mạng; test 20/20 hai bản cài; G1–G4 65/0; không đổi hành vi (chưa blog nào ketoan). Bridge: chủ chốt 24/11 "blog đã nối → mặc định ketoan" — khoá / chặn ghi theo nguồn từng blog (blog cờ local, admin chọn Tự quản → mở), trả lời `tgs_okt_connected`; test 8/8 ba blog, đối chứng main khoá cả blog tự quản | [open-pos-backend PR #62](https://github.com/hoanganh8389/open-pos-backend/pull/62) · [bằng chứng](https://github.com/hoanganh8389/open-pos-backend/blob/feat/sw3-1-2-nguon-va-cong-ghi/docs/phases/PHASE-001-DANH-MUC-THEO-SITE-DONG-BO-KETOAN/evidence/sw3-1-2-nguon-va-cong-ghi-2026-11-24.md) · [bridge PR #29](https://github.com/hoanganh8389/open-ketoan-bridge/pull/29) |
 | SW3-3 | open-pos-backend | Gỡ bridge: không fatal (G14) | ☐ |  |
 | SW3-4 | bridge | Bridge có, blog không khoá / kiểm lỗi → standalone (G5) | 🟡 phần C1: PR #2 (chưa merge, chưa chạy WP thật) |  |
 
