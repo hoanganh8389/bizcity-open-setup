@@ -75,7 +75,7 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 193 | 11 | 60 | 19 | 103 | 17 |
+| 194 | 11 | 61 | 19 | 103 | 17 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
@@ -333,6 +333,7 @@
 
 | ID | Repo | Việc | Trạng thái | Bằng chứng |
 |---|---|---|---|---|
+| SW2-0 | open-pos-backend | Khớp luật mã hàng với open-ketoan (nguồn sự thật, chủ chốt 24/11): mã con của mã Q, mã nhóm sai khuôn chặn đẩy | 🟡 2026-11-24 11:30 PM — `parent_from_sku` chép `parentFromSku` / SQL 0170; H-3/H-4/H-5 theo đó; `group_errors` (GRP-BLOCK-008) chặn `ready_to_push`; dryRun thật: `Q12345678A` create, `Q1234567801` error; test 52/52 · 33/33 · 24/24; chờ duyệt | [open-pos-backend PR #72](https://github.com/hoanganh8389/open-pos-backend/pull/72) |
 | SW2-1 | bridge + tsm | Kết nối theo blog | ☐ |  |
 | SW2-2 | open-pos-backend | Lần đầu bật: dựng sẵn → dryRun → đẩy lô → kéo về → gắn `item_id` → đối chứng | ☐ |  |
 | SW2-3 | open-pos-backend | Lượt kéo theo blog, chỉ cột `erp`, tombstone, đối soát đêm | ☐ |  |
