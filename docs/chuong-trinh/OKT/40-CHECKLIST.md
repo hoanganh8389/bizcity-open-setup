@@ -54,6 +54,7 @@
 <!-- [2026-11-24 03:20 AM Johnny Chu - Chu Hoàng Anh] SW3-3 ☐ → 🟡 (open-pos-backend #63): G17 đạt hai bản cài, không cần sửa mã. -->
 <!-- [2026-11-24 04:50 PM Johnny Chu - Chu Hoàng Anh] SW3-4 🟡 phần C1 → 🟡 ca vàng G5 chạy thật + sửa hàng chờ giữ nhóm blog đã gỡ (open-ketoan-bridge #30). -->
 <!-- [2026-11-24 05:50 PM Johnny Chu - Chu Hoàng Anh] SW3-1 thêm màn Cài đặt "Nguồn danh mục" (open-pos-backend #66) — chủ chốt 24/11: local → ketoan khoá chờ SW2-2; khôi phục ketoan → local chỉ quản trị mạng. -->
+<!-- [2026-11-24 07:10 PM Johnny Chu - Chu Hoàng Anh] SW4a-2 ☐ → 🟡 (open-pos-backend #67): sinh mã theo cây nhóm như open-ketoan, 40 ĐVT chuẩn, mã thuế open-ketoan; đếm 61 → 62 🟡, 107 → 106 ☐. -->
 <!-- [2026-11-22 05:50 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — S002-C10 sang 🟡 (bridge #16: quầy không chờ kế toán, hàng chờ gửi bù được); scoreboard đo lại. -->
 <!-- [2026-11-22 04:40 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — lát dọc L0 → L7 chạy trên WordPress multisite thật (Docker okt-wp): S002-C0, C2, C6, C7 sang 🟡 (open-pos-backend #41); sửa lỗi chỉ WP thật bắt được (open-pos-backend #40, bridge #15, open-pos #26); scoreboard 52,2 %. -->
 <!-- [2026-11-22 02:55 PM Johnny Chu - Chu Hoàng Anh] OKT-P0 — OKT-SC-2 sang 🟡 (bridge #14, open-pos-backend #40); S001-MD3 đã merge (bf73d65, c4d8b38); scoreboard 44,6 %. -->
@@ -70,7 +71,7 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 193 | 6 | 61 | 19 | 107 | 17 |
+| 193 | 6 | 62 | 19 | 106 | 17 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
@@ -319,7 +320,7 @@
 | ID | Repo | Việc | Trạng thái | Bằng chứng |
 |---|---|---|---|---|
 | SW4a-1 | open-pos-backend | `TGS_Catalog_Standard::check_product()` H-1…H-18 | 🟡 2026-11-23 11:59 PM — `check_product` / `check_ids` mức E / W / A, đọc qua `tgs_catalog_table()`; đủ H-1…H-18 trừ H-6 (bộ sinh SKU = SW4a-2); test 47/47 ở okt-wp1, shop-a, shop-b; census T1 / T2 / Q0 ✓, G0 241 = main | [open-pos-backend PR #60](https://github.com/hoanganh8389/open-pos-backend/pull/60) · [bằng chứng](https://github.com/hoanganh8389/open-pos-backend/blob/feat/sw4a-1-sw1-9-chuan-hang-hoa/docs/phases/PHASE-001-DANH-MUC-THEO-SITE-DONG-BO-KETOAN/evidence/sw4a-1-sw1-9-chuan-hang-hoa-muc-w-2026-11-23.md) |
-| SW4a-2 | open-pos-backend | Bộ sinh SKU theo cây nhóm; 40 ĐVT chuẩn; ánh xạ mã thuế | ☐ |  |
+| SW4a-2 | open-pos-backend | Bộ sinh SKU theo cây nhóm; 40 ĐVT chuẩn; ánh xạ mã thuế | 🟡 2026-11-24 07:10 PM — `TGS_Catalog_Sku` chép luật open-ketoan `sku-rule.ts`: ngành (2) + nhãn (3) + nhóm (1) + số thứ tự (3), mã nhóm khai → suy từ mã đang có → cấp số kế tiếp (ghi lại khi shop tự quản), quà Q 1/3/1 + 4, số thứ tự tính cả mã đã xoá (H-2); cột `global_product_cat_sku_code` (migration, DB_VERSION 1.1.64 — chỉ ADD COLUMN; deploy hỏi chủ); nút sinh mã gửi nhóm của form, chưa tới cấp 3 → ngẫu nhiên kèm cảnh báo; form gợi ý đúng 40 ĐVT chuẩn; `TGS_Tax_Code::okt_code` → KCT · 0 · 5 · 8 · 10 · KKKN (lạ → null); test 23/23 shop-b + okt-wp1, HTTP thật admin-ajax | [open-pos-backend PR #67](https://github.com/hoanganh8389/open-pos-backend/pull/67) · [bằng chứng](https://github.com/hoanganh8389/open-pos-backend/blob/feat/sw4a-2-sinh-ma-theo-nhom/docs/phases/PHASE-001-DANH-MUC-THEO-SITE-DONG-BO-KETOAN/evidence/sw4a-2-sinh-ma-theo-nhom-2026-11-24.md) |
 | SW4a-3 | open-pos-backend | Điểm sẵn sàng + màn "Chuẩn hàng hoá" | ☐ |  |
 | SW4b-1 | open-pos-backend | Dựng sẵn tenant: nhóm có `sku_code`, bảng giá công ty, chi nhánh | ☐ |  |
 | SW4b-2 | open-pos-backend | Kiểm thử `dryRun` | ☐ |  |
