@@ -75,7 +75,7 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 196 | 11 | 66 | 19 | 100 | 17 |
+| 196 | 11 | 69 | 16 | 100 | 17 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
@@ -214,9 +214,9 @@
 
 | ID | Repo | Việc | Trạng thái | Bằng chứng |
 |---|---|---|---|---|
-| S001-C1 | open-pos-backend | `tgs_tenant_of_blog($blog)` = `tgs_okt_connection($blog)['tenant']`; `tgs_branch_of_blog()` giữ làm vỏ | ⛔ chờ B001-C6 |  |
-| S001-C3 | open-pos-backend | Màn site **Đồng bộ kế toán** (trạng thái từ `tgs_okt_connection()`, link sang màn Kết nối của bridge, ánh xạ tự dựng, lần kéo, đối chứng, "thay đổi đã bị ghi đè"); màn Kết nối / khoá ➡ B001-C4 | ⛔ chờ B001-C6 |  |
-| S001-C3b | open-pos-backend | Network "Danh mục & Kế toán": bảng tổng blog (chế độ, tenant, lần kéo, lỗi) | ⛔ chờ B001-C6 |  |
+| S001-C1 | open-pos-backend | `tgs_tenant_of_blog($blog)` = `tgs_okt_connection($blog)['tenant']`; `tgs_branch_of_blog()` giữ làm vỏ | 🟡 2026-11-25 12:00 PM — [open-pos-backend PR 77](https://github.com/hoanganh8389/open-pos-backend/pull/77) |
+| S001-C3 | open-pos-backend | Màn site **Đồng bộ kế toán** (trạng thái từ `tgs_okt_connection()`, link sang màn Kết nối của bridge, ánh xạ tự dựng, lần kéo, đối chứng, "thay đổi đã bị ghi đè"); màn Kết nối / khoá ➡ B001-C4 | 🟡 2026-11-25 12:00 PM — hiển thị bốn điều kiện + liên kết xong; còn ánh xạ tự dựng, lần kéo, đối chứng, ghi đè → C17/C18 · [open-pos-backend PR 77](https://github.com/hoanganh8389/open-pos-backend/pull/77) |
+| S001-C3b | open-pos-backend | Network "Danh mục & Kế toán": bảng tổng blog (chế độ, tenant, lần kéo, lỗi) | 🟡 2026-11-25 12:00 PM — [open-pos-backend PR 77](https://github.com/hoanganh8389/open-pos-backend/pull/77) |
 | S001-C17 | open-pos-backend | `{p}tgs_okt_offline_edit`: ghi sửa `erp` / giá / thuế lúc mất kết nối; lượt kéo ghi đè và đánh dấu | ☐ |  |
 
 ### PHASE-001 danh mục theo site — M3 — Đồng bộ (đạt G6, G7, G10–G13)
@@ -336,7 +336,7 @@
 | SW2-0 | open-pos-backend | Khớp luật mã hàng với open-ketoan (nguồn sự thật, chủ chốt 24/11): mã con của mã Q, mã nhóm sai khuôn chặn đẩy | 🟡 2026-11-24 11:30 PM — `parent_from_sku` chép `parentFromSku` / SQL 0170; H-3/H-4/H-5 theo đó; `group_errors` (GRP-BLOCK-008) chặn `ready_to_push`; dryRun thật: `Q12345678A` create, `Q1234567801` error; test 52/52 · 33/33 · 24/24; chờ duyệt | [open-pos-backend PR #72](https://github.com/hoanganh8389/open-pos-backend/pull/72) |
 | SW2-0a (nợ) | open-pos-backend | **Nợ:** kiểm "mã hàng phải bắt đầu bằng đoạn mã nhóm cấp 3" cho mã gõ tay (open-ketoan chặn: "mã phải bắt đầu bằng 100011"); tsm mới tuân khi sinh mã (SW4a-2). Làm cùng SW2-2 (dryRun bắt đúng lỗi này) | ☐ | ghi 25/11 — [bằng chứng SW2-0, mục "Chưa làm"](https://github.com/hoanganh8389/open-pos-backend/pull/72) |
 | SW2-0b (nợ) | open-ketoan (người) | **Nợ, việc của bên open-ketoan:** `sku-rule.ts` / `nextSku` cấp mã nhóm cấp 1 là `01` và cho cấp 1 là "Q", nhưng API (GRP-BLOCK-008) chặn cả hai. tsm đang theo luật đã duyệt (cấp 1 từ 10). Cần báo, không sửa ở repo này | ☐ | ghi 25/11 |
-| SW2-1 | bridge + tsm | Kết nối theo blog | 🟡 2026-11-25 09:10 AM — **lõi bridge xong** (B001-C2, C6, T2). **Còn:** tsm S001-C1 / C3 / C3b | [open-ketoan-bridge PR 37](https://github.com/hoanganh8389/open-ketoan-bridge/pull/37), [PR 38 (B001-C4)](https://github.com/hoanganh8389/open-ketoan-bridge/pull/38) |
+| SW2-1 | bridge + tsm | Kết nối theo blog | 🟡 2026-11-25 09:10 AM — **lõi bridge xong** (B001-C2, C6, T2). **tsm S001-C1, C3, C3b xong (PR 77)**; còn S001-C3 phần ánh xạ / đối chứng (C17, C18) | [open-ketoan-bridge PR 37](https://github.com/hoanganh8389/open-ketoan-bridge/pull/37), [PR 38 (B001-C4)](https://github.com/hoanganh8389/open-ketoan-bridge/pull/38), [open-pos-backend PR 77](https://github.com/hoanganh8389/open-pos-backend/pull/77) |
 | SW2-2 | open-pos-backend | Lần đầu bật: dựng sẵn → dryRun → đẩy lô → kéo về → gắn `item_id` → đối chứng | ☐ |  |
 | SW2-3 | open-pos-backend | Lượt kéo theo blog, chỉ cột `erp`, tombstone, đối soát đêm | ☐ |  |
 | SW2-4 | open-pos-backend | Thêm mã / sửa giá khi kết nối = gửi lên; chưa về chưa bán | ⛔ Q001-16 |  |
