@@ -75,7 +75,7 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 197 | 11 | 70 | 16 | 100 | 17 |
+| 200 | 11 | 70 | 17 | 102 | 17 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
@@ -334,9 +334,12 @@
 | ID | Repo | Việc | Trạng thái | Bằng chứng |
 |---|---|---|---|---|
 | SW2-0 | open-pos-backend | Khớp luật mã hàng với open-ketoan (nguồn sự thật, chủ chốt 24/11): mã con của mã Q, mã nhóm sai khuôn chặn đẩy | 🟡 2026-11-24 11:30 PM — `parent_from_sku` chép `parentFromSku` / SQL 0170; H-3/H-4/H-5 theo đó; `group_errors` (GRP-BLOCK-008) chặn `ready_to_push`; dryRun thật: `Q12345678A` create, `Q1234567801` error; test 52/52 · 33/33 · 24/24; chờ duyệt | [open-pos-backend PR #72](https://github.com/hoanganh8389/open-pos-backend/pull/72) |
-| SW2-0a (nợ) | open-pos-backend | **Nợ:** kiểm "mã hàng phải bắt đầu bằng đoạn mã nhóm cấp 3" cho mã gõ tay (open-ketoan chặn: "mã phải bắt đầu bằng 100011"); tsm mới tuân khi sinh mã (SW4a-2). Làm cùng SW2-2 (dryRun bắt đúng lỗi này) | ☐ | ghi 25/11 — [bằng chứng SW2-0, mục "Chưa làm"](https://github.com/hoanganh8389/open-pos-backend/pull/72) |
-| SW2-0c (nợ) | open-pos-backend | **Nợ:** chuẩn hàng hoá báo 100 % dù mặt hàng ở nhóm **cấp 1** (open-ketoan đòi cấp 3: "phải chọn tới nhóm cấp 3") — dryRun ở SW2-2 mới bắt. Thêm kiểm "mặt hàng phải thuộc nhóm cấp 3", làm cùng SW2-0a | ☐ | ghi 25/11 — [open-ketoan-bridge PR 43](https://github.com/hoanganh8389/open-ketoan-bridge/pull/43) |
+| SW2-0a (nợ) | open-pos-backend | **Nợ:** kiểm "mã hàng phải bắt đầu bằng đoạn mã nhóm cấp 3" cho mã gõ tay (open-ketoan chặn: "mã phải bắt đầu bằng 100011"); tsm mới tuân khi sinh mã (SW4a-2). Làm cùng SW2-2 (dryRun bắt đúng lỗi này) | ☐ **Giao: H-joyyy Hoàng** (chủ giao 25/11) | ghi 25/11 — [bằng chứng SW2-0, mục "Chưa làm"](https://github.com/hoanganh8389/open-pos-backend/pull/72) |
+| SW2-0c (nợ) | open-pos-backend | **Nợ:** chuẩn hàng hoá báo 100 % dù mặt hàng ở nhóm **cấp 1** (open-ketoan đòi cấp 3: "phải chọn tới nhóm cấp 3") — dryRun ở SW2-2 mới bắt. Thêm kiểm "mặt hàng phải thuộc nhóm cấp 3", làm cùng SW2-0a | ☐ **Giao: H-joyyy Hoàng** (chủ giao 25/11) | ghi 25/11 — [open-ketoan-bridge PR 43](https://github.com/hoanganh8389/open-ketoan-bridge/pull/43) |
 | SW2-0b (nợ) | open-ketoan (người) | **Nợ, việc của bên open-ketoan:** `sku-rule.ts` / `nextSku` cấp mã nhóm cấp 1 là `01` và cho cấp 1 là "Q", nhưng API (GRP-BLOCK-008) chặn cả hai. tsm đang theo luật đã duyệt (cấp 1 từ 10). Cần báo, không sửa ở repo này | ☐ | ghi 25/11 |
+| SW2-0d (nợ) | open-pos-backend | **Nợ:** ô sửa **mã SKU nhóm** (`global_product_cat_sku_code`) ở form danh mục — hiện chỉ sinh tự động (`TGS_Catalog_Sku::ensure_codes`); nhóm sai khuôn (GRP-BLOCK-008) chặn đẩy lên kế toán mà người dùng không sửa được tay | ☐ **Giao: H-joyyy Hoàng** (chủ giao 25/11) | ghi 25/11 |
+| SW2-0e (nợ) | open-pos-backend | **Nợ:** màn tạo / sửa **bảng giá** cho shop tự quản (local) — bảng giá hiện chỉ có từ seed / kéo về; shop mới chưa có chỗ tạo | ☐ **Giao: H-joyyy Hoàng** (chủ giao 25/11) | ghi 25/11 |
+| SW2-0f (nợ) | open-pos-backend | **Nợ — cần chủ chốt trước khi làm:** kiểm H-9 (ĐVT sai hoa / thường) báo hàng loạt; chưa có thao tác sửa hàng loạt. Quy tắc chuẩn hoá chữ hoa / thường của ĐVT chủ chưa chốt | ⛔ chờ chủ chốt · giao: H-joyyy Hoàng | ghi 25/11 |
 | SW2-1 | bridge + tsm | Kết nối theo blog | 🟡 2026-11-25 09:10 AM — **lõi bridge xong** (B001-C2, C6, T2). **tsm S001-C1, C3, C3b xong (PR 77)**; còn S001-C3 phần ánh xạ / đối chứng (C17, C18) | [open-ketoan-bridge PR 37](https://github.com/hoanganh8389/open-ketoan-bridge/pull/37), [PR 38 (B001-C4)](https://github.com/hoanganh8389/open-ketoan-bridge/pull/38), [open-pos-backend PR 77](https://github.com/hoanganh8389/open-pos-backend/pull/77) |
 | SW2-2 | open-pos-backend | Lần đầu bật: dựng sẵn → dryRun → đẩy lô → kéo về → gắn `item_id` → đối chứng | 🟡 2026-11-25 04:00 PM — `TGS_Acc_Switch` + nối nút tsm; chạy thật shop-c ↔ okt-thu: đối chứng lệch 0, item_id gắn; chưa đặt nguồn trên dev (tsm đặt khi bấm nút). chạy TỪNG LƯỢT (admin-ajax) hoặc nền (cron) theo chủ chốt 25/11. Xếp chồng trên PR 38 / tsm PR 77 | [open-ketoan-bridge PR 43](https://github.com/hoanganh8389/open-ketoan-bridge/pull/43), [open-pos-backend PR 79](https://github.com/hoanganh8389/open-pos-backend/pull/79) |
 | SW2-3 | open-pos-backend | Lượt kéo theo blog, chỉ cột `erp`, tombstone, đối soát đêm | ☐ |  |
