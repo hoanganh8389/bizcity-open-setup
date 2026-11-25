@@ -75,7 +75,7 @@
 
 | Việc còn hiệu lực | ✅ | 🟡 | ⛔ | ☐ | Đã huỷ / chuyển |
 |---|---|---|---|---|---|
-| 196 | 11 | 65 | 19 | 101 | 17 |
+| 196 | 11 | 66 | 19 | 100 | 17 |
 
 - **Đối chiếu:** 175 dòng việc ở các repo nguồn = 159 còn hiệu lực + 16 đã huỷ / chuyển (P001-T3 còn hiệu lực phần đổi tên bảng; sửa lúc 08:10 PM).
 - **Sáu việc ✅:** năm việc chủ trả lời / duyệt (S001-O1, O1b, O5, S002-0d, SW0-3) và **việc chạy thật đầu tiên**: S002-1 (open-ketoan thử `okt-thu`, bằng chứng trên `main`).
@@ -336,7 +336,7 @@
 | SW2-0 | open-pos-backend | Khớp luật mã hàng với open-ketoan (nguồn sự thật, chủ chốt 24/11): mã con của mã Q, mã nhóm sai khuôn chặn đẩy | 🟡 2026-11-24 11:30 PM — `parent_from_sku` chép `parentFromSku` / SQL 0170; H-3/H-4/H-5 theo đó; `group_errors` (GRP-BLOCK-008) chặn `ready_to_push`; dryRun thật: `Q12345678A` create, `Q1234567801` error; test 52/52 · 33/33 · 24/24; chờ duyệt | [open-pos-backend PR #72](https://github.com/hoanganh8389/open-pos-backend/pull/72) |
 | SW2-0a (nợ) | open-pos-backend | **Nợ:** kiểm "mã hàng phải bắt đầu bằng đoạn mã nhóm cấp 3" cho mã gõ tay (open-ketoan chặn: "mã phải bắt đầu bằng 100011"); tsm mới tuân khi sinh mã (SW4a-2). Làm cùng SW2-2 (dryRun bắt đúng lỗi này) | ☐ | ghi 25/11 — [bằng chứng SW2-0, mục "Chưa làm"](https://github.com/hoanganh8389/open-pos-backend/pull/72) |
 | SW2-0b (nợ) | open-ketoan (người) | **Nợ, việc của bên open-ketoan:** `sku-rule.ts` / `nextSku` cấp mã nhóm cấp 1 là `01` và cho cấp 1 là "Q", nhưng API (GRP-BLOCK-008) chặn cả hai. tsm đang theo luật đã duyệt (cấp 1 từ 10). Cần báo, không sửa ở repo này | ☐ | ghi 25/11 |
-| SW2-1 | bridge + tsm | Kết nối theo blog | 🟡 2026-11-25 09:10 AM — **lõi bridge xong** (B001-C2, C6, T2). **Còn:** màn Network "Khoá theo shop" (B001-C4); tsm S001-C1 / C3 / C3b | [open-ketoan-bridge PR 37](https://github.com/hoanganh8389/open-ketoan-bridge/pull/37) |
+| SW2-1 | bridge + tsm | Kết nối theo blog | 🟡 2026-11-25 09:10 AM — **lõi bridge xong** (B001-C2, C6, T2). **Còn:** tsm S001-C1 / C3 / C3b | [open-ketoan-bridge PR 37](https://github.com/hoanganh8389/open-ketoan-bridge/pull/37), [PR 38 (B001-C4)](https://github.com/hoanganh8389/open-ketoan-bridge/pull/38) |
 | SW2-2 | open-pos-backend | Lần đầu bật: dựng sẵn → dryRun → đẩy lô → kéo về → gắn `item_id` → đối chứng | ☐ |  |
 | SW2-3 | open-pos-backend | Lượt kéo theo blog, chỉ cột `erp`, tombstone, đối soát đêm | ☐ |  |
 | SW2-4 | open-pos-backend | Thêm mã / sửa giá khi kết nối = gửi lên; chưa về chưa bán | ⛔ Q001-16 |  |
@@ -394,7 +394,7 @@
 |---|---|---|---|---|
 | B001-C2 | open-ketoan-bridge | `TGS_Acc_Api_Client::for_blog($blog)` (WP_Error nếu không có khoá riêng); constructor mặc định = blog hiện tại; `health()` / `ping()` theo blog; nhật ký 60 lượt gọi thêm `blog_id`, xem theo blog | 🟡 2026-11-25 09:10 AM — `for_blog()` đã có từ trước; thêm hỏi kết nối theo blog (`TGS_Acc_Connection`, `wp tgs-acc connection`); chờ duyệt | [open-ketoan-bridge PR 37](https://github.com/hoanganh8389/open-ketoan-bridge/pull/37) |
 | B001-C6 | open-ketoan-bridge | `includes/class-tgs-acc-connection.php`: `tgs_okt_connected()` (4 điều kiện, transient 60 giây, timeout 3 giây, kiểm trùng tenant), `tgs_okt_connection()`, bản đồ tenant → blog (site option `tgs_okt_tenant_map`), hook `tgs_okt_connection_changed`; thay `TGS_Acc_Config::ready()` ở admin :121 / :250, events :76-87, catalog-sync :182, branch / warehouse / supplier `ready()` | 🟡 2026-11-25 09:10 AM — `class-tgs-acc-connection.php`: bốn điều kiện (khoá · kế toán trả lời 3 giây · tenant do kế toán báo · không trùng tenant SC-3), đệm 60 giây, hook `tgs_okt_connection_changed`, filter `tgs_okt_connected` của tsm; bản đồ dùng option `tgs_acc_tenant_map` chung với tự kiểm SC-3. **Chưa:** thay `ready()` ở admin / events / branch / warehouse / supplier (mỗi trang admin thêm tối đa 3 giây/phút — chờ chủ quyết); chờ duyệt | [open-ketoan-bridge PR 37](https://github.com/hoanganh8389/open-ketoan-bridge/pull/37) |
-| B001-C4 | open-ketoan-bridge | Màn Network "Khoá theo shop" (cột: blog, nguồn khoá, khoá che, tenant, trạng thái 🟢🟡⚪🔴, lần kéo) + nút Kiểm tất cả / dòng / Xuất CSV (không khoá); màn Kết nối của site (URL riêng, khoá, Kiểm tra, Xoá); AJAX `tgs_acc_blog_save` / `_check` / `_list`; `shops()` từ blog đã kết nối | ☐ |  |
+| B001-C4 | open-ketoan-bridge | Màn Network "Khoá theo shop" (cột: blog, nguồn khoá, khoá che, tenant, trạng thái 🟢🟡⚪🔴, lần kéo) + nút Kiểm tất cả / dòng / Xuất CSV (không khoá); màn Kết nối của site (URL riêng, khoá, Kiểm tra, Xoá); AJAX `tgs_acc_blog_save` / `_check` / `_list`; `shops()` từ blog đã kết nối | 🟡 2026-11-25 10:50 AM — tab "Khoá theo shop" trong Cổng kế toán (Kiểm / Kiểm tất cả / Sửa / CSV); cột "lần kéo" tạm là lần kiểm kết nối | [open-ketoan-bridge PR 38](https://github.com/hoanganh8389/open-ketoan-bridge/pull/38) |
 | B001-T2 | open-ketoan-bridge | `tests/connection-test.php`: 4 điều kiện, transient, trùng tenant, site 0, bridge tắt | 🟡 2026-11-25 09:10 AM — `tests/connection-wp-test.php` 32/32 shop-b · 30/30 okt-wp1 (bốn điều kiện, đệm, hook, trùng tenant, không lộ khoá); chạy thật okt-thu: shop-a / b / c 🟢, blog 1 🔴 BLOG_NOT_LINKED | [open-ketoan-bridge PR 37](https://github.com/hoanganh8389/open-ketoan-bridge/pull/37) |
 
 ### PHASE-001 kết nối theo blog — M3 — sự kiện vào theo tenant, gỡ kéo catalog
