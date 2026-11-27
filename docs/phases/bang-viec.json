@@ -1,11 +1,17 @@
 {
   "schema": "bizcity_task_board@1",
-  "generated": "2026-11-25T06:56:15.591Z",
+  "generated": "2026-11-26T16:30:54.678Z",
   "phases": [
     {
       "name": "PHASE-001-CONG-TU-TAO-KE-TOAN",
       "path": "docs/phases/PHASE-001-CONG-TU-TAO-KE-TOAN",
       "status": null,
+      "items": []
+    },
+    {
+      "name": "PHASE-002-LUU-TEP-R2-THEO-WP",
+      "path": "docs/phases/PHASE-002-LUU-TEP-R2-THEO-WP",
+      "status": "Chưa làm",
       "items": []
     },
     {
@@ -547,14 +553,14 @@
         },
         {
           "id": "S001-C1",
-          "group": "Bị chặn",
+          "group": "Đang làm / có mã",
           "text": "open-pos-backend",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
           "line": 217
         },
         {
           "id": "S001-C3",
-          "group": "Bị chặn",
+          "group": "Đang làm / có mã",
           "text": "open-pos-backend",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
           "line": 218
@@ -921,378 +927,378 @@
           "group": "Đang làm / có mã",
           "text": "Kết nối theo blog",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 339
+          "line": 340
         },
         {
           "id": "SW2-2",
-          "group": "Chưa làm",
+          "group": "Đang làm / có mã",
           "text": "open-pos-backend",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 340
+          "line": 341
         },
         {
           "id": "SW2-3",
           "group": "Chưa làm",
           "text": "open-pos-backend",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 341
+          "line": 342
         },
         {
           "id": "SW2-4",
           "group": "Bị chặn",
           "text": "open-pos-backend",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 342
+          "line": 343
         },
         {
           "id": "SW2-5",
           "group": "Chưa làm",
           "text": "Mã lạ → kéo → thử lại",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 343
+          "line": 344
         },
         {
           "id": "SW2-6",
           "group": "Chưa làm",
           "text": "cả ba",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 344
+          "line": 345
         },
         {
           "id": "P001-W0",
           "group": "Đang làm / có mã",
           "text": "Bộ hồ sơ phase + khảo sát máy 21/11",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 350
+          "line": 351
         },
         {
           "id": "P001-DOC",
           "group": "Chưa làm",
           "text": "Phụ chú D13 ở docs/ke-hoach-react-api/* (00, 10, 16, 08, 13 và các file ở 10 §9); 13-fake-api.md đổi tên bảng sang theo blog",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 351
+          "line": 352
         },
         {
           "id": "P001-T1",
           "group": "Bị chặn",
           "text": "10 helper tên bảng (TGS_POS_Global_Products::*_table, TGS_POS_Price_List::*_table, TGS_POS_Material_Policy::*_table, stock-max global_product_table) → tgs_catalog_table($kind, $blog_id); bỏ ensure_global_product_source() require_once theo đường dẫn",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 357
+          "line": 358
         },
         {
           "id": "P001-T2",
           "group": "Chưa làm",
           "text": "9 chỗ vượt helper + 7 fallback defined(...) ?: 'wp_global_*' + promo-migrate::TABLE dùng helper; wp_ viết cứng ở lô / policy / training → $wpdb->base_prefix; --check=G0 (tsm) với --pos= ra 0",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 358
+          "line": 359
         },
         {
           "id": "P001-T3",
           "group": "Bị chặn",
           "text": "TGS_POS_Price_List: đọc bảng giá theo blog — **chỉ đổi tên bảng** (D002-7); phần luật DM14 bỏ (áp ở bộ kéo, D002-8). Chi tiết: [open-pos checklist](https://github.com/hoanganh8389/open-pos/blob/main/docs/phases/PHASE-001-POS-BANG-THEO-BLOG/40-MASTER-CHECKLIST.md)",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 359
+          "line": 360
         },
         {
           "id": "P001-T4",
           "group": "Chưa làm",
           "text": "22 chỗ báo cáo dùng get_blog_prefix($blog_id) cho ledger phải truyền cùng $blog_id vào helper catalog / giá; 3 AJAX (ajax-return:42, ajax-exchange-return:28, ajax-policy-stats:30) kiểm quyền trên blog đích trước khi switch_to_blog",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 360
+          "line": 361
         },
         {
           "id": "P001-CACHE",
           "group": "Bị chặn",
           "text": "Lắng tgs_catalog_changed($blog, …): xoá tgs_pos_all_products_v9_<blog>_*, tgs_pos_search_rows_*, TGS_POS_Cache::invalidate('global.price'\\",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 361
+          "line": 362
         },
         {
           "id": "P001-T6",
           "group": "Chưa làm",
           "text": "Smoke test bộ 3 plugin trên multisite mới: G1–G4 không fatal khi thiếu Viettel / loyalty / tgs-bc-tk / TTCK_API (đường tiền mặt); liệt kê fatal còn lại ở thanh toán QR",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 362
+          "line": 363
         },
         {
           "id": "P001-EVT",
           "group": "Bị chặn",
           "text": "blog_for_branch() thành vỏ: nhận blog_id do bridge (C5) truyền; không quét mọi site",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 368
+          "line": 369
         },
         {
           "id": "P001-G",
           "group": "Chưa làm",
           "text": "Chạy ca golden G2–G4, G7, G9, G14 trên multisite thử (script của tsm S001-G6)",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 374
+          "line": 375
         },
         {
           "id": "B001-DOC",
           "group": "Chưa làm",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 382
+          "line": 383
         },
         {
           "id": "B001-FIX1",
           "group": "Chưa làm",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 388
+          "line": 389
         },
         {
           "id": "B001-C1",
           "group": "Đang làm / có mã",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 389
+          "line": 390
         },
         {
           "id": "B001-C2",
           "group": "Đang làm / có mã",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 395
+          "line": 396
         },
         {
           "id": "B001-C6",
           "group": "Đang làm / có mã",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 396
-        },
-        {
-          "id": "B001-C4",
-          "group": "Chưa làm",
-          "text": "open-ketoan-bridge",
-          "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
           "line": 397
         },
         {
-          "id": "B001-T2",
+          "id": "B001-C4",
           "group": "Đang làm / có mã",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
           "line": 398
         },
         {
-          "id": "B001-C5",
-          "group": "Bị chặn",
+          "id": "B001-T2",
+          "group": "Đang làm / có mã",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 404
+          "line": 399
         },
         {
-          "id": "B001-C7",
+          "id": "B001-C5",
           "group": "Bị chặn",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
           "line": 405
         },
         {
+          "id": "B001-C7",
+          "group": "Bị chặn",
+          "text": "open-ketoan-bridge",
+          "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
+          "line": 406
+        },
+        {
           "id": "B001-C9",
           "group": "Chưa làm",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 406
+          "line": 407
         },
         {
           "id": "B001-C3",
           "group": "Chưa làm",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 412
+          "line": 413
         },
         {
           "id": "B001-C8",
           "group": "Chưa làm",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 413
+          "line": 414
         },
         {
           "id": "B001-C10",
           "group": "Đang làm / có mã",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 414
+          "line": 415
         },
         {
           "id": "B001-C11",
           "group": "Chưa làm",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 415
+          "line": 416
         },
         {
           "id": "B001-C12",
           "group": "Chưa làm",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 416
+          "line": 417
         },
         {
           "id": "B001-C13",
           "group": "Bị chặn",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 417
+          "line": 418
         },
         {
           "id": "B001-T4",
           "group": "Chưa làm",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 418
+          "line": 419
         },
         {
           "id": "B001-C14",
           "group": "Chưa làm",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 424
+          "line": 425
         },
         {
           "id": "B001-G",
           "group": "Chưa làm",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 425
+          "line": 426
         },
         {
           "id": "S001-K11",
           "group": "Chưa làm",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 431
+          "line": 432
         },
         {
           "id": "S001-K10",
           "group": "Chưa làm",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 432
+          "line": 433
         },
         {
           "id": "S001-K8",
           "group": "Chưa làm",
           "text": "open-ketoan-bridge",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 433
+          "line": 434
         },
         {
           "id": "S001-O2",
           "group": "Huỷ",
           "text": "PHASE-001 danh mục theo site",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 439
+          "line": 440
         },
         {
           "id": "S001-O3",
           "group": "Huỷ",
           "text": "PHASE-001 danh mục theo site",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 440
+          "line": 441
         },
         {
           "id": "OKT-TOPO-7",
           "group": "Huỷ",
           "text": "OKT — ba kiểu cài",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 441
+          "line": 442
         },
         {
           "id": "S001-C7",
           "group": "Huỷ",
           "text": "PHASE-001 danh mục theo site",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 443
+          "line": 444
         },
         {
           "id": "S001-BR4",
           "group": "Đã chuyển",
           "text": "PHASE-001 danh mục theo site",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 444
+          "line": 445
         },
         {
           "id": "S001-BR6",
           "group": "Đã chuyển",
           "text": "PHASE-001 danh mục theo site",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 445
+          "line": 446
         },
         {
           "id": "S001-BR7",
           "group": "Đã chuyển",
           "text": "PHASE-001 danh mục theo site",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 446
+          "line": 447
         },
         {
           "id": "S001-G4",
           "group": "Đã chuyển",
           "text": "PHASE-001 danh mục theo site",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 447
+          "line": 448
         },
         {
           "id": "S001-BR1",
           "group": "Huỷ",
           "text": "PHASE-001 danh mục theo site",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 448
+          "line": 449
         },
         {
           "id": "S001-G3",
           "group": "Đã chuyển",
           "text": "PHASE-001 danh mục theo site",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 449
+          "line": 450
         },
         {
           "id": "S001-BR3",
           "group": "Huỷ",
           "text": "PHASE-001 danh mục theo site",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 450
+          "line": 451
         },
         {
           "id": "S001-P1",
           "group": "Đã chuyển",
           "text": "PHASE-001 danh mục theo site",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 451
+          "line": 452
         },
         {
           "id": "S001-P2",
           "group": "Đã chuyển",
           "text": "PHASE-001 danh mục theo site",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 452
+          "line": 453
         },
         {
           "id": "P001-T5",
           "group": "Huỷ",
           "text": "PHASE-001 POS bảng theo blog",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 453
+          "line": 454
         },
         {
           "id": "P001-N3",
           "group": "Huỷ",
           "text": "PHASE-001 POS bảng theo blog",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 454
+          "line": 455
         },
         {
           "id": "P001-P3",
           "group": "Huỷ",
           "text": "PHASE-001 POS bảng theo blog",
           "file": "docs/chuong-trinh/OKT/40-CHECKLIST.md",
-          "line": 455
+          "line": 456
         }
       ]
     }

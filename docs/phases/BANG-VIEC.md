@@ -2,13 +2,13 @@
 
 <!-- Tệp sinh tự động bởi bizcity-platform tools/bang-viec.mjs (R-STD-DLV-6) — không sửa tay; đổi trạng thái ở checklist / README của phase rồi sinh lại. -->
 
-> **Tệp sinh tự động — không sửa tay.** Sinh lại: `node ../bizcity-platform/tools/bang-viec.mjs --repo . --write` · ngày sinh 2026-11-25
+> **Tệp sinh tự động — không sửa tay.** Sinh lại: `node ../bizcity-platform/tools/bang-viec.mjs --repo . --write` · ngày sinh 2026-11-26
 
 | Cột | Số việc |
 |---|---|
-| Đang làm / có mã | 56 |
-| Bị chặn | 15 |
-| Chưa làm | 82 |
+| Đang làm / có mã | 60 |
+| Bị chặn | 13 |
+| Chưa làm | 80 |
 | Hoãn | 0 |
 | Xong | 14 |
 | Huỷ | 9 |
@@ -21,9 +21,10 @@
 | Phase | Trạng thái phase | Xong | Đang / có mã | Bị chặn | Chưa làm | Tổng |
 |---|---|---|---|---|---|---|
 | [PHASE-001-CONG-TU-TAO-KE-TOAN](PHASE-001-CONG-TU-TAO-KE-TOAN/) | — | 0 | 0 | 0 | 0 | 0 |
-| [OKT](docs/chuong-trinh/OKT/) | — | 14 | 56 | 15 | 82 | 183 |
+| [PHASE-002-LUU-TEP-R2-THEO-WP](PHASE-002-LUU-TEP-R2-THEO-WP/) | Chưa làm | 0 | 0 | 0 | 0 | 0 |
+| [OKT](docs/chuong-trinh/OKT/) | — | 14 | 60 | 13 | 80 | 183 |
 
-## Đang làm / có mã (56)
+## Đang làm / có mã (60)
 
 | Mã | Phase | Việc |
 |---|---|---|
@@ -61,6 +62,8 @@
 | [S002-C7](docs/chuong-trinh/OKT/40-CHECKLIST.md#L163) | OKT | open-pos-backend |
 | [S002-C10](docs/chuong-trinh/OKT/40-CHECKLIST.md#L165) | OKT | open-pos-backend |
 | [S001-G0](docs/chuong-trinh/OKT/40-CHECKLIST.md#L190) | OKT | open-pos-backend |
+| [S001-C1](docs/chuong-trinh/OKT/40-CHECKLIST.md#L217) | OKT | open-pos-backend |
+| [S001-C3](docs/chuong-trinh/OKT/40-CHECKLIST.md#L218) | OKT | open-pos-backend |
 | [S001-MD3](docs/chuong-trinh/OKT/40-CHECKLIST.md#L276) | OKT | open-pos-backend |
 | [SW0-1](docs/chuong-trinh/OKT/40-CHECKLIST.md#L293) | OKT | open-pos-backend |
 | [SW0-2](docs/chuong-trinh/OKT/40-CHECKLIST.md#L294) | OKT | open-pos-backend |
@@ -76,35 +79,35 @@
 | [SW3-3](docs/chuong-trinh/OKT/40-CHECKLIST.md#L319) | OKT | open-pos-backend |
 | [SW3-4](docs/chuong-trinh/OKT/40-CHECKLIST.md#L320) | OKT | Bridge có, blog không khoá / kiểm lỗi → standalone (G5) |
 | [SW2-0](docs/chuong-trinh/OKT/40-CHECKLIST.md#L336) | OKT | open-pos-backend |
-| [SW2-1](docs/chuong-trinh/OKT/40-CHECKLIST.md#L339) | OKT | Kết nối theo blog |
-| [P001-W0](docs/chuong-trinh/OKT/40-CHECKLIST.md#L350) | OKT | Bộ hồ sơ phase + khảo sát máy 21/11 |
-| [B001-C1](docs/chuong-trinh/OKT/40-CHECKLIST.md#L389) | OKT | open-ketoan-bridge |
-| [B001-C2](docs/chuong-trinh/OKT/40-CHECKLIST.md#L395) | OKT | open-ketoan-bridge |
-| [B001-C6](docs/chuong-trinh/OKT/40-CHECKLIST.md#L396) | OKT | open-ketoan-bridge |
-| [B001-T2](docs/chuong-trinh/OKT/40-CHECKLIST.md#L398) | OKT | open-ketoan-bridge |
-| [B001-C10](docs/chuong-trinh/OKT/40-CHECKLIST.md#L414) | OKT | open-ketoan-bridge |
+| [SW2-1](docs/chuong-trinh/OKT/40-CHECKLIST.md#L340) | OKT | Kết nối theo blog |
+| [SW2-2](docs/chuong-trinh/OKT/40-CHECKLIST.md#L341) | OKT | open-pos-backend |
+| [P001-W0](docs/chuong-trinh/OKT/40-CHECKLIST.md#L351) | OKT | Bộ hồ sơ phase + khảo sát máy 21/11 |
+| [B001-C1](docs/chuong-trinh/OKT/40-CHECKLIST.md#L390) | OKT | open-ketoan-bridge |
+| [B001-C2](docs/chuong-trinh/OKT/40-CHECKLIST.md#L396) | OKT | open-ketoan-bridge |
+| [B001-C6](docs/chuong-trinh/OKT/40-CHECKLIST.md#L397) | OKT | open-ketoan-bridge |
+| [B001-C4](docs/chuong-trinh/OKT/40-CHECKLIST.md#L398) | OKT | open-ketoan-bridge |
+| [B001-T2](docs/chuong-trinh/OKT/40-CHECKLIST.md#L399) | OKT | open-ketoan-bridge |
+| [B001-C10](docs/chuong-trinh/OKT/40-CHECKLIST.md#L415) | OKT | open-ketoan-bridge |
 
-## Bị chặn (15)
+## Bị chặn (13)
 
 | Mã | Phase | Việc |
 |---|---|---|
 | [OKT-SC-4](docs/chuong-trinh/OKT/40-CHECKLIST.md#L97) | OKT | Đưa I-8 vào CANON (R-OKT-CONN-13) |
 | [OKT-TOPO-5](docs/chuong-trinh/OKT/40-CHECKLIST.md#L111) | OKT | open-ketoan-bridge + open-pos-backend |
-| [S001-C1](docs/chuong-trinh/OKT/40-CHECKLIST.md#L217) | OKT | open-pos-backend |
-| [S001-C3](docs/chuong-trinh/OKT/40-CHECKLIST.md#L218) | OKT | open-pos-backend |
 | [S001-C8](docs/chuong-trinh/OKT/40-CHECKLIST.md#L226) | OKT | open-pos-backend |
 | [S001-C18](docs/chuong-trinh/OKT/40-CHECKLIST.md#L227) | OKT | open-pos-backend |
 | [S001-C9](docs/chuong-trinh/OKT/40-CHECKLIST.md#L239) | OKT | open-pos-backend |
-| [SW2-4](docs/chuong-trinh/OKT/40-CHECKLIST.md#L342) | OKT | open-pos-backend |
-| [P001-T1](docs/chuong-trinh/OKT/40-CHECKLIST.md#L357) | OKT | 10 helper tên bảng (TGS_POS_Global_Products::*_table, TGS_POS_Price_List::*_table, TGS_POS_Material_Policy::*_table, stock-max global_produ… |
-| [P001-T3](docs/chuong-trinh/OKT/40-CHECKLIST.md#L359) | OKT | TGS_POS_Price_List: đọc bảng giá theo blog — **chỉ đổi tên bảng** (D002-7); phần luật DM14 bỏ (áp ở bộ kéo, D002-8). Chi tiết: [open-pos ch… |
-| [P001-CACHE](docs/chuong-trinh/OKT/40-CHECKLIST.md#L361) | OKT | Lắng tgs_catalog_changed($blog, …): xoá tgs_pos_all_products_v9_<blog>_*, tgs_pos_search_rows_*, TGS_POS_Cache::invalidate('global.price'\ |
-| [P001-EVT](docs/chuong-trinh/OKT/40-CHECKLIST.md#L368) | OKT | blog_for_branch() thành vỏ: nhận blog_id do bridge (C5) truyền; không quét mọi site |
-| [B001-C5](docs/chuong-trinh/OKT/40-CHECKLIST.md#L404) | OKT | open-ketoan-bridge |
-| [B001-C7](docs/chuong-trinh/OKT/40-CHECKLIST.md#L405) | OKT | open-ketoan-bridge |
-| [B001-C13](docs/chuong-trinh/OKT/40-CHECKLIST.md#L417) | OKT | open-ketoan-bridge |
+| [SW2-4](docs/chuong-trinh/OKT/40-CHECKLIST.md#L343) | OKT | open-pos-backend |
+| [P001-T1](docs/chuong-trinh/OKT/40-CHECKLIST.md#L358) | OKT | 10 helper tên bảng (TGS_POS_Global_Products::*_table, TGS_POS_Price_List::*_table, TGS_POS_Material_Policy::*_table, stock-max global_produ… |
+| [P001-T3](docs/chuong-trinh/OKT/40-CHECKLIST.md#L360) | OKT | TGS_POS_Price_List: đọc bảng giá theo blog — **chỉ đổi tên bảng** (D002-7); phần luật DM14 bỏ (áp ở bộ kéo, D002-8). Chi tiết: [open-pos ch… |
+| [P001-CACHE](docs/chuong-trinh/OKT/40-CHECKLIST.md#L362) | OKT | Lắng tgs_catalog_changed($blog, …): xoá tgs_pos_all_products_v9_<blog>_*, tgs_pos_search_rows_*, TGS_POS_Cache::invalidate('global.price'\ |
+| [P001-EVT](docs/chuong-trinh/OKT/40-CHECKLIST.md#L369) | OKT | blog_for_branch() thành vỏ: nhận blog_id do bridge (C5) truyền; không quét mọi site |
+| [B001-C5](docs/chuong-trinh/OKT/40-CHECKLIST.md#L405) | OKT | open-ketoan-bridge |
+| [B001-C7](docs/chuong-trinh/OKT/40-CHECKLIST.md#L406) | OKT | open-ketoan-bridge |
+| [B001-C13](docs/chuong-trinh/OKT/40-CHECKLIST.md#L418) | OKT | open-ketoan-bridge |
 
-## Chưa làm (82)
+## Chưa làm (80)
 
 | Mã | Phase | Việc |
 |---|---|---|
@@ -167,25 +170,24 @@
 | [S001-MD5](docs/chuong-trinh/OKT/40-CHECKLIST.md#L277) | OKT | open-pos-backend |
 | [S001-MD6](docs/chuong-trinh/OKT/40-CHECKLIST.md#L278) | OKT | open-pos-backend |
 | [SW0-4](docs/chuong-trinh/OKT/40-CHECKLIST.md#L296) | OKT | open-pos-backend |
-| [SW2-2](docs/chuong-trinh/OKT/40-CHECKLIST.md#L340) | OKT | open-pos-backend |
-| [SW2-3](docs/chuong-trinh/OKT/40-CHECKLIST.md#L341) | OKT | open-pos-backend |
-| [SW2-5](docs/chuong-trinh/OKT/40-CHECKLIST.md#L343) | OKT | Mã lạ → kéo → thử lại |
-| [SW2-6](docs/chuong-trinh/OKT/40-CHECKLIST.md#L344) | OKT | cả ba |
-| [P001-DOC](docs/chuong-trinh/OKT/40-CHECKLIST.md#L351) | OKT | Phụ chú D13 ở docs/ke-hoach-react-api/* (00, 10, 16, 08, 13 và các file ở 10 §9); 13-fake-api.md đổi tên bảng sang theo blog |
-| [P001-T2](docs/chuong-trinh/OKT/40-CHECKLIST.md#L358) | OKT | 9 chỗ vượt helper + 7 fallback defined(...) ?: 'wp_global_*' + promo-migrate::TABLE dùng helper; wp_ viết cứng ở lô / policy / training → $… |
-| [P001-T4](docs/chuong-trinh/OKT/40-CHECKLIST.md#L360) | OKT | 22 chỗ báo cáo dùng get_blog_prefix($blog_id) cho ledger phải truyền cùng $blog_id vào helper catalog / giá; 3 AJAX (ajax-return:42, ajax-e… |
-| [P001-T6](docs/chuong-trinh/OKT/40-CHECKLIST.md#L362) | OKT | Smoke test bộ 3 plugin trên multisite mới: G1–G4 không fatal khi thiếu Viettel / loyalty / tgs-bc-tk / TTCK_API (đường tiền mặt); liệt kê f… |
-| [P001-G](docs/chuong-trinh/OKT/40-CHECKLIST.md#L374) | OKT | Chạy ca golden G2–G4, G7, G9, G14 trên multisite thử (script của tsm S001-G6) |
-| [B001-DOC](docs/chuong-trinh/OKT/40-CHECKLIST.md#L382) | OKT | open-ketoan-bridge |
-| [B001-FIX1](docs/chuong-trinh/OKT/40-CHECKLIST.md#L388) | OKT | open-ketoan-bridge |
-| [B001-C4](docs/chuong-trinh/OKT/40-CHECKLIST.md#L397) | OKT | open-ketoan-bridge |
-| [B001-C9](docs/chuong-trinh/OKT/40-CHECKLIST.md#L406) | OKT | open-ketoan-bridge |
-| [B001-C3](docs/chuong-trinh/OKT/40-CHECKLIST.md#L412) | OKT | open-ketoan-bridge |
-| [B001-C8](docs/chuong-trinh/OKT/40-CHECKLIST.md#L413) | OKT | open-ketoan-bridge |
-| [B001-C11](docs/chuong-trinh/OKT/40-CHECKLIST.md#L415) | OKT | open-ketoan-bridge |
-| [B001-C12](docs/chuong-trinh/OKT/40-CHECKLIST.md#L416) | OKT | open-ketoan-bridge |
-| [B001-T4](docs/chuong-trinh/OKT/40-CHECKLIST.md#L418) | OKT | open-ketoan-bridge |
-| [B001-C14](docs/chuong-trinh/OKT/40-CHECKLIST.md#L424) | OKT | open-ketoan-bridge |
-| [B001-G](docs/chuong-trinh/OKT/40-CHECKLIST.md#L425) | OKT | open-ketoan-bridge |
-| [S001-K11](docs/chuong-trinh/OKT/40-CHECKLIST.md#L431) | OKT | open-ketoan-bridge |
-| … | | còn 2 việc — xem checklist của phase |
+| [SW2-3](docs/chuong-trinh/OKT/40-CHECKLIST.md#L342) | OKT | open-pos-backend |
+| [SW2-5](docs/chuong-trinh/OKT/40-CHECKLIST.md#L344) | OKT | Mã lạ → kéo → thử lại |
+| [SW2-6](docs/chuong-trinh/OKT/40-CHECKLIST.md#L345) | OKT | cả ba |
+| [P001-DOC](docs/chuong-trinh/OKT/40-CHECKLIST.md#L352) | OKT | Phụ chú D13 ở docs/ke-hoach-react-api/* (00, 10, 16, 08, 13 và các file ở 10 §9); 13-fake-api.md đổi tên bảng sang theo blog |
+| [P001-T2](docs/chuong-trinh/OKT/40-CHECKLIST.md#L359) | OKT | 9 chỗ vượt helper + 7 fallback defined(...) ?: 'wp_global_*' + promo-migrate::TABLE dùng helper; wp_ viết cứng ở lô / policy / training → $… |
+| [P001-T4](docs/chuong-trinh/OKT/40-CHECKLIST.md#L361) | OKT | 22 chỗ báo cáo dùng get_blog_prefix($blog_id) cho ledger phải truyền cùng $blog_id vào helper catalog / giá; 3 AJAX (ajax-return:42, ajax-e… |
+| [P001-T6](docs/chuong-trinh/OKT/40-CHECKLIST.md#L363) | OKT | Smoke test bộ 3 plugin trên multisite mới: G1–G4 không fatal khi thiếu Viettel / loyalty / tgs-bc-tk / TTCK_API (đường tiền mặt); liệt kê f… |
+| [P001-G](docs/chuong-trinh/OKT/40-CHECKLIST.md#L375) | OKT | Chạy ca golden G2–G4, G7, G9, G14 trên multisite thử (script của tsm S001-G6) |
+| [B001-DOC](docs/chuong-trinh/OKT/40-CHECKLIST.md#L383) | OKT | open-ketoan-bridge |
+| [B001-FIX1](docs/chuong-trinh/OKT/40-CHECKLIST.md#L389) | OKT | open-ketoan-bridge |
+| [B001-C9](docs/chuong-trinh/OKT/40-CHECKLIST.md#L407) | OKT | open-ketoan-bridge |
+| [B001-C3](docs/chuong-trinh/OKT/40-CHECKLIST.md#L413) | OKT | open-ketoan-bridge |
+| [B001-C8](docs/chuong-trinh/OKT/40-CHECKLIST.md#L414) | OKT | open-ketoan-bridge |
+| [B001-C11](docs/chuong-trinh/OKT/40-CHECKLIST.md#L416) | OKT | open-ketoan-bridge |
+| [B001-C12](docs/chuong-trinh/OKT/40-CHECKLIST.md#L417) | OKT | open-ketoan-bridge |
+| [B001-T4](docs/chuong-trinh/OKT/40-CHECKLIST.md#L419) | OKT | open-ketoan-bridge |
+| [B001-C14](docs/chuong-trinh/OKT/40-CHECKLIST.md#L425) | OKT | open-ketoan-bridge |
+| [B001-G](docs/chuong-trinh/OKT/40-CHECKLIST.md#L426) | OKT | open-ketoan-bridge |
+| [S001-K11](docs/chuong-trinh/OKT/40-CHECKLIST.md#L432) | OKT | open-ketoan-bridge |
+| [S001-K10](docs/chuong-trinh/OKT/40-CHECKLIST.md#L433) | OKT | open-ketoan-bridge |
+| [S001-K8](docs/chuong-trinh/OKT/40-CHECKLIST.md#L434) | OKT | open-ketoan-bridge |
