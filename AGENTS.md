@@ -15,6 +15,9 @@ Dự án: **Bizcity Open Setup** — nơi tạo và quản lý các site kế to
 > - Mỗi instance ghi `core_version` (bản open-core đang chạy) + `app_version`; nâng cấp = app chạy migration **lõi trước, module sau** — Site Manager chỉ gọi API, không tự chạy migration.
 > - Sửa máy nhiều site / hợp đồng `bizcity_site_provisioning@N`: mã ở **open-core** (từ NC-003 C2), văn bản hợp đồng vẫn ở open-ketoan tới khi chủ chốt nơi ở mới (NC-003 Q-CORE-5).
 
+<!-- [2026-11-28 12:24 AM Johnny Chu - Chu Hoàng Anh] NC-004 — tenant ↔ blog_id (canon R-CANON-18) -->
+> **Tenant ↔ blog (canon R-CANON-18, bizcity-platform NC-004 Q-PIL-2):** một cửa hàng = một blog WordPress = **một tenant**; một chuỗi nhiều cửa hàng = nhiều tenant trong cùng Workspace. Registry ghi ánh xạ `blog_id ↔ tenant` một-một (`tenants.external_ref = wp-blog:<id>` ở app) — không suy tenant từ khoá hay tên. Workspace là blog chủ của chuỗi (đề xuất Q-PIL-5, chờ chủ).
+
 ## Bốn câu không thương lượng
 
 1. **Frappe không giữ dữ liệu kế toán.** Site Manager chỉ giữ danh sách site, khách hàng và nhật ký việc. Sổ sách nằm trong database của từng site bên Open Kế Toán.
