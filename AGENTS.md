@@ -9,6 +9,12 @@ Dự án: **Bizcity Open Setup** — nơi tạo và quản lý các site kế to
 
 > **Hiện trạng (2026-11-21):** repo có **tài liệu và script vận hành, chưa có mã app**. App Frappe `bizcity_site_manager` và Provisioning API của Open Kế Toán là **đích**; đừng giả định chúng đã tồn tại. Kiểm bằng cách đọc cây thư mục. Việc kế tiếp: [PHASE-001](docs/phases/PHASE-001-CONG-TU-TAO-KE-TOAN/README.md).
 
+<!-- [2026-11-27 11:03 PM Johnny Chu - Chu Hoàng Anh] NC-003 — chủ chốt Q-CORE-1…4: ba vai nền; open-setup cấp instance cho mọi app dựng trên open-core -->
+> **Ba vai nền (canon R-CANON-17, 2026-11-27):** **open-platform** = repo `bizcity-platform` (chuẩn `BIZCITY-*`, bộ kiểm) quy định → **open-core** = repo `open-core` (mã lõi `@bizcity/*`, semver chung; trong đó có máy nhiều site `db/site-*.ts` phục vụ `/_sites/v1`) hiện thực → mỗi app (open-ketoan, open-cake, open-pos, open-hrm, open-mrp…) = open-core + module → **open-setup (repo này)** giữ registry Workspace × app = instance và gọi `/_sites/v1` của app. Hệ quả cho repo này:
+> - Site Manager phục vụ **mọi app trên open-core**, không chỉ Kế Toán: DocType `Bizcity Ketoan Site` sẽ tổng quát thành `Bizcity App Instance` (thêm `product`, `core_version`, `app_version`, `root_domains`) — NC-003 bước C7, NC-002 OC-6.
+> - Mỗi instance ghi `core_version` (bản open-core đang chạy) + `app_version`; nâng cấp = app chạy migration **lõi trước, module sau** — Site Manager chỉ gọi API, không tự chạy migration.
+> - Sửa máy nhiều site / hợp đồng `bizcity_site_provisioning@N`: mã ở **open-core** (từ NC-003 C2), văn bản hợp đồng vẫn ở open-ketoan tới khi chủ chốt nơi ở mới (NC-003 Q-CORE-5).
+
 ## Bốn câu không thương lượng
 
 1. **Frappe không giữ dữ liệu kế toán.** Site Manager chỉ giữ danh sách site, khách hàng và nhật ký việc. Sổ sách nằm trong database của từng site bên Open Kế Toán.

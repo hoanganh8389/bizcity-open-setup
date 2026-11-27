@@ -5,6 +5,9 @@ Theo [Keep a Changelog](https://keepachangelog.com/); phiên bản theo SemVer k
 
 ## [Chưa phát hành]
 
+### 2026-11-27 — ba vai nền (canon R-CANON-17)
+- <!-- [2026-11-27 11:08 PM Johnny Chu - Chu Hoàng Anh] NC-003 — chủ chốt Q-CORE-1…4 --> AGENTS và `docs/canon/README`: open-setup cấp instance cho **mọi app trên open-core**; registry sẽ ghi `product`, `core_version`, `app_version` (bizcity-platform NC-003 C7).
+
 ### 2026-11-21 (khuya) — W1: khung app Frappe `bizcity_site_manager`
 <!-- [2026-11-21 10:48 PM Johnny Chu - Chu Hoàng Anh] PHASE-001 — W1 -->
 
