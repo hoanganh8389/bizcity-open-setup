@@ -6,6 +6,7 @@
 |---|---|---|
 | **BIZCITY OPEN CANON** | [open-hub/docs/canon](https://github.com/hoanganh8389/open-hub/blob/main/docs/canon/README.md) | §2.1: open-setup là **repo điều phối thứ hai** — registry site → DB, vòng đời site, tên miền gốc |
 | **`bizcity_spine@1`** — xương sống xuyên app | [bizcity-platform/docs/standard/BIZCITY-SPINE-v1.md](https://github.com/hoanganh8389/bizcity-platform/blob/main/docs/standard/BIZCITY-SPINE-v1.md) | trục `tenant` do repo này làm chủ |
+| **Ba vai nền** (R-CANON-17) | [canon §2.2](https://github.com/hoanganh8389/open-hub/blob/main/docs/canon/BIZCITY-OPEN-CANON-v1.md) · [bizcity-platform NC-003](https://github.com/hoanganh8389/bizcity-platform/blob/main/docs/research/NC-003-TACH-OPEN-CORE.md) | open-platform (chuẩn) → open-core (mã lõi `@bizcity/*`) → app = open-core + module → **repo này** cấp instance, ghi `core_version` <!-- [2026-11-27 11:03 PM Johnny Chu - Chu Hoàng Anh] NC-003 — chủ chốt Q-CORE-1…4: ba vai nền; open-setup cấp instance cho mọi app dựng trên open-core --> |
 | Luật của repo | [docs/00-CANON.md](../00-CANON.md), [chương trình OKT](../chuong-trinh/OKT/00-ADR-OKT-1.md) | luật tối thượng P-0 của open-pos ⇄ open-ketoan |
 
 ## open-setup trong xương sống (`bizcity.app.json` ở gốc repo)
