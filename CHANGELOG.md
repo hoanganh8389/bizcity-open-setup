@@ -5,6 +5,9 @@ Theo [Keep a Changelog](https://keepachangelog.com/); phiên bản theo SemVer k
 
 ## [Chưa phát hành]
 
+### Thêm (R-CORE-10 — Lõi trước)
+- 2026-11-29 — <!-- [2026-11-29 01:19 AM Johnny Chu - Chu Hoàng Anh] R-CORE-10 --> khối chung "Lõi trước — bánh xe đóng góp" (`bizcity:loi-truoc@1`, chuẩn `bizcity_core_first@1`) trong AGENTS.md + mẫu PR có ô "Lõi hay app?".
+
 ### 2026-11-27 — ba vai nền (canon R-CANON-17)
 - <!-- [2026-11-27 11:08 PM Johnny Chu - Chu Hoàng Anh] NC-003 — chủ chốt Q-CORE-1…4 --> AGENTS và `docs/canon/README`: open-setup cấp instance cho **mọi app trên open-core**; registry sẽ ghi `product`, `core_version`, `app_version` (bizcity-platform NC-003 C7).
 
