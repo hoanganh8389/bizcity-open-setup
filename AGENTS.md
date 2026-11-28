@@ -16,7 +16,7 @@ Dự án: **Bizcity Open Setup** — nơi tạo và quản lý các site kế to
 > - Sửa máy nhiều site / hợp đồng `bizcity_site_provisioning@N`: mã ở **open-core** (từ NC-003 C2), văn bản hợp đồng vẫn ở open-ketoan tới khi chủ chốt nơi ở mới (NC-003 Q-CORE-5).
 
 <!-- [2026-11-28 12:24 AM Johnny Chu - Chu Hoàng Anh] NC-004 — tenant ↔ blog_id (canon R-CANON-18) -->
-> **Tenant ↔ blog (canon R-CANON-18, bizcity-platform NC-004 Q-PIL-2):** một cửa hàng = một blog WordPress = **một tenant**; một chuỗi nhiều cửa hàng = nhiều tenant trong cùng Workspace. Registry ghi ánh xạ `blog_id ↔ tenant` một-một (`tenants.external_ref = wp-blog:<id>` ở app) — không suy tenant từ khoá hay tên. Workspace là blog chủ của chuỗi (đề xuất Q-PIL-5, chờ chủ).
+> **Tenant ↔ blog (canon R-CANON-18, bizcity-platform NC-004 Q-PIL-2):** một cửa hàng = một blog WordPress = **một tenant**; một chuỗi nhiều cửa hàng = nhiều tenant trong cùng Workspace. Registry ghi ánh xạ `blog_id ↔ tenant` một-một (`tenants.external_ref = wp-blog:<id>` ở app) — không suy tenant từ khoá hay tên. **Workspace chỉ ghi chép trạng thái** — trạng thái hoạt động gốc (thành viên, blog, gói, khoá) nằm ở phía WordPress bizcity hub; Site Manager đọc / nhận từ hub rồi ghi lại, không tự quyết bật / tắt (Q-PIL-5, chủ chốt 2026-11-28 02:15 PM).
 
 ## Bốn câu không thương lượng
 
